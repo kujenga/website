@@ -1,0 +1,76 @@
+body {
+    padding-top: 75px;
+}
+
+.lead {
+    padding-top: 30px;
+}
+
+.jumbotron {
+    margin-top: -25px;
+    /*height: 350px;*/
+    color: black;
+    /*text-shadow: #444 0 1px 1px;*/
+    background: url("../img/view-med.jpg");
+}
+
+.jumbotron > .container {
+    padding-top: 40px;
+    padding-bottom: 200px;
+
+    text-align: center;
+}
+
+/*Footer*/
+.footer {
+    margin-top: 50px;
+    margin-bottom: 25px;
+
+    border: solid 1px #eee;
+
+    background: -webkit-linear-gradient(#eee, #fff, #fff, #fff, #fff); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(#eee, #fff, #fff, #fff, #fff); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(#eee, #fff, #fff, #fff, #fff); /* For Firefox 3.6 to 15 */
+    background: repeating-linear-gradient(#eee, #fff, #fff, #fff, #fff); /* Standard syntax */
+}
+
+/*Social Links*/
+.btn-outline {
+    margin-top: 15px;
+
+    font-size: 20px;
+
+    transition: all .3s ease-in-out;
+
+    color: #ddd;
+    border: solid 2px #ddd;
+    background: 0 0;
+}
+
+.btn-outline:hover,
+.btn-outline:focus,
+.btn-outline:active,
+.btn-outline.active {
+    color: #999;
+    border: solid 2px #999;
+    background: #fff;
+}
+.btn-social {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+
+    font-size: 20px;
+    line-height: 45px;
+
+    text-align: center;
+
+    border: 2px solid #fff;
+    border-radius: 100%;
+}
+
+.btn:focus,
+.btn:active,
+.btn.active {
+    outline: 0;
+}

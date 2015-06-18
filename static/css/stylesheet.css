@@ -1,0 +1,244 @@
+
+body {
+    margin-left: 40px;
+
+    background-color: #f6f7f0;
+
+    text-rendering: optimizeLegibility;
+}
+
+a {
+    text-decoration: none;
+}
+/* unvisited link */
+a:link {
+    color: #00c;
+}
+
+/* visited link */
+a:visited {
+    color: #00c;
+}
+
+/* selected link */
+a:active {
+    color: #22f;
+}
+
+#resume {
+    color: #000;
+}
+
+/*Header Styling*/
+/*some inspiration drawn from: http://onepagelove.com/green-chameleon*/
+
+#in_progress {
+    position: fixed;
+    right: 2%;
+    bottom: 2%;
+    z-index: 10;
+
+    float: right;
+    padding-right: 10px;
+    padding-left: 10px;
+
+    text-align: center;
+
+    background: rgba(200, 54, 54, .7);
+}
+#in_progress > p {
+    color: white;
+}
+
+.vert_nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 5;
+
+    float: left;
+    width: 100px;
+    height: 100%;
+    padding: 10px;
+    padding: .625rem;
+    overflow: hidden;
+
+    text-align: center;
+
+    background: #1d2123;
+}
+
+.vert_nav > ul {
+    list-style-type: none;
+}
+
+/* All of the text in the navigation bar */
+nav.vert_nav a {
+    font-family: "avenir", sans-serif;
+    font-size: 15px;
+    font-size: .9375rem;
+    font-weight: 400;
+    line-height: inherit;
+
+    letter-spacing: .0625em;
+    text-transform: uppercase;
+
+    color: white;
+}
+
+.personal_info {
+    position: absolute;
+    top: 50%;
+
+    float: left;
+
+    -webkit-transition: .4s ease;
+            transition: .4s ease;
+    -webkit-transform: translate(-28%, -70%);
+}
+
+.page_nav {
+    position: absolute;
+    top: 50%;
+
+    float: left;
+
+    -webkit-transition: .4s ease;
+            transition: .4s ease;
+    -webkit-transform: translate(-28%, -70%);
+}
+
+.page_nav li a {
+    position: relative;
+
+    display: block;
+    height: 80px;
+    height: 4rem;
+}
+
+.page_nav li a:hover {
+    text-shadow: #ee0 0 0 10px;
+}
+
+#social {
+    position: absolute;
+    top: calc(100% - 320px);
+
+    display: block;
+    float: bottom;
+    width: 100%;
+    margin-left: -50px;
+}
+
+.social_link {
+    display: block;
+    margin: 20px;
+
+    opacity: .6;
+}
+
+.social_link:hover {
+    opacity: 1.0;
+}
+
+/*
+Body of the Resume Page
+*/
+
+.resume_body {
+    position: relative;
+
+    float: right;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    margin-left: 95px;
+}
+
+h2 {
+    font-family: "avenir", sans-serif;
+    font-size: 1.8em;
+}
+
+h3 {
+    font-family: "avenir", sans-serif;
+    font-size: 1.4em;
+}
+
+h4 {
+    font-family: "avenir", sans-serif;
+    font-size: 1.2em;
+}
+
+p {
+    font-family: "avenir", sans-serif;
+    font-size: 1.0em;
+}
+
+p.header {
+    margin-right: 20px;
+    margin-left: 20px;
+
+    font-size: 1.1em;
+    font-weight: bold;
+    font-variant: smallcaps;
+}
+
+p.date {
+    margin-right: 20px;
+    margin-left: 20px;
+}
+
+p.body {
+    margin-right: 20px;
+    margin-left: 30px;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.resume_item {
+    margin: 5px;
+
+    border: 1px solid #999;
+}
+
+.resume_item_header {
+    display: inline-block;
+}
+
+
+
+#peckappstore {
+    margin-left: 20px;
+}
+
+#peckappstore > * {
+    display: inline-block;
+}
+
+/*h3 {
+	font-family: Century Gothic, sans-serif;
+	color:#36648b;
+	text-align:center;
+}*/
+
+.skills li {
+    font-family: "avenir", sans-serif;
+    font-size: 1.0em;
+}
+
+.jobTitle {
+    font-size: 24px;
+
+    color: #c00;
+}
+
+/*Footer links and styling*/
+
+#footer {
+    height: 20px;
+    clear: both;
+
+    background-color: #ded;
+}

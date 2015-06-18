@@ -1,0 +1,9 @@
+baseurl = "https://ataylor.io/"
+languageCode = "en-us"
+title = "ataylor.io"
+description = "My personal site"
+
+[params]
+	twitter = "https://twitter.com/ataylor0123"
+	github = "https://github.com/kujenga"
+	linkedin = "https://linkedin.com/in/ataylor0123"
