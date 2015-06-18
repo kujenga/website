@@ -6,7 +6,9 @@
         <div class="col-md-9">
             <ul class="list-unstyled">
                 {{ range .Data.Pages }}
-                    {{ .Render "summary" }}
+                    <li>
+                        {{ .Render "summary" }}
+                    </li>
                 {{ end}}
             </ul>
         </div>
