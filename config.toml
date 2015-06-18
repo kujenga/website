@@ -1,6 +1,6 @@
-baseurl = "https://ataylor.io/"
+baseurl = "https://kujenga.github.io/"
 languageCode = "en-us"
-title = "ataylor.io"
+title = "Aaron Taylor"
 description = "My personal site"
 
 [params]
