@@ -1,6 +1,7 @@
 +++
 date = "2015-06-16T23:11:40-04:00"
 title = "Replicated hosting within a P2P marketplace"
+header_img = "/img/proj/p2p.jpg"
 
 categories = ["homepage"]
 +++

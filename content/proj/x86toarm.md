@@ -1,6 +1,7 @@
 +++
 date = "2015-06-16T22:57:32-04:00"
 title = "Compiling Interpreter for x86 written in ARM"
+header_img = "/img/proj/arm_vs_x86.png"
 
 categories = ["homepage"]
 +++
