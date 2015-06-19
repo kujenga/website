@@ -13,8 +13,8 @@ before_install:
 install:
   - npm install
 script:
-  - gulp lint
+  # - gulp lint
 after_success:
-  - chmod 600 .travis/deploy_key # this key should have push access
-  - ssh-add .travis/deploy_key
-  - ./deploy.sh
+  # - chmod 600 .travis/deploy_key # this key should have push access
+  # - ssh-add .travis/deploy_key
+  # - ./deploy.sh
