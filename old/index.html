@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Aaron Taylor - Resume</title>
+    <!-- <link href='http://fonts.googleapis.com/css?family=Arimo' rel='stylesheet' type='text/css'> -->
+    <link type="text/css" rel="stylesheet" href="assets/stylesheet.css"/>
+
+    <!-- Google Analytics tracking -->
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-56787812-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+
+    <!-- Javascript and jquery -->
+    <!-- taken from: http://css-tricks.com/examples/SmoothPageScroll/ -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+    <!-- implements smooth scrolling for page anchor links -->
+    <script>
+    $(function() {
+      $('a[href*=#]:not([href=#])').click(function() {
+        if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
+
+          var target = $(this.hash);
+          target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+          if (target.length) {
+            $('html,body').animate({
+              scrollTop: target.offset().top
+            }, 700);
+            return false;
+          }
+        }
+      });
+    });
+    </script>
+  </head>
+  <body>
+    <nav class="vert_nav">
+      <!-- Snippets of personal information -->
+      <ul class=="personal_info">
+        <li>
+          <a href="#body">Aaron Taylor</a>
+        </li>
+        <!-- <li>
+          <a>Williams College - Class of 2016</a>
+          <a><strong>Major:</strong> Computer Science</p>
+        </li> -->
+      </ul>
+      <!-- Naviagtion within this page -->
+      <ul id="navigation" class="page_nav">
+      <li>
+          <a href="#education">Education</a>
+        </li>
+        <li>
+          <a href="#experience">Experience</a>
+        </li>
+        <li>
+          <a href="#projects">Projects</a>
+        </li>
+      </ul>
+      <!-- Links to my social media accounts -->
+      <ul id="social">
+        <li class="social_link">
+          <a href="https://www.github.com/kujenga" target=newtab>
+            <img src="https://d3gsyx416re2gv.cloudfront.net/img/github_light.png" width="50px" height="50px" ></img>
+          </a>
+        </li>
+        <li class="social_link">
+          <a href="https://www.linkedin.com/in/ataylor0123" target=newtab>
+            <img src="https://d3gsyx416re2gv.cloudfront.net/img/linkedin.png" width="50px" height="50px" ></img>
+          </a>
+        </li>
+        <li class="social_link">
+          <a href="http://strava.com/athletes/3953034/badge" class="strava-badge- strava-badge-follow" target="_blank">
+            <img src="https://d3gsyx416re2gv.cloudfront.net/img/strava.png" width="50px" height="50px"  alt="Strava" />
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- floating element indicaiting that the site is in progress -->
+    <div id="in_progress">
+      <p>
+        Site is currently<br/>
+        a work in progress!
+      </p>
+    </div>
+
+    <div id="body" class="resume_body">
+      <h2><a id="resume" href="https://dl.dropboxusercontent.com/u/25473394/Aaron_Taylor_Resume.pdf" download>Resume</a></h2>
+      
+      <div>
+        <h3 id="education">Education</h3>
+        <p> <span class="bold" style="color: #6B008F">Williams College</span> - Class of 2016 </p>
+        <p> <span class="bold">Major:</span> Computer Science </p>
+        <p>
+          <span class="bold">Favorite Coursework:</span> Distributed Systems, Data Mining, Principles of Programming
+          Languages, Computer Architecture and Organization, Mobile Application Development, Introduction to
+          Cryptography, Computer Graphics, Computer Vision for Digital Cinema
+        </p>
+      </div>
+      <div>
+        <h3 id="experience">Experience</h3>
+
+        <div class="resume_item">
+          <div class="resume_item_header">
+            <p class="header">CTO and Co-Founder, <a class="header_link" href="http://www.meta.sc">Meta</a></p>
+            <p class="date">January 2015 - Present</p>
+          </div>
+          <p class="body">
+            Developing a cloud platform that brings the power of a search engine to a user's own files. Architecting 
+            and implementing a service-based distributed system that interfaces with user devices and other cloud 
+            services to provide a single user experience for file search and organization.
+            <br/>
+            Working in Go and Python and deployed on Google App Engine.
+          </p>
+        </div>
+
+        <div class="resume_item">
+          <div class="resume_item_header">
+            <p class="header">Head Developer and Co-Founder, <a class="header_link" href="https://www.peckapp.com">Peck App</a></p>
+            <p class="date">Fall 2013 - January 2015</p>
+          </div>
+          <a id="appstore" href="https://itunes.apple.com/tr/app/peck-social-calendaring-event/id912464190?mt=8" target=newtab>
+            <div id="peckappstore">
+              <img src="https://d3gsyx416re2gv.cloudfront.net/img/appstore.png" alt="Peck App Store Link" height="50px"/>
+            </div>
+          </a>
+          <p class="body">
+            Started a company after pitching at and winning the annual Williams College Business Plan Competition.
+            Formed a team of 5 other CS majors, paid to work full-time last summer. I lead development of full-stack
+            mobile application for iOS and Android with a Ruby on Rails backend, taking part in creating every piece of
+            the project. Four servers run the webservice in a distributed environment and the application is now live on
+            the iOS App Store. Peck is a social calendaring service for college students providing information and
+            event-based communication within groups. I designed a robust system for repetitively scraping websites of
+            any format for reliable integrations with the front end of any existing calendaring system.
+          </p>
+        </div>
+
+        <div class="resume_item">
+          <p class="header">Winter Intern, <a class="header_link" href="https://www.newsignature.com" target=newtab>New Signature</a></p>
+          <p class="date">January 2014</p>
+          <p class="body">
+            Researching and beginning implementation of a system for knowledge management and intellectual property
+            creation for diagnostic, configurational, and procedural toolsets, with goals of internal efficiency,
+            expanded services, and competitive advantage in the field of IT. Created an online advertising campaign
+            mirroring ongoing sales initiatives.
+          </p>
+        </div>
+
+        <div class="resume_item">
+          <p class="header">Filmmaker and Founder, <a class="header_link" href="http://www.berkshireproductions.com" target=newtab>Berkshire Productions</a></p>
+          <p class="date">2007 - Present</p>
+          <p class="body">
+            Founded a filmmaking and videography business built around client relationships and purpose-driven media
+            that furthers an organization’s message and goals. Completed more than 160 jobs for over 40 clients,
+            learning about a wide variety of cinema technologies, hardware, and software in the process.
+          </p>
+        </div>
+
+        <div class="resume_item">
+          <p class="header">iPhone app development, <a class="header_link" href="https://cs.williams.com" target=newtab>Williams Computer Science Department</a></p>
+          <p class="date">Spring 2013 - Present</p>
+          <p class="body">
+            Created an app to provide a simpler and more intuitive interface for daily and late night snack bar menus
+            that uses data scraped from the existing online dining resources.
+          </p>
+        </div>
+
+        <div>
+          <h4 id="projects">Projects</h4>
+          <div class="resume_item">
+            <p class="header">Compiling Interpreter for x86 assembly written in ARM assembly</p>
+            <p class="date">Fall 2013</p>
+            <p class="body">
+              Created the fastest interpreter in my Computer Architecture class for large programs by compiling
+              instructions read commands of the x86 instruction set into mappes sequences of ARM instructions which
+              allowed loops to be executed much faster than if they had to be interpreted every time.
+            </p>
+          </div>
+          <div class="resume_item">
+            <p class="header">Replicated hosting within a P2P marketplace</p>
+            <p class="date">Spring 2014</p>
+            <p class="body">
+              Created a fork of the OpenBazaar decentralized marketplace project in its early stages to emulate a
+              hosted site environment within a P2P network. Used the Entangled implementation of a Kademlia distributed
+              hash table to facilitate replicated storage of a user’s site across multiple peers.
+            </p>
+          </div>
+          <div class="resume_item">
+            <p class="header">Microcontroller based Motorized camera dolly</p>
+            <p class="date">Fall 2013</p>
+            <p class="body">
+              A motor-controlled dolly to make smooth-tracking video shots. Physical components designed in CAD and
+              build using a laser cutter. Programmed Arduino and stepper motor controller to operate the system.
+            </p>
+          </div>
+          <div class="resume_item">
+            <p class="header">Electric Powered Off-Road Vehicle</p>
+            <p class="date">Summer 2011 - Fall 2013</p>
+            <p class="body">
+              Hand-fabricated a full-suspension metal frame from raw of steel tubing. Designed the
+              electronics system for the power train, used CAD software to design the motor and control board mounts and
+              drivetrain assembly and create custom fabricated parts.
+            </p>
+          </div>
+
+        </div>
+      </div>
+      <div>
+        <h3>Skills</h3>
+          <ul class="skills">
+          <li>
+            <strong>Computer Science: </strong> Objective-C, Ruby, Java, C/C++, Python, Bash, Assembly Language, Distributed Systems, iOS Development, Relational Databases
+          </li>
+          <li>
+            <strong>Other Interests: </strong> Metalworking and Fabrication, Woodworking, Piano (15 years), Williams Cycling Club, Williams Sailing Team, Williams Nordic Ski Club, Hiking, Film
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div id="footer">
+
+    </div>
+  </body>
+</html>
