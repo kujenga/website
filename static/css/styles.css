@@ -1,5 +1,6 @@
+
 body {
-    padding-top: 75px;
+    font-family: 'Lato', sans-serif;
 }
 
 .lead {
@@ -21,6 +22,11 @@ body {
     text-align: center;
 }
 
+/*Sidebar*/
+#sidebar ul {
+    list-style: square;
+}
+
 /*Footer*/
 .footer {
     margin-top: 50px;
@@ -32,6 +38,11 @@ body {
     background: -o-linear-gradient(#eee, #fff, #fff, #fff, #fff); /* For Opera 11.1 to 12.0 */
     background: -moz-linear-gradient(#eee, #fff, #fff, #fff, #fff); /* For Firefox 3.6 to 15 */
     background: repeating-linear-gradient(#eee, #fff, #fff, #fff, #fff); /* Standard syntax */
+}
+
+/*Blog Post*/
+#blog-post {
+    line-height: 170%;
 }
 
 /*Social Links*/

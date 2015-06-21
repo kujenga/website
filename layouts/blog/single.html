@@ -4,8 +4,8 @@
 <div class="container">
     <div class="row">
         <div class="col-md-9">
-            <div class="well well-sm">
-                    <h3>{{ .Title }}<br> <small>{{ .Description }}</small></h3>
+            <div id="blog-post" class="">
+                    <h1>{{ .Title }}<br> <small>{{ .Description }}</small></h1>
                     <hr>
                     {{ .Content }}
             </div>
@@ -13,6 +13,7 @@
 
         <!-- Sidebar -->
         <div class="col-md-3">
+            {{ partial "sidebar.html" . }}
             <div class=""> <!-- Post-specific stats -->
                 <h4>{{ .Date.Format "January 2, 2006" }}<br>
                 <small>{{ .WordCount }} words</small></h4>
@@ -27,7 +28,6 @@
                 <strong>Tags</strong><br>
                 {{ range .Params.tags }}<a class="label label-default" href="/tags/{{ . | urlize }}">{{ . }}</a> {{ end }}
             </div>
-            {{ partial "sidebar.html" . }}
         </div>
     </div>
 {{ partial "footer.social.html" . }}

@@ -1,16 +1,20 @@
-<div class="panel panel-default">
+<div id="sidebar" class="panel panel-default">
     <div class="panel-heading" style="padding: 2px 15px;">
         <h4>Looking Outward</h4>
     </div>
     <div class="panel-body">
-        <h3><a href="https://www.meta.sc" title="Meta">Meta</a></h3>
-
+        <div>
+            <ul>
+                <li><a href="https://www.meta.sc" title="Meta">Meta</a></li>
+            </ul>
+        </div>
         <div>
             <h3>External Postings</h3>
             <ul>
-                <li> <a href="https://meta.sc/blog" title="Meta Blog">Meta Blog</a></li>
+            {{ range $.Site.Data.external }}
+                <li><a href="{{ .Link }}" title="{{ .Name }}">{{ .Name }}</a></li>
+            {{ end }}
             </ul>
         </div>
-        
     </div>
 </div>
