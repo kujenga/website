@@ -8,7 +8,9 @@
                     <h1>{{ .Title }}<br> <small>{{ .Description }}</small></h1>
                     <hr>
                     {{ .Content }}
+                    <br>
             </div>
+            {{ partial "disqus.html" . }}
         </div>
 
         <!-- Sidebar -->

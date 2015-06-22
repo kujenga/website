@@ -4,6 +4,12 @@
 	<title>{{ .Title }}</title>
 </head>
 <body>
-{{ .Data }}
+<div class="container">
+{{ range .Data }}
+	<div>
+		{{ . }}
+	</div>
+{{ end }}
+</div>
 </body>
 </html>

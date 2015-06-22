@@ -42,7 +42,8 @@ body {
 
 /*Blog Post*/
 #blog-post {
-    line-height: 170%;
+    line-height: 1.7em;
+    font-size: 1.1em;
 }
 
 /*Social Links*/

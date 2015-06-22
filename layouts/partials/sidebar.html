@@ -5,14 +5,14 @@
     <div class="panel-body">
         <div>
             <ul>
-                <li><a href="https://www.meta.sc" title="Meta">Meta</a></li>
+                <li><a href="https://www.meta.sc" title="Meta" target=newtab>Meta</a></li>
             </ul>
         </div>
         <div>
-            <h3>External Postings</h3>
+            <h3>Other Posts</h3>
             <ul>
             {{ range $.Site.Data.external }}
-                <li><a href="{{ .Link }}" title="{{ .Name }}">{{ .Name }}</a></li>
+                <li><a href="{{ .Link }}" title="{{ .Name }}" target=newtab>{{ .Name }}</a></li>
             {{ end }}
             </ul>
         </div>
