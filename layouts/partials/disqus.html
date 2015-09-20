@@ -1,5 +1,9 @@
 <div id="disqus_thread"></div>
 <script type="text/javascript">
+    // Don't ever inject Disqus on localhost--it creates unwanted
+    // discussions from 'localhost:1313' on your Disqus account...
+    if (window.location.hostname == "localhost")
+        return;
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = 'kujengatech';
     
