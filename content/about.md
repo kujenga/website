@@ -1,6 +1,6 @@
 +++
 date = "2015-06-16T22:59:46-04:00"
-title = "About me"
+title = "About"
 description = "I've been building things all my life"
 
 +++
@@ -33,8 +33,8 @@ Created an app, [HungryEph](https://itunes.apple.com/us/app/hungryeph/id44028893
 Created the fastest interpreter in my Computer Architecture class by compiling translated instructions of the x86 instruction set into mapped sequences of ARM instructions allowing for much faster runtimes than a standard interpreter.
 ### Replicated Hosting within a P2P Marketplace
 [Forked](https://github.com/kujenga/OpenBazaar) the [OpenBazaar](https://github.com/OpenBazaar/OpenBazaar) project in its earliest stages to emulate a hosted site environment within a P2P network. Used a [Kademlia](http://xlattice.sourceforge.net/components/protocol/kademlia/specs.html) distributed hash table to facilitate replicated storage of a user’s site across multiple peers.
-### Electric Powered Off-Road Vehicle - Summer 2011 - Fall 2013
-Hand-fabricated a full-suspension metal frame from raw steel tubing. Designed the power train electronics system, used CAD software to design and fabricate control board, motor mount, and drivetrain assembly.
+### Electric Powered Off-Road Vehicle
+Hand-fabricated a full-suspension metal frame from raw steel tubing. Designed the power train electronics system, used CAD software to design and fabricate control board, motor mount, and drive train assembly.
 ## Education
 ### [Williams College](https://www.google.com/webhp?hl=en#hl=en&q=Williams+College) 2016'
 #### Majoring in Computer Science

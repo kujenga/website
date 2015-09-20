@@ -1,7 +1,7 @@
 +++
 date = "2015-06-17T01:04:26-04:00"
-title = "my website"
-description = "Getting started with blogging and such"
+title = "A Website"
+description = "I guess I have a blog now"
 
 +++
 

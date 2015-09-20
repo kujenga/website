@@ -10,8 +10,7 @@
     <link rel="canonical" href="{{ .Permalink }}">
     {{ if .RSSlink }}<link href="{{ .RSSlink }}" rel="alternate" type="application/rss+xml" title="{{ .Site.Title }}" />{{ end }}
 
-    <!-- <title>Aaron and Bootstraps</title> -->
-    <title>{{ .Site.Title }} - {{ .Title }}</title>
+    <title>{{ .Site.Title }}{{ if not (eq .Site.Title .Title) }} - {{ .Title }}{{ end }}</title>
 
     {{ partial "newrelic.html" . }}
     
