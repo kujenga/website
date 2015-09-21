@@ -4,6 +4,9 @@ title = "Aaron Taylor"
 description = "My personal site"
 disqusShortname = "kujengatech"
 
+# for github pages: https://gohugo.io/tutorials/github-pages-blog/
+canonifyurls = true
+
 [params]
 	twitter = "https://twitter.com/ataylor0123"
 	github = "https://github.com/kujenga"
