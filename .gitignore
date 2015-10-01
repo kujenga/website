@@ -1,3 +1,4 @@
 .travis/
 node_modules/
 build/
+public/
