@@ -1,0 +1,77 @@
+==================================================================
+https://keybase.io/ataylor
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of https://ataylor.io
+  * I am ataylor (https://keybase.io/ataylor) on keybase.
+  * I have a public key with fingerprint D86B E1CC CA9A D502 8987  B297 42B1 4D00 D191 5CE5
+
+To do so, I am signing this object:
+
+{
+    "body": {
+        "client": {
+            "name": "keybase.io node.js client",
+            "version": "0.8.23"
+        },
+        "key": {
+            "eldest_kid": "0101b4d28dcbb56211f848b6707aee83240fb3dbb7b3cdcfd034bc0fdfb8856d39260a",
+            "fingerprint": "d86be1ccca9ad5028987b29742b14d00d1915ce5",
+            "host": "keybase.io",
+            "key_id": "42b14d00d1915ce5",
+            "kid": "0101b4d28dcbb56211f848b6707aee83240fb3dbb7b3cdcfd034bc0fdfb8856d39260a",
+            "uid": "284567b287b7a3af68792c3616b7f100",
+            "username": "ataylor"
+        },
+        "service": {
+            "hostname": "ataylor.io",
+            "protocol": "https:"
+        },
+        "type": "web_service_binding",
+        "version": 1
+    },
+    "ctime": 1446737062,
+    "expire_in": 157680000,
+    "prev": "dd9f428443c089863d0e14c62fe7d624464b5303c77da33a2d88aa26bf4dcd24",
+    "seqno": 5,
+    "tag": "signature"
+}
+
+which yields the signature:
+
+-----BEGIN PGP MESSAGE-----
+Comment: GPGTools - https://gpgtools.org
+
+owGtkn9QFGUcxg8QxJsBHZVT8CTaZoQZEPbX7e7xU2hEo/hhAuJoXPvu+y5sHLfn
+3R5wKkU4UjI2xBQkWUpQGYxZNkwyCgzVWCOMY6gDqMBpknCBJo02hTK0S9SMM/3Z
+/rXzvp/v8z7P875vB/np9D5ppzN1A/W7f/bp9wJdfoLy6T4MyNCNxe/DBKuEbIr2
+Z+NLERaPlSA34J0oVpIjbDJEsa84IxaZGKwMOZySbFMpPJaLJSmsMkbjtWlkhcip
+WEokqO0SOAFoSHJQAMDEkAQhcjQHGBZneYQ4iqRxEVAQABZQAhREiFM0EHARioDj
+TAykzCSD8+qBomQrQg67Q9IsYpBjACIEQeDNPDThJGfmWECaWZoEBA1xHBJmwiQg
+kzpYLDuVJ8JgC04tC/b+g/+ffbsW5EiONjGqQ9Uly1O8yHCsmRQohmAAKxI4roFO
+5Fgsnld4t1V2aJ2qi2WSgLRetSBPAn+HsTtkRRZkq7perCh2Z7w2p7jtGliOgGVR
+wgIkG1RL/PfyGtTbI1RUUCRNlKBphqVYnCFjMFRhlxzIImmEiWU4XP20g1CZ1j00
+i7QaiKYEXO2doSCOCFpgSBGxkCFVGRqYKJwSWBbyFMWTkON4nmSASEMBkjSmpdpj
+k7F4k+qTL1IlnVKRjVdcDoRVHvI1LtH56HUB/r7a89Tpl634582eGFg+F9Z3Ky2j
+6sGpROlR7j1HXPqV6vbuymTyKTq/6+jwGnthX8Xc45vPl6BI1+YJeN8wOTi6/ml3
+UtuqODEOeISCDzYM66/ObJ8Mt3wS+HKatD3B3hQw+VOr/uCOGk/bWKghtMnQ+Y13
+8kDCrx+fH5kiLg9GZAV8GBV2pi01PYU1ZudWD6y5dDKv1y8ou7nzNvVwSH5mVcuF
+5s66nmPmemwMvtPqIt7k86akg39I/eOJYxlbS2eqT/m6zqYII5VbLh4rWL1p9vfo
+yNGMuWevmMsO1/y2MfLu5NyBjhBn/vFyz9BKa1i0POK1v3unb+rbnpwbn+m/Gqpw
+bdtQ2HqiPefIka/bzl17rq650Zp+CfemYm/U1n+fssfRcjagoa+JybxfaPTZWfqQ
+MG57ZJzG/4zQF2UW8D3O2RSD+EsvSxZfLk+6FzS/e//qLTXjn0cFx4eufenuzPUq
+j23J5syjKzy9u6qyUmev3ZjwRl68tXeiPfv1Q/3rxo8PvDYwIUws9Tv9+PaDOmmw
+w1O5s2Sd/0qqO0fuSEwVxs611EpnGpLCW85/lBiV18HtX0rnjgZ/lxw8/eWBYWt6
+49brF1rzDd58/7fqgn6gp7tqazaa+mNf7Ek3XDW4u8LnQ4ybeqOWB3bv/XE+C6+5
+2b22hVoW6Ovr90Vye+/6+sZdCLzwXtqd6PdftZ4MKd8xlPoX
+=kn+r
+-----END PGP MESSAGE-----
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/ataylor
+
+==================================================================
