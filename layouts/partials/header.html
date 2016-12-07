@@ -6,9 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="{{ .Description }}">
     <meta name="author" content="Aaron Taylor">
+
+    <meta name="google-site-verification" content="tiuapB3N9vmYdU9_nwX6t_iHEqjDsOaSi8sRQ_CppY4" />
+
     <link rel="icon" href="../../favicon.ico">
     <link rel="canonical" href="{{ .Permalink }}">
-    {{ if .RSSlink }}<link href="{{ .RSSlink }}" rel="alternate" type="application/rss+xml" title="{{ .Site.Title }}" />{{ end }}
+
+    {{ if .RSSlink }}
+    <link href="{{ .RSSlink }}" rel="alternate" type="application/rss+xml" title="{{ .Site.Title }}" />
+    {{ end }}
 
     <title>{{ .Site.Title }}{{ if not (eq .Site.Title .Title) }} - {{ .Title }}{{ end }}</title>
 
