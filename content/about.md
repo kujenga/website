@@ -5,11 +5,16 @@ description = "I've been building things all my life"
 
 +++
 
-I am a full-stack developer with a track record of delivering on ambitious projects in both a professional and academic setting. At Meta, I am leading the development of a scalable and modern cloud architecture as we build out a powerful and experienced [team](https://meta.sc/careers). As a Co-Founder of Peck, I lead a team of developers in the development of a mobile application and web service. I aspire to maintain a holistic vision for a product while managing and participating in the development process. I have experience with a wide variety of technologies that provide me with a strong basis for designing and developing computer systems. I have studied Computer Science at Williams College and the Aquincum Institute of Technology, and am currently taking time off from school to work on Meta in Boston.
+I am an entrepreneur, computer scientist, and full-stack software engineer with a track record of delivering on ambitious projects. At [Diffeo](https://diffeo.com) I'm building search and discovery tools to uncover the hidden connections in the world's information. Meta was acquired by Diffeo in late 2016. There, I led the development of a scalable cloud architecture as we built a brand new search experience.
 
 ## Experience
-### Co-Founder and CTO, [Meta](https://meta.sc)
-#### January 2015 - present
+
+### Co-Founder and Director of Cloud Services, [Diffeo](https://diffeo.com)
+#### September 2016 - present
+Building search and discovery tools that use collaborative machine intelligence to solve the challenges of disparate data. My focus is on expanding our platform as a robust set of cloud services, providing the power of Diffeo on a broader scale and building a data platform connecting the world's information.
+
+### Co-Founder and CTO, [Meta](https://meta.sc) (Acquired by Diffeo)
+#### January 2015 - September 2016
 Developing a cloud platform that brings the power of a search engine to a user's own files. Architecting a service-based backend to provide a single user experience for file search and organization. It analyzes files with a similar intent to how a search engine would analyze the web, providing SmartTags based on found concepts and ideas.
 
 ### Head Developer and Co-Founder, [Peck](https://itunes.apple.com/tr/app/peck-social-calendaring-event/id912464190)
