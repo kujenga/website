@@ -3,6 +3,7 @@ languageCode = "en-us"
 title = "Aaron Taylor"
 description = "My personal site"
 disqusShortname = "kujengatech"
+publishDir = "app/public"
 
 [params]
 	twitter = "https://twitter.com/ataylor0123"
