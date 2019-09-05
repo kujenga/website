@@ -7,22 +7,26 @@ var paths = {
 };
 
 // Copy all static images 
-gulp.task('images', function() {
+function images() {
   return gulp.src(paths.images)
     // Pass in options to the task 
     .pipe(imagemin({optimizationLevel: 5}))
     .pipe(gulp.dest('build/img'));
-});
+}
 
-gulp.task('lint', function() {
+function lint() {
     return gulp.src('./public/**/*.html')
         .pipe(html5Lint());
-});
+}
 
 // Rerun the task when a file changes 
-gulp.task('watch', function() {
+function watch() {
   gulp.watch(paths.images, ['images']);
-});
+}
+
+exports.images = images;
+exports.lint = lint;
+exports.watch = watch;
 
 // The default task (called when you run `gulp` from cli) 
-gulp.task('default', ['watch', 'lint', 'images']);
+exports.default = gulp.series(gulp.parallel(images, lint));;

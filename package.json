@@ -1,6 +1,9 @@
 {
   "name": "@kujenga/site",
   "version": "0.1.0",
+  "scripts": {
+    "build": "gulp"
+  },
   "devDependencies": {
     "gulp": "^4.0.2",
     "gulp-html5-lint": "^1.1.0",
