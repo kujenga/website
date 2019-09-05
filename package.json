@@ -1,11 +1,9 @@
 {
   "name": "@kujenga/site",
   "version": "0.1.0",
-  "dependencies": {
-    "gulp": ">=3.9.0",
-    "gulp-imagemin": ">=2.2.1"
-  },
   "devDependencies": {
-    "gulp-html5-lint": "^1.0.1"
+    "gulp": "^4.0.2",
+    "gulp-html5-lint": "^1.1.0",
+    "gulp-imagemin": "^6.1.0"
   }
 }
