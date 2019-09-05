@@ -12,7 +12,9 @@
     <link rel="icon" href="../../favicon.ico">
     <link rel="canonical" href="{{ .Permalink }}">
 
-    {{ with .OutputFormats.Get "RSS" }}{{ .RelPermalink }}{{ end }}
+    {{ if .RSSLink }}
+    <link href="{{ .RSSLink }}" rel="alternate" type="application/rss+xml" title="{{ .Site.Title }}" />
+    {{ end }}
 
     <title>{{ .Site.Title }}{{ if not (eq .Site.Title .Title) }} - {{ .Title }}{{ end }}</title>
 
