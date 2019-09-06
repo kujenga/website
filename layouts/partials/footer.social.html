@@ -1,11 +1,14 @@
 <!-- Footer -->
 <footer class="footer">
   <div class="container">
-    <div class="col-md-12">
+    <div class="col-md-6 copyright">
+      <p class="text-muted">
+        {{ replace .Site.Copyright "{year}" now.Year | safeHTML }},
+        Licensed under <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">CC-BY-4.0</a>.
+      </p>
+    </div>
+    <div class="col-md-6">
       <ul class="list-inline">
-        <li>
-          <p class="text-muted">{{ replace .Site.Copyright "{year}" now.Year | safeHTML }}</p>
-        </li>
         <li>
           <p></p>
         </li>
@@ -28,8 +31,6 @@
             <a href="{{ .Site.Params.keybase }}" class="btn-social btn-outline" target="newtab"><i class="fa fa-fw fa-key"></i></a>
         </li>
       </ul>
-    </div>
-    <div class="col-md-6">
     </div>
   </div>
 </footer>

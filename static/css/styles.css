@@ -40,6 +40,10 @@ body {
     background: repeating-linear-gradient(#eee, #fff, #fff, #fff, #fff); /* Standard syntax */
 }
 
+.copyright {
+    margin-top: 2em;
+}
+
 /*Blog Post*/
 #blog-post {
     line-height: 1.7em;
