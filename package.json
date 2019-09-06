@@ -5,7 +5,7 @@
     "postinstall": "./scripts/postinstall.sh",
     "start": "hugo server --watch --verbose",
     "build": "gulp && hugo",
-    "deploy": "./scripts/deploy.sh"
+    "deploy": "npm run build && ./scripts/deploy.sh"
   },
   "devDependencies": {
     "gulp": "^4.0.2",
