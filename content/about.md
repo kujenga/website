@@ -9,11 +9,11 @@ I am an entrepreneur, computer scientist, and full-stack software engineer with 
 
 ## Experience
 
-### Co-Founder and Director of Cloud Services, [Diffeo](https://diffeo.com)
+### VP Engineering and Co-Founder, [Diffeo](https://diffeo.com)
 #### September 2016 - present
 Building search and discovery tools that use collaborative machine intelligence to solve the challenges of disparate data. My focus is on expanding our platform as a robust set of cloud services, providing the power of Diffeo on a broader scale and building a data platform connecting the world's information.
 
-### Co-Founder and CTO, [Meta](https://meta.sc) (Acquired by Diffeo)
+### CTO and Co-Founder, [Meta](https://meta.sc) (Acquired by Diffeo)
 #### January 2015 - September 2016
 Developing a cloud platform that brings the power of a search engine to a user's own files. Architecting a service-based backend to provide a single user experience for file search and organization. It analyzes files with a similar intent to how a search engine would analyze the web, providing SmartTags based on found concepts and ideas.
 
