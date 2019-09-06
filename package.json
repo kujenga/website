@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "scripts": {
     "postinstall": "./scripts/postinstall.sh",
-    "build": "gulp"
+    "start": "hugo server --watch --verbose",
+    "build": "gulp && hugo",
+    "deploy": "./scripts/deploy.sh"
   },
   "devDependencies": {
     "gulp": "^4.0.2",
