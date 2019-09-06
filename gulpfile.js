@@ -1,6 +1,6 @@
 var gulp = require('gulp');
 var imagemin = require('gulp-imagemin');
-var html5Lint = require('gulp-html5-lint');
+var htmlhint = require("gulp-htmlhint");
 
 var paths = {
   images: 'static/img/**/*'
@@ -16,7 +16,7 @@ function images() {
 
 function lint() {
     return gulp.src('./public/**/*.html')
-        .pipe(html5Lint());
+        .pipe(htmlhint());
 }
 
 // Rerun the task when a file changes 
