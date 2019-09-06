@@ -4,6 +4,7 @@ title = "Aaron Taylor"
 description = "My personal site"
 disqusShortname = "kujengatech"
 googleAnalytics = "UA-56787812-1"
+copyright = "© Aaron Taylor 2015-{year}"
 
 [params]
 	twitter = "https://twitter.com/ataylor0123"

@@ -1,34 +1,31 @@
-<!-- <footer>
-  <p>&copy; Aaron Taylor 2015</p>
-</footer> -->
 <!-- Footer -->
 <footer class="footer">
   <div class="container">
-    <div class="col-md-6">
+    <div class="col-md-12">
       <ul class="list-inline">
         <li>
-          <p class="text-muted">&copy; Aaron Taylor 2015</p>
+          <p class="text-muted">{{ replace .Site.Copyright "{year}" now.Year | safeHTML }}</p>
         </li>
         <li>
           <p></p>
         </li>
         <li>
-            <a href="{{ .Site.Params.linkedin }}" class="btn-social btn-outline" target=newtab><i class="fa fa-fw fa-linkedin"></i></a>
+            <a href="{{ .Site.Params.linkedin }}" class="btn-social btn-outline" target="newtab"><i class="fa fa-fw fa-linkedin"></i></a>
         </li>
         <li>
-            <a href="{{ .Site.Params.github }}" class="btn-social btn-outline" target=newtab><i class="fa fa-fw fa-github"></i></a>
+            <a href="{{ .Site.Params.github }}" class="btn-social btn-outline" target="newtab"><i class="fa fa-fw fa-github"></i></a>
         </li>
         <li>
-            <a href="{{ .Site.Params.angellist }}" class="btn-social btn-outline" target=newtab><i class="fa fa-fw fa-angellist"></i></a>
+            <a href="{{ .Site.Params.angellist }}" class="btn-social btn-outline" target="newtab"><i class="fa fa-fw fa-angellist"></i></a>
         </li>
         <li>
-            <a href="{{ .Site.Params.twitter }}" class="btn-social btn-outline" target=newtab><i class="fa fa-fw fa-twitter"></i></a>
+            <a href="{{ .Site.Params.twitter }}" class="btn-social btn-outline" target="newtab"><i class="fa fa-fw fa-twitter"></i></a>
         </li>
         <li>
-            <a href="{{ .Site.Params.instagram }}" class="btn-social btn-outline" target=newtab><i class="fa fa-fw fa-instagram"></i></a>
+            <a href="{{ .Site.Params.instagram }}" class="btn-social btn-outline" target="newtab"><i class="fa fa-fw fa-instagram"></i></a>
         </li>
         <li>
-            <a href="{{ .Site.Params.keybase }}" class="btn-social btn-outline" target=newtab><i class="fa fa-fw fa-key"></i></a>
+            <a href="{{ .Site.Params.keybase }}" class="btn-social btn-outline" target="newtab"><i class="fa fa-fw fa-key"></i></a>
         </li>
       </ul>
     </div>
