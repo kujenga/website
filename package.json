@@ -4,12 +4,14 @@
   "scripts": {
     "postinstall": "./scripts/postinstall.sh",
     "start": "hugo server --watch --verbose",
-    "build": "gulp && hugo",
+    "build": "gulp pre && hugo && gulp post",
     "deploy": "npm run build && ./scripts/deploy.sh"
   },
   "devDependencies": {
     "gulp": "^4.0.2",
     "gulp-htmlhint": "^2.2.1",
-    "gulp-imagemin": "^6.1.0"
+    "gulp-imagemin": "^6.1.0",
+    "gulp-rev": "^9.0.0",
+    "gulp-rev-rewrite": "^2.0.0"
   }
 }
