@@ -4,7 +4,11 @@ set -e
 
 cd public
 
+git add .
+
 git status
+
+git diff --stat --staged
 
 if git diff-index --quiet HEAD; then
     echo 'No changes present, aborting deployment without error.'

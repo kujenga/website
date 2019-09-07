@@ -3,6 +3,7 @@ const imagemin = require('gulp-imagemin');
 const htmlhint = require("gulp-htmlhint");
 const rev = require('gulp-rev');
 const revRewrite = require('gulp-rev-rewrite');
+const revDel = require('gulp-rev-delete-original');
 
 const paths = {
   images: 'static/img/**/*'
@@ -35,6 +36,7 @@ function watch() {
 function revision() {
   return gulp.src('public/**/*.{css,js}')
     .pipe(rev())
+    .pipe(revDel())
     .pipe(gulp.dest('public'))
     .pipe(rev.manifest())
     .pipe(gulp.dest('public'));
