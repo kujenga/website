@@ -1,6 +1,6 @@
 # Personal Website
 
-[![Build Status](https://github.com/kujenga/site/workflows/Hugo%20Build/badge.svg)](https://github.com/kujenga/site/actions)
+[![Build Status](https://github.com/kujenga/website/workflows/Hugo%20Build/badge.svg)](https://github.com/kujenga/website/actions)
 
 Built with [Hugo][hugo] and deployed on [GitHub Pages][ghPages].
 
