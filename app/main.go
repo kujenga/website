@@ -13,7 +13,9 @@ func main() {
 	directory := flag.String("d", "./public", "static file directory to host")
 	flag.Parse()
 
-	logger, err := zap.NewProduction()
+	logCfg := zap.NewProductionConfig()
+	logCfg.EncoderConfig.MessageKey = "message"
+	logger, err := logCfg.Build()
 	if err != nil {
 		panic(err)
 	}
