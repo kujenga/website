@@ -4,6 +4,7 @@
   "scripts": {
     "postinstall": "./scripts/postinstall.sh",
     "start": "hugo server --watch --verbose",
+    "start:prod": "cd app && go run main.go",
     "build": "gulp pre && hugo && gulp post",
     "deploy": "npm run build && ./scripts/deploy.sh"
   },

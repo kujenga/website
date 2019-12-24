@@ -1,10 +1,13 @@
 runtime: go112
 
 handlers:
-- url: /
-  static_files: public/index.html
-  upload: public/index.html
+# Configure App Engine to serve any static assets.
+- url: /css
+  static_dir: public/css
+- url: /img
+  static_dir: public/img
 
-- url: /(.*)
-  static_files: public/\1
-  upload: public/(.*)
+# Use HTTPS for all requests.
+- url: /.*
+  secure: always
+  script: auto
