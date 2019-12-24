@@ -23,10 +23,13 @@ var rootCmd = &cobra.Command{
 		}
 		defer logger.Sync()
 
-		port := viper.GetInt("port")
-		directory := viper.GetString("directory")
-
-		s := site.NewServer(logger, port, directory)
+		s := site.NewServer(site.Config{
+			Log:       logger,
+			Dev:       viper.GetBool("dev"),
+			Port:      viper.GetInt("port"),
+			Interface: viper.GetString("interface"),
+			Directory: viper.GetString("directory"),
+		})
 		s.Serve()
 	},
 }
@@ -41,11 +44,20 @@ func Execute() {
 func init() {
 	cobra.OnInitialize(initConfig)
 
+	rootCmd.PersistentFlags().
+		Bool("dev", false, "is development environment")
+	viper.BindPFlag("dev", rootCmd.PersistentFlags().Lookup("dev"))
+
 	// NOTE: This flag is automatically bound to the PORT env var, which is
 	// wanted by app engine, and should not be modified.
 	rootCmd.PersistentFlags().
 		Int("port", 8080, "port to listen on")
 	viper.BindPFlag("port", rootCmd.PersistentFlags().Lookup("port"))
+
+	rootCmd.PersistentFlags().
+		String("interface", "", "interface to listen on")
+	viper.BindPFlag("interface", rootCmd.PersistentFlags().Lookup("interface"))
+
 	rootCmd.PersistentFlags().
 		String("directory", "./public", "directory to serve content from")
 	viper.BindPFlag("directory", rootCmd.PersistentFlags().Lookup("directory"))

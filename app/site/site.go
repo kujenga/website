@@ -1,49 +1,69 @@
+// Package site provides a server for serving a static site.
 package site
 
 import (
 	"fmt"
 	"net/http"
 
+	"github.com/unrolled/secure"
 	"go.uber.org/zap"
 )
 
+const csp = `default-src 'self' 'unsafe-inline' data: *.bootstrapcdn.com https://fonts.googleapis.com https://fonts.gstatic.com https://ajax.googleapis.com https://www.google-analytics.com js-agent.newrelic.com bam.nr-data.net;`
+
 type Server struct {
-	log       *zap.Logger
-	port      int
-	directory string
+	c Config
 }
 
-func NewServer(
-	logger *zap.Logger,
-	port int,
-	directory string,
-) *Server {
-	return &Server{
-		log:       logger,
-		port:      port,
-		directory: directory,
-	}
+type Config struct {
+	Log *zap.Logger
+	Dev bool
+
+	Port      int
+	Interface string
+	Directory string
+}
+
+func NewServer(c Config) *Server {
+	return &Server{c: c}
+}
+
+func (s *Server) l() *zap.Logger {
+	return s.c.Log
 }
 
 func (s *Server) addr() string {
-	return fmt.Sprintf(":%d", s.port)
+	return fmt.Sprintf("%s:%d", s.c.Interface, s.c.Port)
 }
 
 func (s *Server) router() http.Handler {
 	mux := http.NewServeMux()
 
-	fs := http.FileServer(http.Dir(s.directory))
+	fs := http.FileServer(http.Dir(s.c.Directory))
 	mux.Handle("/", fs)
 
-	return mux
+	// Setup middleware for adding desired security headers.
+	secureMiddleware := secure.New(secure.Options{
+		AllowedHosts:          []string{"ataylor.io"},
+		SSLRedirect:           true,
+		SSLProxyHeaders:       map[string]string{"X-Forwarded-Proto": "https"},
+		STSSeconds:            31536000,
+		FrameDeny:             true,
+		ContentTypeNosniff:    true,
+		BrowserXssFilter:      true,
+		ContentSecurityPolicy: csp,
+		IsDevelopment:         s.c.Dev,
+	})
+
+	return secureMiddleware.Handler(mux)
 }
 
 func (s *Server) Serve() {
-	s.log.Info("Serving HTTP requests",
-		zap.Int("port", s.port),
-		zap.String("dir", s.directory),
+	s.l().Info("Serving HTTP requests",
+		zap.String("addr", s.addr()),
+		zap.String("dir", s.c.Directory),
 	)
 
 	err := http.ListenAndServe(s.addr(), s.router())
-	s.log.Fatal("error service http requests", zap.Error(err))
+	s.l().Fatal("error service http requests", zap.Error(err))
 }
