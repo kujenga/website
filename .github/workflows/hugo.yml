@@ -28,3 +28,8 @@ jobs:
         -v ${{ github.workspace }}:/srv/hugo \
         -w /srv/hugo \
         kujenga/hugo:v0.78.2-1 hugo
+
+    - uses: actions/upload-artifact@v1
+      with:
+        name: static-dist
+        path: app/public

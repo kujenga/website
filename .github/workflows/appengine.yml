@@ -1,0 +1,41 @@
+name: Deploy to Google App Engine
+
+on:
+  push:
+    branches:
+    - master
+
+# Environment variables available to all jobs and steps in this workflow
+env:
+  GCP_PROJECT: ${{ secrets.GCP_PROJECT }}
+  GCP_EMAIL: ${{ secrets.GCP_EMAIL }}
+
+jobs:
+  deploy:
+    name: Setup and Deploy
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+
+    - name: Checkout
+      uses: actions/checkout@master
+
+    - uses: actions/download-artifact@v1
+      with:
+        name: static-dist
+        path: app/public
+
+    # Setup gcloud CLI
+    - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+      with:
+        version: '274.0.0'
+        service_account_email: ${{ secrets.GCP_EMAIL }}
+        service_account_key: ${{ secrets.GCP_KEY }}
+
+    # Deploy the Docker image to the GCP cluster
+    - name: Configure environment
+      run: gcloud config set project $GCP_PROJECT
+
+    # Deploy the Docker image to the GCP cluster
+    - name: Deploy
+      run: npm run deploy:appengine
