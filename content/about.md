@@ -9,8 +9,11 @@ I am an entrepreneur, computer scientist, and full-stack software engineer with 
 
 ## Experience
 
+### Director, Software Engineering, [Salesforce](https://www.salesforce.com/)
+#### November 2019 - Present
+
 ### VP Engineering and Co-Founder, [Diffeo](https://diffeo.com)
-#### September 2016 - present
+#### September 2016 - November 2019
 Building search and discovery tools that use collaborative machine intelligence
 to solve the challenges of disparate data. My focus is on expanding our platform
 as a robust set of cloud services, providing the power of Diffeo on a broader
