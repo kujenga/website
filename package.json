@@ -1,6 +1,8 @@
 {
   "name": "@kujenga/site",
   "version": "0.1.0",
+  "license": "CC-BY-4.0",
+  "repository": "git@github.com:kujenga/website.git",
   "scripts": {
     "postinstall": "./scripts/postinstall.sh",
     "start": "hugo server --watch --verbose",
@@ -15,6 +17,6 @@
     "gulp-imagemin": "^7.1.0",
     "gulp-rev": "^9.0.0",
     "gulp-rev-delete-original": "^0.2.3",
-    "gulp-rev-rewrite": "^3.0.2"
+    "gulp-rev-rewrite": "^3.0.3"
   }
 }
