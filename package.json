@@ -4,8 +4,10 @@
   "scripts": {
     "postinstall": "./scripts/postinstall.sh",
     "start": "hugo server --watch --verbose",
+    "start:prod": "cd app && go run main.go",
     "build": "gulp pre && hugo && gulp post",
-    "deploy": "npm run build && ./scripts/deploy.sh"
+    "deploy:gh-pages": "npm run build && ./scripts/deploy-gh-pages.sh",
+    "deploy:appengine": "npm run build && gcloud app deploy ./app/"
   },
   "devDependencies": {
     "gulp": "^4.0.2",
