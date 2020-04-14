@@ -1,6 +1,8 @@
 {
   "name": "@kujenga/site",
   "version": "0.1.0",
+  "license": "CC-BY-4.0",
+  "repository": "git@github.com:kujenga/website.git",
   "scripts": {
     "postinstall": "./scripts/postinstall.sh",
     "start": "hugo server --watch --verbose",
