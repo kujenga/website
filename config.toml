@@ -15,3 +15,18 @@ relativeURLs = true
 	instagram = "https://instagram.com/ataylor0123/"
 	angellist = "https://angel.co/ataylor0123"
 	keybase = "https://keybase.io/ataylor"
+
+# docs: https://gohugo.io/templates/menu-templates/
+[menu]
+  [[menu.nav]]
+    identifier = "blog"
+    name = "This is the blog section"
+    title = "Blog"
+    url = "/blog/"
+    weight = -110
+  [[menu.nav]]
+    identifier = "about"
+    name = "This the about section"
+    title = "About"
+    url = "/about/"
+    weight = -100
