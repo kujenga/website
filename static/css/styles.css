@@ -67,6 +67,14 @@ body {
   margin-top: 2em;
 }
 
+.copyright p {
+  font-size: small;
+}
+
+.copyright a {
+  color: inherit;
+}
+
 /*Blog Post*/
 #blog-post {
   line-height: 1.7em;
