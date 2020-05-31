@@ -1,6 +1,6 @@
 <div class="blog-summary">
     <h4>
-        <a href="{{ .Permalink }}">{{ .Title }}</a> <small class="pull-right">Posted on {{ .Date.Format "Jan 2, 2006" }}</small><br>
+        <a href="{{ .RelPermalink }}">{{ .Title }}</a> <small class="pull-right">Posted on {{ .Date.Format "Jan 2, 2006" }}</small><br>
         <small>{{ .Description }}</small>
     </h4>
     <hr>
