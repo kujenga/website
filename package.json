@@ -6,7 +6,7 @@
   "scripts": {
     "postinstall": "./scripts/postinstall.sh",
     "start": "hugo server --watch --verbose",
-    "start:prod": "cd app && go run main.go",
+    "start:prod": "cd app && go run main.go --dev",
     "build": "gulp pre && hugo && gulp post",
     "deploy:gh-pages": "npm run build && ./scripts/deploy-gh-pages.sh",
     "deploy:appengine": "npm run build && gcloud app deploy ./app/"

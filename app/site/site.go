@@ -33,7 +33,12 @@ func (s *Server) l() *zap.Logger {
 }
 
 func (s *Server) addr() string {
-	return fmt.Sprintf("%s:%d", s.c.Interface, s.c.Port)
+	iface := s.c.Interface
+	if iface == "" && s.c.Dev {
+		// Default to localhost in dev to avoid warnings on macos
+		iface = "127.0.0.1"
+	}
+	return fmt.Sprintf("%s:%d", iface, s.c.Port)
 }
 
 func (s *Server) router() http.Handler {

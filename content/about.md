@@ -5,21 +5,25 @@ description = "I've been building things all my life"
 
 +++
 
-I am an entrepreneur, computer scientist, and full-stack software engineer with a track record of delivering on ambitious projects. At [Diffeo](https://diffeo.com) I'm building search and discovery tools to uncover the hidden connections in the world's information. Meta was acquired by Diffeo in late 2016. There, I led the development of a scalable cloud architecture as we built a brand new search experience.
+Bringing Collaborative AI to the Salesforce platform, following on from the
+acquisition of Diffeo by Salesforce in 2019. I co-founded Meta Search and Diffeo
+to help make sense of the world's information. I've been building products and
+leading engineering teams in startup and now enterprise environments since 2013.
 
 ## Experience
 
 ### Director, Software Engineering, [Salesforce](https://www.salesforce.com/)
 #### November 2019 - Present
+Bringing Collaborative AI to the Salesforce platform.
 
-### VP Engineering and Co-Founder, [Diffeo](https://diffeo.com)
+### VP Engineering and Co-Founder, [Diffeo](https://diffeo.com) <small>(Acquired by Salesforce)</small>
 #### September 2016 - November 2019
 Building search and discovery tools that use collaborative machine intelligence
 to solve the challenges of disparate data. My focus is on expanding our platform
 as a robust set of cloud services, providing the power of Diffeo on a broader
 scale and building a data platform connecting the world's information.
 
-### CTO and Co-Founder, [Meta](https://meta.sc) (Acquired by Diffeo)
+### CTO and Co-Founder, [Meta](https://meta.sc) <small>(Acquired by Diffeo)</small>
 #### January 2015 - September 2016
 Developing a cloud platform that brings the power of a search engine to a user's
 own files. Architecting a service-based backend to provide a single user
@@ -47,8 +51,8 @@ Founded a filmmaking and videography business with more than 160 jobs for over
 40 clients, learning about marketing and content creation, and a wide variety of
 cinema technologies, hardware, and software.
 
-### iPhone app development, Williams College Computer Science Department
-#### Spring 2013 - present
+### iOS app development, Williams College Computer Science Department
+#### Spring 2013 - Fall 2013
 Created an app,
 [HungryEph](https://itunes.apple.com/us/app/hungryeph/id440288933), to provide a
 simpler and more intuitive interface for daily and late night snack bar menus
