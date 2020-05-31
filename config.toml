@@ -8,6 +8,10 @@ copyright = "© Aaron Taylor 2015-{year}"
 publishDir = "app/public"
 relativeURLs = true
 
+# allow HTML to be used in markdown files
+[markup.goldmark.renderer]
+  unsafe = true
+
 [params]
 	twitter = "https://twitter.com/ataylor0123"
 	github = "https://github.com/kujenga"
