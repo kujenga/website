@@ -13,7 +13,7 @@
   },
   "devDependencies": {
     "gulp": "^4.0.2",
-    "gulp-htmlhint": "^3.0.0",
+    "gulp-htmlhint": "^3.0.1",
     "gulp-imagemin": "^7.1.0",
     "gulp-rev": "^9.0.0",
     "gulp-rev-delete-original": "^0.2.3",
