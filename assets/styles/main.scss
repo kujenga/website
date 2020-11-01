@@ -108,14 +108,18 @@ nav.navbar {
   color: inherit;
 }
 
-.blog-summary {
+.summary {
   margin-bottom: 2rem;
+  hr {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  img {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
 }
 
-.blog-summary hr {
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
-}
 
 /*Blog Post*/
 #blog-post {
