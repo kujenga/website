@@ -2,17 +2,14 @@
 <footer class="footer">
   <div class="container">
     <div class="row">
-      <div class="col copyright">
+      <div class="col-sm copyright">
         <p class="text-muted">
           {{ replace .Site.Copyright "{year}" now.Year | safeHTML }},
           Licensed under <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">CC-BY-4.0</a>.
         </p>
       </div>
-      <div class="col">
+      <div class="col-sm">
         <ul class="float-right">
-          <li class="list-inline-item">
-            <p></p>
-          </li>
           <li class="list-inline-item">
               <a href="{{ .Site.Params.linkedin }}" class="btn-social btn-outline" target="newtab"><i class="fa fa-fw fa-linkedin"></i></a>
           </li>
