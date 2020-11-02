@@ -1,14 +1,21 @@
 +++
 date = "2015-06-16T22:59:46-04:00"
 title = "About"
-description = "I've been building things all my life"
+subtitle = "I've been building things all my life"
+description = """
+Today, my work focuses on bringing collaborative AI to the Salesforce platform
+by building AI capabilities and user experiences that harness information in
+unstructured content. I joined Salesforce when Diffeo was acquired in November
+2019.
+
+I co-founded Diffeo and Meta Search with the goal of helping to make sense of
+the world's information, leading our engineering teams to build a platform to
+that end.
+"""
+profileImg = "images/me/hawaii-500px.jpeg"
 
 +++
 
-Bringing Collaborative AI to the Salesforce platform, following on from the
-acquisition of Diffeo by Salesforce in 2019. I co-founded Meta Search and Diffeo
-to help make sense of the world's information. I've been building products and
-leading engineering teams in startup and now enterprise environments since 2013.
 
 ## Experience
 
