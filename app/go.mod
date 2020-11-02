@@ -12,7 +12,7 @@ require (
 	github.com/spf13/cobra v1.1.1
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
 	github.com/spf13/viper v1.7.1
-	github.com/unrolled/secure v1.0.7
+	github.com/unrolled/secure v1.0.8
 	go.uber.org/multierr v1.6.0 // indirect
 	go.uber.org/zap v1.16.0
 	golang.org/x/lint v0.0.0-20191125180803-fdd1cda4f05f // indirect
