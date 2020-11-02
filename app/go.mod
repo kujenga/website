@@ -1,4 +1,4 @@
-module github.com/kujenga/site/app
+module github.com/kujenga/website/app
 
 go 1.12
 

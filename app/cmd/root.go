@@ -5,10 +5,11 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/kujenga/site/app/site"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
+
+	"github.com/kujenga/website/app/site"
 )
 
 var rootCmd = &cobra.Command{
