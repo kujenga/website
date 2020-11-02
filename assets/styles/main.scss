@@ -1,3 +1,20 @@
+/* ref: https://coolors.co/555b6e-89b0ae-bee3db-faf9f9-ffd6ba */
+$independence: #555b6eff;
+$morning-blue: #89b0aeff;
+$powder-blue: #bee3dbff;
+$cultured: #faf9f9ff;
+$apricot: #ffd6baff;
+
+/* brandmark */
+$background: #faf9f9;
+$foreground: #317893;
+$accent1: #6091a0;
+$accent2: #90abad;
+$accent3: #c0c5bb;
+
+/* misc */
+$links: #2d70b9;
+
 body {
   font-family: 'Lato', sans-serif;
 }
@@ -24,7 +41,7 @@ p {
 }
 
 a {
-  color: #2d70b9;
+  color: $links;
 }
 
 small {
