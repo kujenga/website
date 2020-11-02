@@ -6,11 +6,11 @@
   "scripts": {
     "postinstall": "./scripts/postinstall.sh",
     "start": "hugo server --watch --verbose",
-    "start:prod": "cd app && go run main.go --dev",
+    "start:prod": "cd app && go run -v main.go --dev",
     "lint": "stylelint assets/**/*.[s]css",
     "build": "hugo",
     "deploy:gh-pages": "npm run build && ./scripts/deploy-gh-pages.sh",
-    "deploy:appengine": "npm run build && gcloud app deploy ./app/"
+    "deploy:appengine": "npm run build && gcloud app deploy ./app/ --project"
   },
   "devDependencies": {
     "stylelint": "^13.7.2",
