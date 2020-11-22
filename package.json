@@ -5,7 +5,7 @@
   "repository": "git@github.com:kujenga/website.git",
   "scripts": {
     "postinstall": "./scripts/postinstall.sh",
-    "start": "hugo server --watch --verbose",
+    "start": "hugo server --watch",
     "start:prod": "cd app && go run -v main.go --dev",
     "lint": "stylelint assets/**/*.[s]css",
     "build": "hugo",
