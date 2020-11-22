@@ -5,7 +5,8 @@
 <link href="https://fonts.googleapis.com/css?family=Lato:300" rel="stylesheet" type="text/css">
 
 <!-- Custom CSS -->
-<link type="text/css" rel="stylesheet" href="/css/styles.css"/>
+{{ $style := resources.Get "styles/main.scss" | resources.ToCSS | resources.Minify | resources.Fingerprint }}
+<link rel="stylesheet" href="{{ $style.RelPermalink }}" integrity="{{ $style.Data.Integrity }}">
 
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 <!--[if lt IE 9]>

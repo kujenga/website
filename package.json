@@ -5,18 +5,15 @@
   "repository": "git@github.com:kujenga/website.git",
   "scripts": {
     "postinstall": "./scripts/postinstall.sh",
-    "start": "hugo server --watch --verbose",
-    "start:prod": "cd app && go run main.go --dev",
-    "build": "gulp pre && hugo && gulp post",
+    "start": "hugo server --watch",
+    "start:prod": "cd app && go run -v main.go --dev",
+    "lint": "stylelint assets/**/*.[s]css",
+    "build": "hugo",
     "deploy:gh-pages": "npm run build && ./scripts/deploy-gh-pages.sh",
-    "deploy:appengine": "npm run build && gcloud app deploy ./app/"
+    "deploy:appengine": "npm run build && gcloud app deploy ./app/ --project"
   },
   "devDependencies": {
-    "gulp": "^4.0.2",
-    "gulp-htmlhint": "^3.0.1",
-    "gulp-imagemin": "^7.1.0",
-    "gulp-rev": "^9.0.0",
-    "gulp-rev-delete-original": "^0.2.3",
-    "gulp-rev-rewrite": "^3.0.3"
+    "stylelint": "^13.7.2",
+    "stylelint-config-standard": "^20.0.0"
   }
 }

@@ -1,3 +1,20 @@
+/* ref: https://coolors.co/555b6e-89b0ae-bee3db-faf9f9-ffd6ba */
+$independence: #555b6eff;
+$morning-blue: #89b0aeff;
+$powder-blue: #bee3dbff;
+$cultured: #faf9f9ff;
+$apricot: #ffd6baff;
+
+/* brandmark */
+$background: #faf9f9;
+$foreground: #317893;
+$accent1: #6091a0;
+$accent2: #90abad;
+$accent3: #c0c5bb;
+
+/* misc */
+$links: #2d70b9;
+
 body {
   font-family: 'Lato', sans-serif;
 }
@@ -6,21 +23,25 @@ body {
 h1 {
   font-size: 2.25rem;
 }
+
 h2 {
   font-size: 1.875rem;
 }
+
 h3 {
   font-size: 1.5rem;
 }
+
 h4 {
   font-size: 1.125rem;
 }
+
 p {
   font-size: 0.9rem;
 }
 
 a {
-  color: #2d70b9;
+  color: $links;
 }
 
 small {
@@ -29,6 +50,10 @@ small {
 
 nav.navbar {
   margin-bottom: 1rem;
+
+  img {
+    padding-right: 0.5rem;
+  }
 }
 
 .lead {
@@ -37,96 +62,105 @@ nav.navbar {
 
 .jumbotron {
   margin-top: -25px;
-  /*height: 350px;*/
+
+  /* height: 350px; */
   color: black;
-  /*text-shadow: #444 0 1px 1px;*/
+
+  /* text-shadow: #444 0 1px 1px; */
   background: url('../img/view-med-comp.jpg');
 }
 
 .jumbotron > .container {
   padding-top: 40px;
   padding-bottom: 200px;
-
   text-align: center;
 }
 
-/*Sidebar*/
+/* Sidebar */
 #sidebar ul {
   list-style: square;
 }
 
-/*Footer*/
+/* Footer */
 .footer {
   margin-top: 50px;
   margin-bottom: 25px;
-
   border: solid 1px #eee;
+  background:
+    -webkit-linear-gradient(
+      #eee,
+      #fff,
+      #fff,
+      #fff,
+      #fff
+    ); /* For Safari 5.1 to 6.0 */
 
-  background: -webkit-linear-gradient(
-    #eee,
-    #fff,
-    #fff,
-    #fff,
-    #fff
-  ); /* For Safari 5.1 to 6.0 */
-  background: -o-linear-gradient(
-    #eee,
-    #fff,
-    #fff,
-    #fff,
-    #fff
-  ); /* For Opera 11.1 to 12.0 */
-  background: -moz-linear-gradient(
-    #eee,
-    #fff,
-    #fff,
-    #fff,
-    #fff
-  ); /* For Firefox 3.6 to 15 */
-  background: repeating-linear-gradient(
-    #eee,
-    #fff,
-    #fff,
-    #fff,
-    #fff
-  ); /* Standard syntax */
+  background:
+    -o-linear-gradient(
+      #eee,
+      #fff,
+      #fff,
+      #fff,
+      #fff
+    ); /* For Opera 11.1 to 12.0 */
+
+  background:
+    -moz-linear-gradient(
+      #eee,
+      #fff,
+      #fff,
+      #fff,
+      #fff
+    ); /* For Firefox 3.6 to 15 */
+
+  background:
+    repeating-linear-gradient(
+      #eee,
+      #fff,
+      #fff,
+      #fff,
+      #fff
+    ); /* Standard syntax */
 }
 
 .copyright {
   margin-top: 2em;
+
+  p {
+    font-size: small;
+  }
+
+  a {
+    color: inherit;
+  }
 }
 
-.copyright p {
-  font-size: small;
-}
-
-.copyright a {
-  color: inherit;
-}
-
-.blog-summary {
+.summary {
   margin-bottom: 2rem;
+
+  hr {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  /* stylelint-disable-next-line no-descending-specificity */
+  img {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
 }
 
-.blog-summary hr {
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
-}
-
-/*Blog Post*/
+/* Blog Post */
 #blog-post {
   line-height: 1.7em;
   font-size: 1.1em;
 }
 
-/*Social Links*/
+/* Social Links */
 .btn-outline {
   margin-top: 15px;
-
   font-size: 20px;
-
   transition: all 0.3s ease-in-out;
-
   color: #ddd;
   border: solid 2px #ddd;
   background: 0 0;
@@ -140,16 +174,14 @@ nav.navbar {
   border: solid 2px #999;
   background: #fff;
 }
+
 .btn-social {
   display: inline-block;
   width: 50px;
   height: 50px;
-
   font-size: 20px;
   line-height: 45px;
-
   text-align: center;
-
   border: 2px solid #fff;
   border-radius: 100%;
 }

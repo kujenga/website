@@ -2,7 +2,7 @@
 package main
 
 import (
-	"github.com/kujenga/site/app/cmd"
+	"github.com/kujenga/website/app/cmd"
 )
 
 func main() {
