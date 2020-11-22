@@ -27,4 +27,4 @@ jobs:
         docker run \
         -v ${{ github.workspace }}:/srv/hugo \
         -w /srv/hugo \
-        kujenga/hugo:latest hugo
+        kujenga/hugo:v0.78.2 hugo
