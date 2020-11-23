@@ -33,3 +33,36 @@ jobs:
       with:
         name: static-dist
         path: app/public
+
+  deploy:
+    name: Deploy to Google App Engine
+    runs-on: ubuntu-latest
+    needs: build
+    # Environment variables available to all jobs and steps in this workflow
+    env:
+      GCP_PROJECT: ${{ secrets.GCP_PROJECT }}
+      GCP_EMAIL: ${{ secrets.GCP_EMAIL }}
+
+    steps:
+
+    - name: Checkout
+      uses: actions/checkout@master
+
+    - uses: actions/download-artifact@v1
+      with:
+        name: static-dist
+        path: app/public
+
+    # ref: https://github.com/google-github-actions/setup-gcloud
+    - name: Set up Google Cloud SDK
+      uses: google-github-actions/setup-gcloud@master
+      with:
+        version: 319.0.0
+        service_account_email: ${{ secrets.GCP_EMAIL }}
+        service_account_key: ${{ secrets.GCP_KEY }}
+
+    # ref: https://github.com/google-github-actions/deploy-appengine
+    - id: deploy
+      uses: google-github-actions/deploy-appengine@main
+      with:
+        project_id: ${{ secrets.GCP_PROJECT }}
