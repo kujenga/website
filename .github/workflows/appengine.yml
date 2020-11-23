@@ -22,17 +22,16 @@ jobs:
         name: static-dist
         path: app/public
 
-    # Setup gcloud CLI
-    - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+    # ref: https://github.com/google-github-actions/setup-gcloud
+    - name: Set up Google Cloud SDK
+      uses: google-github-actions/setup-gcloud@master
       with:
-        version: '274.0.0'
+        version: 319.0.0
         service_account_email: ${{ secrets.GCP_EMAIL }}
         service_account_key: ${{ secrets.GCP_KEY }}
 
-    # Deploy the Docker image to the GCP cluster
-    - name: Configure environment
-      run: gcloud config set project $GCP_PROJECT
-
-    # Deploy the Docker image to the GCP cluster
-    - name: Deploy
-      run: npm run deploy:appengine
+    # ref: https://github.com/google-github-actions/deploy-appengine
+    - id: deploy
+      uses: google-github-actions/deploy-appengine@main
+      with:
+        project_id: ${{ secrets.GCP_PROJECT }}
