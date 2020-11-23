@@ -1,10 +1,10 @@
-name: Hugo Build
+name: Build and Deploy
 
 on: [push]
 
 jobs:
   build:
-
+    name: Build Application
     runs-on: ubuntu-latest
 
     steps:
@@ -67,3 +67,6 @@ jobs:
       with:
         project_id: ${{ secrets.GCP_PROJECT }}
         deliverables: ${{ github.workspace }}/app/app.yaml
+        # Higher permissions required for promotion:
+        # https://github.com/google-github-actions/deploy-appengine#authorization
+        promote: false
