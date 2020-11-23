@@ -66,3 +66,4 @@ jobs:
       uses: google-github-actions/deploy-appengine@main
       with:
         project_id: ${{ secrets.GCP_PROJECT }}
+        deliverables: ${{ github.workspace }}/app/app.yaml
