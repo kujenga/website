@@ -19,6 +19,10 @@ jobs:
             node --version
             npm --version
 
+      - restore_cache:
+          keys:
+            - v4-go-deps-{{ checksum "app/go.mod" }}-{{ checksum "tools/go.mod" }}
+            - v4-go-deps-
       - run:
           name: Install Go-based tooling
           working_directory: 'tools'
@@ -27,6 +31,12 @@ jobs:
           name: Install Go app dependencies
           working_directory: 'app'
           command: go install -v
+      - save_cache:
+          key: v4-go-deps-{{ checksum "app/go.mod" }}-{{ checksum "tools/go.mod" }}
+          paths:
+            # Observed from `go env` output, above
+            - ~/go
+            - ~/.cache
 
       - run:
           name: Run Go tests
