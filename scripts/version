@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Directory containing this script.
+D=$(cd "$(dirname "$0")" && pwd -P)
+# Root of this repository.
+R=$(cd "$D/.." && pwd -P)
+
 DATE="$(date '+%Y%m%dt%H%M%S')"
 
 GIT_HASH="$(git rev-parse --short HEAD)"
@@ -19,4 +24,9 @@ fi
 #     May only contain lowercase letters, digits, and hyphens. Must begin and
 #     end with a letter or digit. Must not exceed 63 characters.
 
-echo "$PRE-$BUILD-$GIT_HASH-$DATE"
+VERSION="$PRE-$BUILD-$GIT_HASH-$DATE"
+
+# Write the version to a file.
+echo "$VERSION" > "$R/VERSION"
+# Echo the version to shell output.
+echo "$VERSION"

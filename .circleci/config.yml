@@ -84,12 +84,12 @@ jobs:
       - attach_workspace:
           at: .
       - run:
+          name: Install additional dependencies
+          command: |
+            apt-get install -y jq
+      - run:
           name: Deploy to App Engine
-          command: >
-            gcloud app deploy app/app.yaml
-            --quiet
-            --no-promote
-            --version "$(./scripts/version)"
+          command: ./scripts/deploy-appengine
 
 workflows:
   build_and_deploy:
