@@ -64,6 +64,10 @@ jobs:
           command: npm run build
       - store_artifacts:
           path: app/public
+      - persist_to_workspace:
+          root: .
+          paths:
+            - app/public
 
   deploy:
     executor: gcp-cli/google
@@ -71,6 +75,15 @@ jobs:
       # Uses pre-defined environment variables:
       # https://circleci.com/developer/orbs/orb/circleci/gcp-cli#commands-initialize
       - gcp-cli/initialize
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: Deploy to App Engine
+          command: >
+            gcloud app deploy app/app.yaml
+            --quiet
+            --version $CIRCLE_BUILD_NUM
 
 workflows:
   build_and_deploy:
