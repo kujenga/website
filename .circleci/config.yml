@@ -10,6 +10,7 @@ jobs:
     steps:
       - checkout
 
+      # Environment
       - run:
           name: Print environment information
           command: |
@@ -19,6 +20,7 @@ jobs:
             node --version
             npm --version
 
+      # Install
       - restore_cache:
           keys:
             - v4-go-deps-{{ checksum "app/go.mod" }}-{{ checksum "tools/go.mod" }}
@@ -38,11 +40,13 @@ jobs:
             - ~/go
             - ~/.cache
 
+      # Go tests
       - run:
           name: Run Go tests
           working_directory: 'app'
           command: go test -v ./...
 
+      # NPM tests
       - run:
           name: Install Node-based tooling
           command: npm install
@@ -50,3 +54,10 @@ jobs:
           name: Run NPM lints
           working_directory: 'app'
           command: npm run lint
+
+      # Site build
+      - run:
+          name: Build site
+          command: npm run build
+      - store_artifacts:
+          path: app/public
