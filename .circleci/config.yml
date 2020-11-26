@@ -11,6 +11,15 @@ jobs:
       - checkout
 
       - run:
+          name: Print environment information
+          command: |
+            set -x
+            go version
+            go env
+            node --version
+            npm --version
+
+      - run:
           name: Install Go-based tooling
           working_directory: 'tools'
           command: ./install-tools
