@@ -1,7 +1,10 @@
-# Golang CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-go/ for more details
-version: 2
+# CircleCI configuration file
+
+version: 2.1
+
+orbs:
+  gcp-cli: circleci/gcp-cli@2.1.0
+
 jobs:
   build:
     docker:
@@ -61,3 +64,18 @@ jobs:
           command: npm run build
       - store_artifacts:
           path: app/public
+
+  deploy:
+    executor: gcp-cli/google
+    steps:
+      # Uses pre-defined environment variables:
+      # https://circleci.com/developer/orbs/orb/circleci/gcp-cli#commands-initialize
+      - gcp-cli/initialize
+
+workflows:
+  build_and_deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
