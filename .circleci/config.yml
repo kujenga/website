@@ -1,0 +1,63 @@
+# Golang CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-go/ for more details
+version: 2
+jobs:
+  build:
+    docker:
+      - image: cimg/go:1.14-node
+
+    steps:
+      - checkout
+
+      # Environment
+      - run:
+          name: Print environment information
+          command: |
+            set -x
+            go version
+            go env
+            node --version
+            npm --version
+
+      # Install
+      - restore_cache:
+          keys:
+            - v4-go-deps-{{ checksum "app/go.mod" }}-{{ checksum "tools/go.mod" }}
+            - v4-go-deps-
+      - run:
+          name: Install Go-based tooling
+          working_directory: 'tools'
+          command: ./install-tools
+      - run:
+          name: Install Go app dependencies
+          working_directory: 'app'
+          command: go install -v
+      - save_cache:
+          key: v4-go-deps-{{ checksum "app/go.mod" }}-{{ checksum "tools/go.mod" }}
+          paths:
+            # Observed from `go env` output, above
+            - ~/go
+            - ~/.cache
+
+      # Go tests
+      - run:
+          name: Run Go tests
+          working_directory: 'app'
+          command: go test -v ./...
+
+      # NPM tests
+      - run:
+          name: Install Node-based tooling
+          command: npm install
+      - run:
+          name: Run NPM lints
+          working_directory: 'app'
+          command: npm run lint
+
+      # Site build
+      - run:
+          name: Build site
+          command: npm run build
+      - store_artifacts:
+          path: app/public
