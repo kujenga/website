@@ -1,0 +1,14 @@
+#!/bin/bash
+
+DATE="$(date '+%Y%m%dt%H%M%S')"
+
+GIT_HASH="$(git rev-parse --short HEAD)"
+
+NAME=''
+if [[ -n "$CIRCLE_BUILD_NUM" ]]; then
+    NAME="CI-${CIRCLE_BUILD_NUM}"
+else
+    NAME="$(git branch --show-current)"
+fi
+
+echo "$NAME-$GIT_HASH-$DATE"

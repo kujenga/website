@@ -74,6 +74,11 @@ jobs:
     steps:
       # Uses pre-defined environment variables:
       # https://circleci.com/developer/orbs/orb/circleci/gcp-cli#commands-initialize
+      # The service account was provisioned according to the instructions here,
+      # with the exception of scoping the iam.serviceAccountUser role to the
+      # specific App Engine service account, and the compute.storageAdmin role
+      # to the specific storage buckets, ref:
+      # https://cloud.google.com/appengine/docs/standard/go/roles#recommended_role_for_application_deployment
       - gcp-cli/initialize
       - checkout
       - attach_workspace:
@@ -83,7 +88,8 @@ jobs:
           command: >
             gcloud app deploy app/app.yaml
             --quiet
-            --version $CIRCLE_BUILD_NUM
+            --no-promote
+            --version "$(./scripts/version)"
 
 workflows:
   build_and_deploy:
