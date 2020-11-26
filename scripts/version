@@ -6,9 +6,14 @@ GIT_HASH="$(git rev-parse --short HEAD)"
 
 NAME=''
 if [[ -n "$CIRCLE_BUILD_NUM" ]]; then
-    NAME="CI-${CIRCLE_BUILD_NUM}"
+    NAME="ci-${CIRCLE_BUILD_NUM}"
 else
     NAME="$(git branch --show-current)"
 fi
+
+# NOTE: The rules for version validation (from CLI output) state:
+#
+#     May only contain lowercase letters, digits, and hyphens. Must begin and
+#     end with a letter or digit. Must not exceed 63 characters.
 
 echo "$NAME-$GIT_HASH-$DATE"
