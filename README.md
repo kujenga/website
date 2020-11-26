@@ -1,10 +1,11 @@
 # Personal Website
 
-[![Build Status](https://github.com/kujenga/website/workflows/Hugo%20Build/badge.svg)](https://github.com/kujenga/website/actions)
+[![kujenga/website](https://circleci.com/gh/kujenga/website.svg?style=svg)](https://circleci.com/gh/kujenga/website)
 
-Built with [Hugo][hugo] and deployed on [GitHub Pages][ghPages].
+Built with [Hugo][hugo] and deployed on [Google App Engine][gae]. See the
+deployed version at [ataylor.io](https://ataylor.io).
 
 
 <!-- Citations -->
 [hugo]: https://gohugo.io
-[ghPages]: https://pages.github.com/
+[gae]: https://cloud.google.com/appengine
