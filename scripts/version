@@ -1,0 +1,32 @@
+#!/bin/bash
+
+# Directory containing this script.
+D=$(cd "$(dirname "$0")" && pwd -P)
+# Root of this repository.
+R=$(cd "$D/.." && pwd -P)
+
+DATE="$(date '+%Y%m%dt%H%M%S')"
+
+GIT_HASH="$(git rev-parse --short HEAD)"
+
+PRE='branch'
+if [[ "$CIRCLE_BRANCH" = 'main' ]]; then
+    PRE="main-${CIRCLE_BUILD_NUM}"
+fi
+
+BUILD='local'
+if [[ -n "$CIRCLE_BUILD_NUM" ]]; then
+    BUILD="ci${CIRCLE_BUILD_NUM}"
+fi
+
+# NOTE: The rules for version validation (from CLI output) state:
+#
+#     May only contain lowercase letters, digits, and hyphens. Must begin and
+#     end with a letter or digit. Must not exceed 63 characters.
+
+VERSION="$PRE-$BUILD-$GIT_HASH-$DATE"
+
+# Write the version to a file.
+echo "$VERSION" > "$R/VERSION"
+# Echo the version to shell output.
+echo "$VERSION"

@@ -1,7 +1,10 @@
-# Golang CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-go/ for more details
-version: 2
+# CircleCI configuration file
+
+version: 2.1
+
+orbs:
+  gcp-cli: circleci/gcp-cli@2.1.0
+
 jobs:
   build:
     docker:
@@ -61,3 +64,48 @@ jobs:
           command: npm run build
       - store_artifacts:
           path: app/public
+      - persist_to_workspace:
+          root: .
+          paths:
+            - app/public
+
+  deploy:
+    executor: gcp-cli/google
+    steps:
+      # No need to deploy branches unless the branch is worthy of having
+      # had a PR opened for it. This allows branches to be pushed with CI
+      # but not worry about over-populating the versions in App Engine.
+      # TODO: Figure out how to do this with a "when" clause for this
+      # entire job to make the behavior clearer in commit status.
+      - run:
+          name: Abort if a PR is not open
+          command: |
+            if [ -z "${CIRCLE_PULL_REQUEST}" ]; then
+              circleci-agent step halt
+            fi
+      # Uses pre-defined environment variables:
+      # https://circleci.com/developer/orbs/orb/circleci/gcp-cli#commands-initialize
+      # The service account was provisioned according to the instructions here,
+      # with the exception of scoping the iam.serviceAccountUser role to the
+      # specific App Engine service account, and the compute.storageAdmin role
+      # to the specific storage buckets, ref:
+      # https://cloud.google.com/appengine/docs/standard/go/roles#recommended_role_for_application_deployment
+      - gcp-cli/initialize
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: Install additional dependencies
+          command: |
+            apt-get install -y jq
+      - run:
+          name: Deploy to App Engine
+          command: ./scripts/deploy-appengine
+
+workflows:
+  build_and_deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
