@@ -39,11 +39,16 @@ update_status \
 
 VERSION="$(./scripts/version)"
 
+PARAM='--no-promote'
+if [ "$CIRCLE_BRANCH" = "main" ]; then
+  PARAM='--promote'
+fi
+
 # Deploy to Google App Engine
 set -x
 gcloud app deploy app/app.yaml \
     --quiet \
-    --no-promote \
+    $PARAM \
     --version "$VERSION"
 set +x
 
