@@ -72,6 +72,17 @@ jobs:
   deploy:
     executor: gcp-cli/google
     steps:
+      # No need to deploy branches unless the branch is worthy of having
+      # had a PR opened for it. This allows branches to be pushed with CI
+      # but not worry about over-populating the versions in App Engine.
+      # TODO: Figure out how to do this with a "when" clause for this
+      # entire job to make the behavior clearer in commit status.
+      - run:
+          name: Abort if a PR is not open
+          command: |
+            if [ -z "${CIRCLE_PULL_REQUEST}" ]; then
+              circleci-agent step halt
+            fi
       # Uses pre-defined environment variables:
       # https://circleci.com/developer/orbs/orb/circleci/gcp-cli#commands-initialize
       # The service account was provisioned according to the instructions here,
