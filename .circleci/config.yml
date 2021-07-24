@@ -107,6 +107,12 @@ jobs:
       - run:
           name: Deploy to App Engine
           command: ./scripts/deploy-appengine
+      - run:
+          name: Cleanup older versions in App Engine
+          # We keep 10 versions as this is reasonably under 15, the max allowed
+          # for the free tier:
+          # https://cloud.google.com/appengine/docs/standard/go/an-overview-of-app-engine#limits
+          command: ./scripts/cleanup-appengine default 10
 
 workflows:
   build_and_deploy:

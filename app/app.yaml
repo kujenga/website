@@ -1,4 +1,20 @@
-runtime: go114
+# App Engine configuration file. Docs:
+# https://cloud.google.com/appengine/docs/standard/go/config/appref#runtime_and_app_elements
+
+runtime: go115
+
+# Smallest auto-scaling standard instance, $0.05/hr
+# https://cloud.google.com/appengine/docs/standard#instance_classes
+instance_class: F1
+
+# https://cloud.google.com/appengine/docs/standard/go/config/appref#automatic_scaling
+automatic_scaling:
+  min_idle_instances: automatic
+  max_idle_instances: automatic
+  min_pending_latency: automatic
+  max_pending_latency: automatic
+  # Cap total cost
+  max_instances: 3
 
 handlers:
 # Configure App Engine to serve any static assets.

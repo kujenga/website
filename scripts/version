@@ -7,7 +7,7 @@ R=$(cd "$D/.." && pwd -P)
 
 DATE="$(date '+%Y%m%dt%H%M%S')"
 
-GIT_HASH="$(git rev-parse --short HEAD)"
+GIT_HASH="g$(git rev-parse --short HEAD)"
 
 PRE='branch'
 if [[ "$CIRCLE_BRANCH" = 'main' ]]; then
