@@ -154,6 +154,11 @@ nav.navbar {
 #blog-post {
   line-height: 1.7em;
   font-size: 1.1em;
+
+  /* Normalize the formatting of embedded github code */
+  .emgithub-container {
+    line-height: 1.1em;
+  }
 }
 
 /* Social Links */
