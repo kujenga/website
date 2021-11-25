@@ -147,8 +147,82 @@ through that later in the post.
 
 ## Making predictions: Implementing Feed-forward
 
+As we think about how to structure the code for our network, there are a few key
+pieces of functionality we need to provide:
+- Initialize the network, allocating the needed data structures and initial
+  values.
+- Train the network, iteratively improving the network output based on inputs.
+- Make predictions using the trained network, taking a set of inputs and
+  providing an inferenced output.
 
-## Training the network: Implementing Backpropagation
+In addition to these basic functionalities, we also want to build it in a
+flexible manner that can facilitate any number of layers, so that we can create
+networks of different architectures in the future, with an eye towards future
+iterations into more complex types neural networks, a possible topic for future
+posts.
+
+For this implementation we will favor clarity over optimizations, aligned with
+the goal of this project as a way to learn the details of how networks operate.
+
+### Code structure
+
+The primary struct controlling our network is the `MLP` struct, representing our
+Multi-Layer Perceptron, and is fairly simple. It holds an array of layers
+which form the structure of the network and hold state for training and
+prediction. The `LearningRate` variable is a network-level hyperparameter
+controlling the training process, and the `Introspect` function allows us to
+look at incremental training progress.
+
+{{< emgithub "https://github.com/kujenga/goml/blob/fc6bc437686cf50dc0ba9f3bb7f7e7ee23bc611d/neural/mlp.go#L21-L39" >}}
+
+Diving deeper into the implementation, the `Layer` struct represents a single
+layer within the network. Here things start to get more complex, as there is
+quite a bit of state that needs to be managed to facilitate the training
+process.
+
+The key elements to capture within this data structure are:
+- Parameters that define the layer behavior, including the width of the network
+  and the "activation function".
+- Internal references to the network itself, as well as the next and previous
+  layers in the network. We need references in both directions to facilitate
+  forward and backward propagation.
+- Internal state values of the layer, holding the weights and biases. We'll look
+  at how these are used more closely in the next section.
+- Records of the internal activation values that the layer had last seen. These
+  need to be captured for use in the backpropagation training process.
+
+{{<emgithub "https://github.com/kujenga/goml/blob/fc6bc437686cf50dc0ba9f3bb7f7e7ee23bc611d/neural/mlp.go#L156-L198" >}}
+
+With these two structures defined, we can look at how the training process
+works. The entrypoint is the `Train` function which iterates for a given number
+of "epochs". Training happens iteratively, with each step containing two passes.
+
+For each input, we first propagate the weights and subsqeuent layer outputs
+forward through the network to get the current predictions of the network for
+the given input. Once that is complete, we propagate the error values we compute
+based on the corresponding labels _backwards_ though the network, and update the
+weights in the direction that looks like it will reduce the error we saw for
+that input.
+
+{{<emgithub "https://github.com/kujenga/goml/blob/fc6bc437686cf50dc0ba9f3bb7f7e7ee23bc611d/neural/mlp.go#L70-L123" >}}
+
+Once the network is trained, we can use it for making predictions! There is some
+neat symmetry in the implementation here, as the `Predict` function is identical
+to the first part of the inner loop of the `Train` function where we are
+propagate our inputs forwards through the network.
+
+{{<emgithub "https://github.com/kujenga/goml/blob/fc6bc437686cf50dc0ba9f3bb7f7e7ee23bc611d/neural/mlp.go#L125-L140" >}}
+
+One note on this approach is that the `float32` type was chosen as full float64
+precision isn't needed here. Manh state of the art ML platforms are using even
+lower precision for increased memory efficient, as well as "mixed precision"
+schemes[^mixedPrecision] that combine multiple precision levels. When Go adds
+support for generics[^goGenerics] that could be something made parameterizable.
+
+## Forward Propagation: Making predictions
+
+
+## Backpropagation: Training the network
 
 
 ## Boolean test cases
@@ -166,9 +240,18 @@ through that later in the post.
 ## Resources
 
 
-<!-- Citations -->
+> Additionally, this post is based on a talk given for [Boston
+> Golang](http://bostongolang.org/) in [Sept.
+> 2021](https://www.meetup.com/bostongo/events/280522108/), the slides for which
+> can be found here: [Building a Neural Network in Go][slideDeck]
+
+<!-- Footnotes -->
+[^mixedPrecision]: https://developer.nvidia.com/blog/mixed-precision-training-deep-neural-networks/
+
+<!-- Links -->
 [repo]: https://github.com/kujenga/goml
 [slideDeck]: https://docs.google.com/presentation/d/1fFeRehIzcdtE_ujWfvYhrytWLYZrXDeQ4AvZnDqCKfc/edit
 [perceptronWiki]: https://en.wikipedia.org/wiki/Perceptron
+[goGenerics]: https://go.dev/blog/generics-proposal
 
 <!-- Attribution -->
