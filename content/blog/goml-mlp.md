@@ -221,6 +221,29 @@ support for generics[^goGenerics] that could be something made parameterizable.
 
 ## Forward Propagation: Making predictions
 
+We will now be implementing this forward propagation step, where we transform a
+set of inputs passed into this network into a set of outputs.
+
+One thing I have found confusing in some portrayals of neural networks is that
+so much of the focus on the "neurons" themselves, represented as nodes in the
+network graph. The real magic is all in the edges! The weights attached to the
+edges, the activation function that they pass through, and the bias values
+shifting the output, are what give these networks their power. The nodes
+themselves are just representations of state, which is what this diagram
+attempts to show:
+
+{{< img 4-basic-neuron-operation.png "Basic Neuron Operation" >}}
+
+With that in mind, we iterate through each input value we are recieving from the
+last layer and calculate the activations. This is skipped for the input layer,
+since it is just recieving the raw values into the network. The combination of
+the weights and input values into a single value is most clearly expressed as a
+dot-product, and the `Z` value is used to record the linear combination of the
+weights with the bias added in before the activation function. Both this `Z`
+value and the activation value itself are stored, not for use in the forward
+propagation, but for use later in the backpropagation process.
+
+{{< emgithub "https://github.com/kujenga/goml/blob/b73f6122025613f0ffe91033a959b8d0093baab4/neural/mlp.go#L247-L268" >}}
 
 ## Backpropagation: Training the network
 
