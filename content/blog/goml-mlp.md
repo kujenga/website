@@ -654,14 +654,50 @@ A score of `0.9644` is equivalent to an error rate of 3.56 percent, which is a
 bit better than the equivalent network architecture listed on the MNIST site! I
 would call that a success.
 
-## Performance
+## Conclusions and Future work
 
+At this point, we've walked through the full lifecycle of creating a fully
+functioning neural network in Go from scratch, using just the tools given to us
+in the Go standard library.
 
-## Future work
+Future work may explore extensions of this network to provide additional
+functionality, such as batch and mini-batch approaches to the gradient descent
+phase.
 
+We could also look at building on top of this network to target better MNIST
+performance through architectures like a Convolutional Neural Network which is
+particularly well suited for image-related tasks, and try to apply this network
+to additional image recognition datasets. Another avenue to explore is extending
+and refactoring this network to support Recurrent Neural Networks, which can be
+used on streams of data like text.
+
+Another avenue to explore would be comparing the straightforward implementation
+we have here with approaches taken by other libraries, including Go-oriented
+libraries like [golearn][golearn], or some of the flagship libraries like
+[tensorflow][tensorflow] and [pytorch][pytorch] which utilize a unique model to
+have the same code be runnable by a variety of execution backends like GPUs.
+
+These may be topics for future posts! If you've made it this far, thanks for
+following along and I hope you found this helpful in gaining a deeper
+understanding of the basics of neural networks.
 
 ## Resources
 
+Source code for this project cam be found here: https://github.com/kujenga/goml
+
+The corresponding documentation is available here: https://pkg.go.dev/github.com/kujenga/goml
+
+References and further learning:
+- The [Backpropagation explained][deeplizardBackPropExplained] YouTube series by
+  [Deeplizard][deeplizardPage] is a great reference to go into even more detail
+  on the concept and math behind the derivation process for backpropagation.
+- [Make Your Own Neural Network][myoNNTariqRashid] is a fantastic book/e-book by
+  Tariq Rashid that goes into more detail and background on this topic, and
+  creates a functional network written in Python, exploring additional
+  applications of linear algebra as well.
+- [Build an Artificial Neural Network From Scratch: Part 1][annFromScratch] is a helpful blog post from KDNuggets for walking through a simplified example of single layer networks.
+- The MNIST dataset, originally from [Yann Lecun][yannLeCunMNIST], and is also
+  mirrored at: https://deepai.org/dataset/mnist
 
 > Additionally, this post is based on a talk given for [Boston
 > Golang](http://bostongolang.org/) in [Sept.
@@ -680,10 +716,17 @@ would call that a success.
 [slideDeck]: https://docs.google.com/presentation/d/1fFeRehIzcdtE_ujWfvYhrytWLYZrXDeQ4AvZnDqCKfc/edit
 [perceptronWiki]: https://en.wikipedia.org/wiki/Perceptron
 [gradientDescentWiki]: https://en.wikipedia.org/wiki/Gradient_descent
+[deeplizardPage]: https://www.youtube.com/deeplizard
 [deeplizardBackPropIntuition]: https://www.youtube.com/watch?v=XE3krf3CQls
 [deeplizardBackPropGradient]: https://www.youtube.com/watch?v=Zr5viAZGndE
+[deeplizardBackPropExplained]: https://www.youtube.com/playlist?list=PLZbbT5o_s2xq7LwI2y8_QtvuXZedL6tQU
 [powerRule]: https://en.wikipedia.org/wiki/Power_rule
 [gopkgIDX]: https://pkg.go.dev/github.com/kujenga/goml@v0.0.0-20210928201159-b73f61220256/idx
 [gopkgMNIST]: https://pkg.go.dev/github.com/kujenga/goml@v0.0.0-20210928201159-b73f61220256/mnist
+[myoNNTariqRashid]: https://smile.amazon.com/Make-Your-Own-Neural-Network/dp/1530826608/
+[annFromScratch]: https://www.kdnuggets.com/2019/11/build-artificial-neural-network-scratch-part-1.html
+[yannLeCunMNIST]: https://yann.lecun.com/exdb/mnist/
+[tensorflow]: https://www.tensorflow.org/learn
+[pytorch]: https://pytorch.org/docs/stable/index.html
 
 <!-- Attribution -->
