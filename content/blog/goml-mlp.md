@@ -478,6 +478,74 @@ minima iteratively.
 
 With these pieces in place, we are now ready to start testing our network!
 
+## Boolean test cases
+
+To re-iterate from above, the basic set of test cases we are targeting are to
+see if our network can learn basic boolean logic. We have test cases
+representing three models we want to train:
+- Boolean MUST
+- Boolean AND
+- Boolean OR
+
+Each set of labels will be used to train a different network, and the tests will
+be setup and executed in a repeated table-driven style with the following cases:
+
+{{< emgithub "https://github.com/kujenga/goml/blob/fc6bc437686cf50dc0ba9f3bb7f7e7ee23bc611d/neural/mlp_test.go#L80-L100" >}}
+
+First we set up a basic MLP network to test against with just an input layer and
+single output layer with weights doing computation.
+
+We iterate over the boolean test cases and assert that the network can learn the
+outputs in each case.
+
+{{< emgithub "https://github.com/kujenga/goml/blob/b73f6122025613f0ffe91033a959b8d0093baab4/neural/mlp_test.go#L152-L179" >}}
+
+A test case for the multi-layer network it set up the same way, just adding in a
+hidden layer to the network.
+
+{{< emgithub "https://github.com/kujenga/goml/blob/b73f6122025613f0ffe91033a959b8d0093baab4/neural/mlp_test.go#L209-L238" >}}
+
+The `predictionTestBool` function is a simple helper that asserts that the
+output of the network always matches the output of the labeled data for the
+corresponding boolean function.
+
+Below is the output of these tests (with the `Introspect` function ommitted). We
+can observe how the predictions trend toward the correct labels. The assertions
+in the test verify this, using fuzzy mathing logic with cutoffs to classify the
+network output one way ot the other.
+
+```
+$ go test -v ./neural -run TestMLPMultiLayerBool
+=== RUN   TestMLPMultiLayerBool
+=== RUN   TestMLPMultiLayerBool/must
+    mlp_test.go:114: input: [0 0], prediction: [0.12680678], label: [0]
+    mlp_test.go:114: input: [0 1], prediction: [0.10898689], label: [0]
+    mlp_test.go:114: input: [1 0], prediction: [0.8846526], label: [1]
+    mlp_test.go:114: input: [1 1], prediction: [0.8737482], label: [1]
+=== RUN   TestMLPMultiLayerBool/and
+    mlp_test.go:114: input: [0 0], prediction: [0.03306453], label: [0]
+    mlp_test.go:114: input: [0 1], prediction: [0.09745012], label: [0]
+    mlp_test.go:114: input: [1 0], prediction: [0.1063798], label: [0]
+    mlp_test.go:114: input: [1 1], prediction: [0.8444925], label: [1]
+=== RUN   TestMLPMultiLayerBool/or
+    mlp_test.go:114: input: [0 0], prediction: [0.08692269], label: [0]
+    mlp_test.go:114: input: [0 1], prediction: [0.95728356], label: [1]
+    mlp_test.go:114: input: [1 0], prediction: [0.9525525], label: [1]
+    mlp_test.go:114: input: [1 1], prediction: [0.97686994], label: [1]
+=== RUN   TestMLPMultiLayerBool/xor
+    mlp_test.go:114: input: [0 0], prediction: [0.028652104], label: [0]
+    mlp_test.go:114: input: [0 1], prediction: [0.9467217], label: [1]
+    mlp_test.go:114: input: [1 0], prediction: [0.04812079], label: [0]
+    mlp_test.go:114: input: [1 1], prediction: [0.9651075], label: [1]
+--- PASS: TestMLPMultiLayerBool (0.00s)
+    --- PASS: TestMLPMultiLayerBool/must (0.00s)
+    --- PASS: TestMLPMultiLayerBool/and (0.00s)
+    --- PASS: TestMLPMultiLayerBool/or (0.00s)
+    --- PASS: TestMLPMultiLayerBool/xor (0.00s)
+PASS
+ok  	github.com/kujenga/goml/neural	0.243s
+```
+
 ## Validating on MNIST
 
 
