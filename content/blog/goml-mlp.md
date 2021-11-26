@@ -61,6 +61,8 @@ happens.
 
 {{< img 3-single-layer-perceptron.png "Single Layer Perceptron" >}}
 
+### Understanding neurons
+
 Each of the nodes in the above graph is often referred to as a "neuron", as they
 are intended to roughly mimic the structures within a simplified model of the
 brain. Let's dive a bit deeper into how those function at a high level. We will
@@ -94,6 +96,8 @@ extreme input values is critical to the learning ability of the network.
 
 > By Qef (talk) - Created from scratch with gnuplot, Public Domain,
 > https://commons.wikimedia.org/w/index.php?curid=4310325
+
+### Adding layers to the network
 
 To make this network morecapable, we can extend the model of a single-layer
 perceptron by adding more layers, creating a multi-layer perceptron. The number
@@ -147,7 +151,7 @@ through that later in the post.
 
 > Josef Steppan, CC BY-SA 4.0 <https://creativecommons.org/licenses/by-sa/4.0>, via Wikimedia Commons
 
-## Making predictions: Implementing Feed-forward
+### Code structure
 
 As we think about how to structure the code for our network, there are a few key
 pieces of functionality we need to provide:
@@ -165,8 +169,6 @@ posts.
 
 For this implementation we will favor clarity over optimizations, aligned with
 the goal of this project as a way to learn the details of how networks operate.
-
-### Code structure
 
 The primary struct controlling our network is the `MLP` struct, representing our
 Multi-Layer Perceptron, and is fairly simple. It holds an array of layers
@@ -478,7 +480,7 @@ minima iteratively.
 
 With these pieces in place, we are now ready to start testing our network!
 
-## Boolean test cases
+## Validating on Boolean test cases
 
 To re-iterate from above, the basic set of test cases we are targeting are to
 see if our network can learn basic boolean logic. We have test cases
