@@ -548,6 +548,111 @@ ok  	github.com/kujenga/goml/neural	0.243s
 
 ## Validating on MNIST
 
+Now that we have established that our network can learn boolean functions, let's
+crank things up a few notches and take on the MNIST dataset.
+
+{{< img "MnistExamples.png" "MNIST Examples" >}}
+
+> Josef Steppan, CC BY-SA 4.0 <https://creativecommons.org/licenses/by-sa/4.0>, via Wikimedia Commons
+
+### Parsing MNIST
+
+Before we can start working with the MNIST dataset directly, we need to parse it
+into a usable form. The dataset is stored in a rather unique binary format,
+which we handle as two separate parsing steps.
+
+First, we create a parser for the binary [idx][gopkgIDX] dataset format, which
+returns the following parsed data structure from the binary files read out from
+disk.
+
+{{< emgithub "https://github.com/kujenga/goml/blob/fc6bc437686cf50dc0ba9f3bb7f7e7ee23bc611d/idx/idx.go#L16-L24" >}}
+
+Secong, we create an [mnist][gopkgMNIST] package which builds on IDX parser to
+read in the specific MNIST dataset using the capabilities of the IDX reader, and
+returns the following data structure for use in tests.
+
+{{< emgithub "https://github.com/kujenga/goml/blob/fc6bc437686cf50dc0ba9f3bb7f7e7ee23bc611d/mnist/mnist.go#L14-L26" >}}
+
+This parsing code is based directly on the MNIST spec and is all specified in
+the files linked to from the snippets just above, with corresponding test cases
+in those packages as well.
+
+### One-hot encoding
+
+Neural Networks are generally weaker when you are trying to predict a range of
+outputs from a single neuron. As an example of why this is the case, let's look
+at the numbers `7` and `8`. Numerically, they are right next to each other, but
+when visually represented, there is nothing about those two numbers which makes
+them closer together than any other pair of numbers in the range 0-9. Because
+our network is a mathematical combination of predictions, it would be difficult
+to have a network that could output a single numeric value quantized 0-9 to
+represent these digits.
+
+One-hot encoding solves this problem. It uses a vector of binary values to make
+all the possible categorical outcomes independent of each other, as shown in
+thiws diagram, where "8" is mapped to a single "1" value within a vector.
+One-hot encodings are very useful for categorical variables, and that is what we
+will use here for representing MNIST.
+
+{{< img "35-mnist-one-hot.png" "MNIST One-hot encoding" >}}
+
+### MNIST Network Architecture
+
+Now that we have our dataset ready, we can start architecting our network. The
+following diagram depicts about what our network will look like conceptually,
+and is based on the network architectures documented on the MNIST page
+[^mnistArchive], one of which is `2-layer NN, 300 hidden units, mean square
+error`, which we will replicate here, though modifications of this architecture
+with a different number of layers, layer sizes, etc. still do perform well!
+
+{{< img "36-mnist-architecture.png" "MNIST Network Architecture" >}}
+
+### MNIST Test cases
+
+In a similar manner to the boolean test cases above, we lay out our network
+architecture for the MNIST network, execute the training process, and then
+validate our network performance.
+
+One key difference here is that we are training and validating on separate
+datasets, which are given to us separately by the MNIST dataset itself.
+
+> For speed of execution in CI systems, the following test case limits the
+> dataset size to 1/6 of what it normally would be, with 60k total examples.
+> This is a trick that can be useful generally, to use a subset of your dataset
+> that can by more quickly trained on to get things functional, and then pulling
+> in the rest of the data later as you fine tune the architecture.
+
+{{< emgithub "https://github.com/kujenga/goml/blob/fc6bc437686cf50dc0ba9f3bb7f7e7ee23bc611d/neural/mlp_test.go#L270-L303" >}}
+
+Validating our network performance is a bit more involved here than it was for
+the boolean test cases, as we need to compute an _error rate_ for the network as
+a whole, rather than just asserting that it must be correct all the time as we
+did with the boolean test cases. Our test can then assert that the error rate is
+below a given threshold. The `predictionTestOneHot` function does this for us:
+
+{{< emgithub "https://github.com/kujenga/goml/blob/fc6bc437686cf50dc0ba9f3bb7f7e7ee23bc611d/neural/mlp_test.go#L128-L148" >}}
+
+Running these tests locally, (with a slight modification to the source to remove
+the `[:10000]` slicing that just speeds up CI execution) we get the following
+output:
+
+```
+$ go test -v ./neural -run MNIST
+=== RUN   TestMLPMultiLayerMNIST
+    mlp_test.go:289: {Epoch:0 Loss:0.010991104}
+    mlp_test.go:289: {Epoch:1 Loss:0.0065983073}
+    mlp_test.go:289: {Epoch:2 Loss:0.0057215523}
+    mlp_test.go:289: {Epoch:3 Loss:0.0051340326}
+    mlp_test.go:289: {Epoch:4 Loss:0.004867792}
+    mlp_test.go:145: one-hot predictions score: 0.9644
+--- PASS: TestMLPMultiLayerMNIST (86.19s)
+PASS
+ok  	github.com/kujenga/goml/neural	86.409s
+```
+
+A score of `0.9644` is equivalent to an error rate of 3.56 percent, which is a
+bit better than the equivalent network architecture listed on the MNIST site! I
+would call that a success.
 
 ## Performance
 
@@ -568,6 +673,7 @@ ok  	github.com/kujenga/goml/neural	0.243s
 [^goGenerics]: https://go.dev/blog/generics-proposal
 [^lossFunctions]: https://www.theaidream.com/post/loss-functions-in-neural-networks
 [^gradientDescentTypes]: https://www.analyticsvidhya.com/blog/2021/03/variants-of-gradient-descent-algorithm/
+[^mnistArchive]: https://web.archive.org/web/20211125025603/http://yann.lecun.com/exdb/mnist/ (We utilize a link to the archive page here as the original website is observed to sometimes give authorization errors)
 
 <!-- Links -->
 [repo]: https://github.com/kujenga/goml
@@ -577,5 +683,7 @@ ok  	github.com/kujenga/goml/neural	0.243s
 [deeplizardBackPropIntuition]: https://www.youtube.com/watch?v=XE3krf3CQls
 [deeplizardBackPropGradient]: https://www.youtube.com/watch?v=Zr5viAZGndE
 [powerRule]: https://en.wikipedia.org/wiki/Power_rule
+[gopkgIDX]: https://pkg.go.dev/github.com/kujenga/goml@v0.0.0-20210928201159-b73f61220256/idx
+[gopkgMNIST]: https://pkg.go.dev/github.com/kujenga/goml@v0.0.0-20210928201159-b73f61220256/mnist
 
 <!-- Attribution -->
