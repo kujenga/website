@@ -32,6 +32,7 @@
     <title>{{ .Site.Title }}{{ if not (eq .Site.Title .Title) }} - {{ .Title }}{{ end }}</title>
 
     {{ partial "newrelic.html" . }}
+    {{ partial "mathjax.html" . }}
     {{ template "_internal/google_analytics.html" . }}
 
     {{ partial "header.includes.html" . }}

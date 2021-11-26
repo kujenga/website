@@ -6,6 +6,8 @@ Creating a basic neural network from scratch, with just the Go standard library.
 """
 categories = []
 tags = []
+mathjax = true
+toc = true
 +++
 
 This post covers the creation of a basic neural network written in Go.
@@ -247,9 +249,234 @@ propagation, but for use later in the backpropagation process.
 
 ## Backpropagation: Training the network
 
+Being able to compute a set of outputs given a set of inputs is great, but in
+order to give meaning to these outputs, we need to train the network to give it
+the behavior that we expect. The way most all machine learning models are
+trained is through a series of iterative steps, where each step tweaks the
+parameters of the model a way that decreases the "loss" of the network, and
+we'll be doing that same process here.
 
-## Boolean test cases
+In each of those iterative steps, our goal is to update the parameters in the
+network, primarily the weights and biases, to minimize the error. Moving
+backwards through this three layer network to do that, our conceptual steps
+corresponding to the diagram below are:
+1. Compute the error at the output layer, comparing output activations vs. the
+   provided labels.
+1. Update the weights in a way that will decrease the computed error.
+1. Propagate the error backwards through the network in order to repeat the
+   process of weight updates.
+1. Update the next set of weights to minimize propagation error from that
+   earlier layer.
 
+{{< img "20-backprop-overall.png" "Backpropagation Overview" >}}
+
+If this still isn't totally clear and you'd like to go into more depth with
+understanding the intuition behind backpropagation, watch this video!
+[Backpropagation explained | Part 1 - The
+intuition][deeplizardBackPropIntuition]
+
+### Introducing Loss Functions
+
+In the above diagram, we talk about propagating the "error" back through the
+network. This presents a slight hiccup however, as the simplest way to calculate
+error values, the difference between the expected labeled output and the output
+we recieved from the network, can be either a positive or negative value. In
+order to determine how well the network is doing, we need to be able to look at
+the aggregate of these errors. We do this using a Loss Function, which
+transforms the raw error from the network into something more mathematically
+useful to us.
+
+For our network, we will be using the Mean Squared Error (MSE) loss function,
+which is just what it sounds like, taking the average of the squared values from
+each output, so that the summed errors in the average always correctly indicate
+that the network is doing better or worse and there is no cancellation. The
+formula for MSE is as follows:
+
+<!-- LaTex rendered by MathJax -->
+<div>
+$$\frac{1}{N} \sum_{i=1}^N (labels_{i} - outputs_{i})^2$$
+</div>
+
+There are all sorts of different loss function with varying properties which can
+be used as well. More can be read about different loss functions in other
+resources around the web [^lossFunctions].
+
+### Understanding Gradient Descent
+
+Now that we have the basic concepts of propagating error values back through the
+network to update parameters and using loss functions to calculate how well (or
+poorly) the network is doing, we can apply this process repeatedly to
+iteratively improve our network's performance. That iterative process is known
+as [Gradient Descent][gradientDescentWiki].
+
+Conceptually, this gradient can be thought of as a hilly landscape, which we
+represent here from the top in two dimensions. The vertical axis represents the
+loss, where lower is better, and the horizontal access represents the space of
+possible parameters that we can move around within as we look for the point to
+minimize this loss. In reality, the number dimensions in this graph is the same
+as the number of parameters we are trying to tweak, but this conceptual
+understanding remains valid as the model scales.
+
+In the training process, the goal is to find the point in this landscape that minimizes the loss for the inputs that we care about.
+
+{{< img "Gradient_descent.svg" "Gradient Descent" >}}
+<!-- https://en.wikipedia.org/wiki/Gradient_descent#/media/File:Gradient_descent.svg -->
+
+There are a few different approaches to Gradient Descent, but the one we will be
+starting off with here is the simplest, called Stochastic Gradient Descent
+(SGD). With SGD, you look at one input at a time and update the network based on
+the loss from that input/label pair. Other types of gradient descent such as
+batch and mini-batch look at multiple inputs and label pairs at a time, which
+can have various advantages[^gradientDescentTypes], but introduce complexity as
+well, so we skip those for the scope of this post.
+
+### Backpropagation in more detail
+
+To get into the details of what our backpropgation implementation will actually
+look like, first we look at a single layer, going from the outputs back to the
+inputs from the previous. The basic steps for this are:
+
+1. Labels are used to compute errors in the output, transformed using loss
+   function.
+1. Those errors are used to inform updates to teh the weight and bias parameters
+   in a way that would have decreased the computed error.
+
+This is equivalent to the first back-propagation step in Multi-layer backpropagation.
+
+{{< img "22-backprop-single-layer.png" "Backpropagation in a Single Layer" >}}
+
+In order to extend this to multiple layers within the whole network, we
+simply propagate error values back another layer. For each node in the previous
+layer, we use the dot product of the errors and the weights on the corresponding
+edges, which has a sort of symmertry with how the outputs were computed in the
+first place.
+
+{{< img "23-backprop-multi-layer.png" "Backpropagation in Multiple Layers" >}}
+
+### Calculating with Calculus
+
+So, being able to iteratively walk down hill in our loss landscape and update
+weights to move towards a better and better network sounds great, but how do we
+actually go about finding what that landscape actually looks like and which
+direction to move in? All the feed-forward process implementation we have looked
+at so far gives us is our current location in the loss landscape. This is where
+derivatives come into play, allowing us to compute a closed form solution for
+updating the weights for a given set of errors.
+
+To capture all of our formulas in one place, here are the three equations that
+will be differentiated.
+
+<!-- LaTex rendered by MathJax -->
+<div>
+$$Z = Weights \cdot Inputs + Biases$$
+$$Activations = f_{activation}(Z)$$
+$$Loss = \frac{1}{N} \sum_{i=1}^N (labels_{i} - outputs_{i})^2$$
+</div>
+
+Based on these equations, we use the chain rule to expand the derivative of the
+loss with respect to weights out into a series of functions we can compute. For
+a fantastic explaination of this differentiation process in more detail, watch:
+[Backpropagation explained | Part 4 - Calculating the
+gradient][deeplizardBackPropGradient] as well as preceeding videos in that
+series. To cover this briefly, the derivatives that we wish to compute are as
+follows.
+
+For updating the _weights_, we need to compute the derivative of the loss with
+respect to the derivative of the weights. In other words, how to we change the
+weights to decrease the loss?
+
+<!-- LaTex rendered by MathJax -->
+<!-- ∂L/∂w = ∂L/∂a * ∂a/∂z * ∂z/∂w -->
+<div>
+$$
+\frac{\partial Loss}{\partial Weights} =
+\frac{\partial Loss}{\partial Activations} *
+\frac{\partial Activations}{\partial Z} *
+\frac{\partial Z}{\partial Weights}
+$$
+</div>
+
+For updating the _bias_, we calculate the derivative of the loss with respect to
+the derivative of the inner \\(Z\\) value, which is directly influenced by the
+bias. In other words, how do we shift the values to decrease the loss?
+
+<!-- LaTex rendered by MathJax -->
+<!-- ∂L/∂z = ∂L/∂a * ∂a/∂z -->
+<div>
+$$
+\frac{\partial Loss}{\partial Z} =
+\frac{\partial Loss}{\partial Activations} *
+\frac{\partial Activations}{\partial Z}
+$$
+</div>
+
+#### Calculating the derivative
+
+Armed with these new equations, we can implement each component of these partial
+derivatives to be combined for the final weight and bias updates.
+
+Via the [Power Rule][powerRule] on the MSE function, we have the following
+result for the first component.
+
+<div>
+$$\frac{\partial Loss}{\partial Activations} = 2 * Error$$
+</div>
+
+<!-- ∂L/∂a -->
+{{< emgithub "https://github.com/kujenga/goml/blob/fc6bc437686cf50dc0ba9f3bb7f7e7ee23bc611d/neural/mlp.go#L274-L292" >}}
+
+For the derivative of the activations w.r.t. the intermediate Z values, we
+simply take the derivative of the activation function.
+
+<div>
+$$\frac{\partial Activations}{\partial Z} = f_{activation}^{'}(Z)$$
+</div>
+
+As this is a configurable "hyperparameter" of the network, it is a pre-defined
+value that needs to be specified at network initialization. In our test cases
+outlined further below, the value is \\(sigmoid^{'}(Z)\\).
+
+<!-- ∂a/∂z -->
+{{< emgithub "https://github.com/kujenga/goml/blob/fc6bc437686cf50dc0ba9f3bb7f7e7ee23bc611d/neural/mlp.go#L294-L296" >}}
+
+Lastly, we have the derivative of the Z values with respect to the weights,
+which simply comes out to the activation values from the previous layer.
+
+<div>
+$$\frac{\partial Z}{\partial Weights} = Activations$$
+</div>
+
+<!-- ∂z/∂w -->
+{{< emgithub "https://github.com/kujenga/goml/blob/fc6bc437686cf50dc0ba9f3bb7f7e7ee23bc611d/neural/mlp.go#L306-L308" >}}
+
+Now that we have the components, we can combine them per the original equation
+for our partial derivative that we arrived at via the chain rule. using these
+combined values, we update both the weights and the biases accordingly,
+multiplied by our _learning rate_, which is critical to the success of these
+iterations as we will see next.
+
+{{< emgithub "https://github.com/kujenga/goml/blob/fc6bc437686cf50dc0ba9f3bb7f7e7ee23bc611d/neural/mlp.go#L310-L322" >}}
+
+### Why learning rate matters
+
+When we calculate the derivative for a given point in the loss landscape, we
+need to make sure we are not overly trusting of what it tells us. Looking again
+at this diagram from earlier, we _could_ use the inferred slope of the loss from
+the computed gradient at a given point to attempt to jump straight to the values
+that will set the loss to zero along that plane within the gradient. As we can
+see here though, that would overshoot our desired minimized loss value and
+bounce around more than is desired. Continuing in that process would prevent us
+from reaching the minimum point where error is most greatly reduced, because
+with every step we are likely to overshoot it.
+
+In this diagram, the use of a learning rate is shown through the smaller
+iterations on the thinner light red lines, where we move by a few percentage
+points of the amount predicted by the gradient to get closer and closer to the
+minima iteratively.
+
+{{< img "27-learning-rate-matters.png" "Why learning rate matters" >}}
+
+With these pieces in place, we are now ready to start testing our network!
 
 ## Validating on MNIST
 
@@ -270,11 +497,17 @@ propagation, but for use later in the backpropagation process.
 
 <!-- Footnotes -->
 [^mixedPrecision]: https://developer.nvidia.com/blog/mixed-precision-training-deep-neural-networks/
+[^goGenerics]: https://go.dev/blog/generics-proposal
+[^lossFunctions]: https://www.theaidream.com/post/loss-functions-in-neural-networks
+[^gradientDescentTypes]: https://www.analyticsvidhya.com/blog/2021/03/variants-of-gradient-descent-algorithm/
 
 <!-- Links -->
 [repo]: https://github.com/kujenga/goml
 [slideDeck]: https://docs.google.com/presentation/d/1fFeRehIzcdtE_ujWfvYhrytWLYZrXDeQ4AvZnDqCKfc/edit
 [perceptronWiki]: https://en.wikipedia.org/wiki/Perceptron
-[goGenerics]: https://go.dev/blog/generics-proposal
+[gradientDescentWiki]: https://en.wikipedia.org/wiki/Gradient_descent
+[deeplizardBackPropIntuition]: https://www.youtube.com/watch?v=XE3krf3CQls
+[deeplizardBackPropGradient]: https://www.youtube.com/watch?v=Zr5viAZGndE
+[powerRule]: https://en.wikipedia.org/wiki/Power_rule
 
 <!-- Attribution -->
