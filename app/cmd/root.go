@@ -35,6 +35,8 @@ var rootCmd = &cobra.Command{
 	},
 }
 
+// Execute sets off the root command for this package, parsing parameters and
+// updating the applications.
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
@@ -55,13 +57,15 @@ func init() {
 		Int("port", 8080, "port to listen on")
 	viper.BindPFlag("port", rootCmd.PersistentFlags().Lookup("port"))
 
-	rootCmd.PersistentFlags().
-		String("interface", "", "interface to listen on")
-	viper.BindPFlag("interface", rootCmd.PersistentFlags().Lookup("interface"))
+	rootCmd.PersistentFlags().String(
+		"interface", "", "interface to listen on")
+	viper.BindPFlag("interface",
+		rootCmd.PersistentFlags().Lookup("interface"))
 
-	rootCmd.PersistentFlags().
-		String("directory", "./public", "directory to serve content from")
-	viper.BindPFlag("directory", rootCmd.PersistentFlags().Lookup("directory"))
+	rootCmd.PersistentFlags().String(
+		"directory", "./public", "directory to serve content from")
+	viper.BindPFlag("directory",
+		rootCmd.PersistentFlags().Lookup("directory"))
 }
 
 func initConfig() {
