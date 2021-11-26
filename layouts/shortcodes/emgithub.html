@@ -1,3 +1,6 @@
 <!-- Embed snippets: https://emgithub.com/ -->
 <!-- Based on: https://github.com/gohugoio/hugo/blob/master/tpl/tplimpl/embedded/templates/shortcodes/gist.html -->
-<script src="https://emgithub.com/embed.js?target={{ .Get 0 | urlquery }}&style=github&showBorder=on&showLineNumbers=on&showFileMeta=on&showCopy=on"></script>
+<!-- We embed the upstream project within this repository in order to self-host the snippet: https://gohugo.io/hugo-pipes/js/#examples -->
+{{ $opts := dict "targetPath" "emgithub/embed.js" }}
+{{ $built := resources.Get "embed-like-gist/embed.js" | js.Build $opts }}
+<script type="text/javascript" src="{{ $built.RelPermalink }}?target={{ .Get 0 | urlquery }}&style=github&showBorder=on&showLineNumbers=on&showFileMeta=on&showCopy=on"></script>
