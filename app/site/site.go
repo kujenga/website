@@ -9,12 +9,21 @@ import (
 	"go.uber.org/zap"
 )
 
-const csp = `default-src 'self' 'unsafe-inline' data: *.bootstrapcdn.com https://fonts.googleapis.com https://fonts.gstatic.com https://ajax.googleapis.com https://www.google-analytics.com js-agent.newrelic.com bam.nr-data.net;`
+const csp = `
+default-src 'self';
+script-src 'self' 'unsafe-inline' https://code.jquery.com https://cdn.jsdelivr.net https://stackpath.bootstrapcdn.com https://www.google-analytics.com js-agent.newrelic.com https://polyfill.io https://cdn.jsdelivr.net bam.nr-data.net;
+style-src 'self' 'unsafe-inline' https://stackpath.bootstrapcdn.com https://cdn.jsdelivr.net https://fonts.googleapis.com;
+img-src 'self' data: https://www.google.com;
+font-src data: https://stackpath.bootstrapcdn.com https://fonts.gstatic.com https://cdn.jsdelivr.net;
+connect-src https://www.google-analytics.com https://www.google.com https://stats.g.doubleclick.net https://raw.githubusercontent.com`
 
+// Server provides operations to encapsulate the functionality needed for
+// operating a web server.
 type Server struct {
 	c Config
 }
 
+// Config provides configuration for the web server.
 type Config struct {
 	Log *zap.Logger
 	Dev bool
@@ -24,6 +33,7 @@ type Config struct {
 	Directory string
 }
 
+// NewServer initializes the server with the given configuration.
 func NewServer(c Config) *Server {
 	return &Server{c: c}
 }
@@ -68,6 +78,7 @@ func (s *Server) router() http.Handler {
 	return secureMiddleware.Handler(mux)
 }
 
+// Serve blocks forever, starting the server on the configured address.
 func (s *Server) Serve() {
 	s.l().Info("Serving HTTP requests",
 		zap.String("addr", s.addr()),

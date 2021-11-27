@@ -5,6 +5,12 @@
 Built with [Hugo][hugo] and deployed on [Google App Engine][gae]. See the
 deployed version at [ataylor.io](https://ataylor.io).
 
+## Development
+
+```
+npm install
+npm run start
+```
 
 <!-- Citations -->
 [hugo]: https://gohugo.io

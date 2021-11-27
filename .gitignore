@@ -1,6 +1,10 @@
+# Build
 .travis/
 node_modules/
 build/
 public/
 resources/
 VERSION
+
+# Hugo
+*.lock
