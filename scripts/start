@@ -1,0 +1,13 @@
+#!/bin/bash
+#
+# Start the development server.
+
+set -e
+
+# Read in the same configuration as we use in production for the content
+# security policy to prevent issues from sneaking through local development.
+export CONTENT_SECURITY_POLICY="$(cat app/site/content-security-policy.txt)"
+
+set -x
+
+hugo server --watch
