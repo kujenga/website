@@ -8,7 +8,7 @@ orbs:
 jobs:
   build:
     docker:
-      - image: cimg/go:1.14-node
+      - image: cimg/go:1.16-node
 
     steps:
       - checkout
