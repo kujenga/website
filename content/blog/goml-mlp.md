@@ -44,10 +44,12 @@ inputs, and pass on their outputs to other neurons in the network. The network
 as a whole takes in a set of inputs and produces a set of outputs, the result of
 the values passing through the network neurons.
 
+{{< img file=3-single-layer-perceptron.png alt="Single Layer Perceptron" loc=right max-width=50% >}}
+
 A single-layer [Perceptron][perceptronWiki] is the simplest useful network, the
 idea for which was first introduced in 1958(!). It can solve basic linearly
 separable problems, meaning that you could draw straight line(s) to bisect the
-differen categories in the output.
+different categories in the output.
 
 The following diagram illustrates the basic structure of a single-layer
 perceptron. Inputs come in on the left-hand side of the network, are passed to
@@ -58,8 +60,6 @@ is mostly all in the edges themselves. The nodes within the input layer
 basically just relay values into the network, and the method by which we
 propagate those values to the following layers is where the actual computation
 happens.
-
-{{< img 3-single-layer-perceptron.png "Single Layer Perceptron" >}}
 
 ### Understanding neurons
 
@@ -76,9 +76,11 @@ cover each of these in detail throughout this post.
 1. Apply an “activation function” to the sum.
 1. Pass the result to the next layer.
 
-{{< img 4-basic-neuron-operation.png "Basic Neuron Operation" >}}
+{{< img file=4-basic-neuron-operation.png alt="Basic Neuron Operation" loc=center max-width=45% >}}
 
 ### Activation Functions
+
+{{< img file=Logistic-curve.svg alt="Logistic Curve" loc=right max-width=50% >}}
 
 A key element of the above diagram is the activation function that modifies the
 summation of the incoming values and weights. Activation functions are
@@ -92,7 +94,6 @@ which is what we will be using in our network implementation. The output is
 represented in the y axis and the input on the x axis. The smoothing of more
 extreme input values is critical to the learning ability of the network.
 
-{{< img "Logistic-curve.svg" "Logistic Curve" >}}
 
 > By Qef (talk) - Created from scratch with gnuplot, Public Domain,
 > https://commons.wikimedia.org/w/index.php?curid=4310325
@@ -116,7 +117,7 @@ In the rest of this post, we will build out an implementation of this network
 that is flexible with respect to the network architecture, allowing for an
 artibtrary number of layers at arbitrary sizes.
 
-{{< img "6-multi-layer-preceptron.png" "Multi-layer Perceptron" >}}
+{{< img file="6-multi-layer-preceptron.png" alt="Multi-layer Perceptron" loc=center max-width=50% >}}
 
 ## Let's build
 
@@ -147,9 +148,7 @@ One caveat here is that the MNIST dataset is in a unique format, which we will
 need to deserialize in order to make use of it in a test case. We will walk
 through that later in the post.
 
-{{< img "MnistExamples.png" "MNIST Examples" >}}
-
-> Josef Steppan, CC BY-SA 4.0 <https://creativecommons.org/licenses/by-sa/4.0>, via Wikimedia Commons
+{{< img file="MnistExamples.png" alt="MNIST Examples" loc=center caption="Josef Steppan, CC BY-SA 4.0 <https://creativecommons.org/licenses/by-sa/4.0>, via Wikimedia Commons" >}}
 
 ### Code structure
 
@@ -236,7 +235,7 @@ shifting the output, are what give these networks their power. The nodes
 themselves are just representations of state, which is what this diagram
 attempts to show:
 
-{{< img 4-basic-neuron-operation.png "Basic Neuron Operation" >}}
+{{< img file=4-basic-neuron-operation.png alt="Basic Neuron Operation" loc=center max-width=60% >}}
 
 With that in mind, we iterate through each input value we are recieving from the
 last layer and calculate the activations. This is skipped for the input layer,
@@ -270,7 +269,8 @@ corresponding to the diagram below are:
 1. Update the next set of weights to minimize propagation error from that
    earlier layer.
 
-{{< img "20-backprop-overall.png" "Backpropagation Overview" >}}
+{{< img file="20-backprop-overall.png" alt="Backpropagation Overview" loc=center
+max-width=70% >}}
 
 If this still isn't totally clear and you'd like to go into more depth with
 understanding the intuition behind backpropagation, watch this video!
@@ -311,6 +311,9 @@ poorly) the network is doing, we can apply this process repeatedly to
 iteratively improve our network's performance. That iterative process is known
 as [Gradient Descent][gradientDescentWiki].
 
+{{< img file=Gradient_descent.svg alt="Gradient Descent" loc=right max-width=50% >}}
+<!-- https://en.wikipedia.org/wiki/Gradient_descent#/media/File:Gradient_descent.svg -->
+
 Conceptually, this gradient can be thought of as a hilly landscape, which we
 represent here from the top in two dimensions. The vertical axis represents the
 loss, where lower is better, and the horizontal access represents the space of
@@ -320,9 +323,6 @@ as the number of parameters we are trying to tweak, but this conceptual
 understanding remains valid as the model scales.
 
 In the training process, the goal is to find the point in this landscape that minimizes the loss for the inputs that we care about.
-
-{{< img "Gradient_descent.svg" "Gradient Descent" >}}
-<!-- https://en.wikipedia.org/wiki/Gradient_descent#/media/File:Gradient_descent.svg -->
 
 There are a few different approaches to Gradient Descent, but the one we will be
 starting off with here is the simplest, called Stochastic Gradient Descent
@@ -345,7 +345,7 @@ inputs from the previous. The basic steps for this are:
 
 This is equivalent to the first back-propagation step in Multi-layer backpropagation.
 
-{{< img "22-backprop-single-layer.png" "Backpropagation in a Single Layer" >}}
+{{< img file="22-backprop-single-layer.png" alt="Backpropagation in a Single Layer" loc=center max-width=60% >}}
 
 In order to extend this to multiple layers within the whole network, we
 simply propagate error values back another layer. For each node in the previous
@@ -353,7 +353,7 @@ layer, we use the dot product of the errors and the weights on the corresponding
 edges, which has a sort of symmertry with how the outputs were computed in the
 first place.
 
-{{< img "23-backprop-multi-layer.png" "Backpropagation in Multiple Layers" >}}
+{{< img file="23-backprop-multi-layer.png" alt="Backpropagation in Multiple Layers" loc=center max-width=60% >}}
 
 ### Calculating with Calculus
 
@@ -461,22 +461,24 @@ iterations as we will see next.
 
 ### Why learning rate matters
 
+{{< img file="27-learning-rate-matters.png" alt="Why learning rate matters"
+loc=right max-width=40% >}}
+
 When we calculate the derivative for a given point in the loss landscape, we
-need to make sure we are not overly trusting of what it tells us. Looking again
-at this diagram from earlier, we _could_ use the inferred slope of the loss from
-the computed gradient at a given point to attempt to jump straight to the values
-that will set the loss to zero along that plane within the gradient. As we can
-see here though, that would overshoot our desired minimized loss value and
-bounce around more than is desired. Continuing in that process would prevent us
-from reaching the minimum point where error is most greatly reduced, because
-with every step we are likely to overshoot it.
+need to make sure we are not overly trusting of what that derivative tells us.
+Looking again at this diagram from earlier, we _could_ use the inferred slope of
+the loss from the computed gradient at a given point to attempt to jump straight
+to the values that will set the loss to zero along that plane within the
+gradient. As we can see here though, that would overshoot our desired minimized
+loss value and bounce around more than is desired, represented by the thicker
+red lines. If we were to continue that process, we may never reach the minimum
+point in the center where error is most greatly reduced, because with every step
+we are likely to overshoot it.
 
 In this diagram, the use of a learning rate is shown through the smaller
 iterations on the thinner light red lines, where we move by a few percentage
 points of the amount predicted by the gradient to get closer and closer to the
 minima iteratively.
-
-{{< img "27-learning-rate-matters.png" "Why learning rate matters" >}}
 
 With these pieces in place, we are now ready to start testing our network!
 
@@ -553,9 +555,7 @@ ok  	github.com/kujenga/goml/neural	0.243s
 Now that we have established that our network can learn boolean functions, let's
 crank things up a few notches and take on the MNIST dataset.
 
-{{< img "MnistExamples.png" "MNIST Examples" >}}
-
-> Josef Steppan, CC BY-SA 4.0 <https://creativecommons.org/licenses/by-sa/4.0>, via Wikimedia Commons
+{{< img file="MnistExamples.png" alt="MNIST Examples" loc=center caption="Josef Steppan, CC BY-SA 4.0 <https://creativecommons.org/licenses/by-sa/4.0>, via Wikimedia Commons" >}}
 
 ### Parsing MNIST
 
@@ -581,6 +581,8 @@ in those packages as well.
 
 ### One-hot encoding
 
+{{< img file="35-mnist-one-hot.png" alt="MNIST One-hot encoding" loc=right max-width=50% >}}
+
 Neural Networks are generally weaker when you are trying to predict a range of
 outputs from a single neuron. As an example of why this is the case, let's look
 at the numbers `7` and `8`. Numerically, they are right next to each other, but
@@ -596,8 +598,6 @@ thiws diagram, where "8" is mapped to a single "1" value within a vector.
 One-hot encodings are very useful for categorical variables, and that is what we
 will use here for representing MNIST.
 
-{{< img "35-mnist-one-hot.png" "MNIST One-hot encoding" >}}
-
 ### MNIST Network Architecture
 
 Now that we have our dataset ready, we can start architecting our network. The
@@ -607,7 +607,7 @@ and is based on the network architectures documented on the MNIST page
 error`, which we will replicate here, though modifications of this architecture
 with a different number of layers, layer sizes, etc. still do perform well!
 
-{{< img "36-mnist-architecture.png" "MNIST Network Architecture" >}}
+{{< img file="36-mnist-architecture.png" alt="MNIST Network Architecture" loc=center max-width=70% >}}
 
 ### MNIST Test cases
 

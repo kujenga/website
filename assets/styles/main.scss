@@ -44,8 +44,28 @@ a {
   color: $links;
 }
 
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-top: 1.5rem;
+}
+
 small {
   color: #777;
+}
+
+figcaption {
+  color: #777 !important;
+  font-size: 0.8rem !important;
 }
 
 nav.navbar {
@@ -151,13 +171,17 @@ nav.navbar {
 }
 
 /* Blog Post */
-#blog-post {
+.type-blog {
   line-height: 1.7em;
   font-size: 1.1em;
 
   /* Normalize the formatting of embedded github code */
   .emgithub-container {
     line-height: 1.1em;
+  }
+
+  .img {
+    padding: 0.5em;
   }
 }
 

@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-9">
-            <div id="blog-post" class="">
+            <div id="main" class="kind-{{ .Page.Kind }} type-{{ .Page.Type }}">
                 <h1>{{ .Title }}<br> <small>{{ .Description }}</small></h1>
                 {{ partial "toc.html" . }}
                 <hr>

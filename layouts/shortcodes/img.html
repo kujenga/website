@@ -1,2 +1,23 @@
 <!-- Lookup for images in the static/img directory with a path mirroring the current page's path. -->
-<img class="img-fluid" src="/img{{ $.Page.RelPermalink }}{{ .Get 0 }}" alt="{{ .Get 1 }}">
+<!-- https://gohugo.io/templates/shortcode-templates/ -->
+<!-- https://getbootstrap.com/docs/4.1/content/figures/ -->
+<figure
+    class="figure
+          {{- with .Get "class" }} {{ . }}{{ end -}}
+          {{- if eq (.Get "loc") "left" }} float-left{{ end -}}
+          {{- if eq (.Get "loc") "right" }} float-right{{ end -}}
+          {{- if eq (.Get "loc") "center" }} mx-auto d-block{{ end -}}
+    "
+    style="{{ with .Get "max-width" }}max-width: {{ . }};{{ end }}"
+>
+    <img
+        class="figure-img img-fluid
+              {{- if eq (.Get "loc") "center" }} mx-auto d-block{{ end -}}
+        "
+        src="/img{{ $.Page.RelPermalink }}{{ .Get "file" }}"
+        alt="{{ .Get "alt" }}"
+    >
+    {{- with .Get "caption" }}
+    <figcaption class="figure-caption">{{ . }}</figcaption>
+    {{- end }}
+</figure>
