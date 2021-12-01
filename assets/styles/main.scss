@@ -170,18 +170,37 @@ nav.navbar {
   }
 }
 
+// General overrides to improve the styling of emgithub.
+.emgithub-container {
+  /* Normalize the formatting of embedded github code */
+  line-height: 1.05rem;
+
+  code {
+    /* Smaller than the default from Bootstrap of 87.5% */
+    font-size: 80%;
+    // No padding needed here, handled on individual rows.
+    padding: 0 !important;
+  }
+
+  .hljs-ln td.hljs-ln-numbers {
+    // Matches the pre-existing padding-right;
+    padding-left: 1.25rem;
+  }
+}
+
 /* Blog Post */
 .type-blog {
-  line-height: 1.7em;
-  font-size: 1.1em;
-
-  /* Normalize the formatting of embedded github code */
-  .emgithub-container {
-    line-height: 1.1em;
+  p {
+    line-height: 1.7em;
+    font-size: 1.1em;
   }
 
   .img {
     padding: 0.5em;
+  }
+
+  pre code {
+    line-height: 1.05rem;
   }
 }
 
