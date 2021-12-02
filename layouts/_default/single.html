@@ -21,9 +21,9 @@
         <div class="col-md-3">
             {{ partial "sidebar.html" . }}
             <div class=""> <!-- Post-specific stats -->
-                <h4>{{ .Date.Format "January 2, 2006" }}<br>
-                <small>{{ .ReadingTime }} min reading time</small></h4>
-                <small>{{ .WordCount }} words</small></h4>
+                <br>
+                <h5>{{ .Date.Format "January 2, 2006" }}</h5>
+                {{ .ReadingTime }} min - {{ .WordCount }} words
                 <!-- <hr>
                 <strong>Categories</strong>
                 <ul class="list-unstyled">
