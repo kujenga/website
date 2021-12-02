@@ -16,7 +16,7 @@ $accent3: #c0c5bb;
 $links: #2d70b9;
 
 body {
-  font-family: 'Lato', sans-serif;
+  font-family: Lato, sans-serif;
 }
 
 a {
@@ -70,41 +70,24 @@ nav.navbar {
   margin-top: 50px;
   margin-bottom: 25px;
   border: solid 1px #eee;
-  background:
-    -webkit-linear-gradient(
-      #eee,
-      #fff,
-      #fff,
-      #fff,
-      #fff
-    ); /* For Safari 5.1 to 6.0 */
+  background: linear-gradient(
+    #eee,
+    #fff,
+    #fff,
+    #fff,
+    #fff
+  ); /* For:
+  - Safari 5.1 to 6.0
+  - Opera 11.1 to 12.0
+  - Firefox 3.6 to 15 */
 
-  background:
-    -o-linear-gradient(
-      #eee,
-      #fff,
-      #fff,
-      #fff,
-      #fff
-    ); /* For Opera 11.1 to 12.0 */
-
-  background:
-    -moz-linear-gradient(
-      #eee,
-      #fff,
-      #fff,
-      #fff,
-      #fff
-    ); /* For Firefox 3.6 to 15 */
-
-  background:
-    repeating-linear-gradient(
-      #eee,
-      #fff,
-      #fff,
-      #fff,
-      #fff
-    ); /* Standard syntax */
+  background: repeating-linear-gradient(
+    #eee,
+    #fff,
+    #fff,
+    #fff,
+    #fff
+  ); /* Standard syntax */
 }
 
 .copyright {
@@ -142,6 +125,7 @@ nav.navbar {
   code {
     /* Smaller than the default from Bootstrap of 87.5% */
     font-size: 80%;
+
     // No padding needed here, handled on individual rows.
     padding: 0 !important;
   }
