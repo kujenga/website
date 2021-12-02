@@ -10,23 +10,25 @@ mathjax = true
 toc = true
 +++
 
-This post covers the creation of a basic neural network written in Go.
-Specifically, we will be implementing a Multi-Layer Perceptron (MLP), walking
-through how this mechanism works and then walk through the creation of this
-network in Go. Our goal is to create a network that performs well on the MNIST
-dataset, which measures performance at recognizing handwritten digits.
+This post covers the creation of a basic neural network written in Go. We will
+walk through the basics of what neural networks are and how they work,
+specifically looking at feed-forward neural networks, and walk through the
+implementation of a Multi-Layer Perceptron (MLP). Our goal in this process is to
+create a network that performs well on the MNIST dataset, which measures
+performance at recognizing handwritten digits.
 
-While there are a number of resources out there that will cover either the
-implementation of basic single layer networks, or the the concepts and math
+While there are a number of resources available that cover either the
+implementation of basic single layer networks or the the concepts and math
 behind neural networks generally, there seems to be scant resources available
-covering both concept and implementation of multi-layer networks, particularly
-in a way that goes into the details of backpropagation and structuring it in a
-way that is flexible enough for a variety of use cases. My goal here is to walk
-through the creation what's needed to create a neural network by creating it in
-Go using just the standard library, so that everything needed to create the
-network is right in the package we will be implementing.
+online which cover both concept and implementation of multi-layer networks,
+particularly in a way that goes into the details of backpropagation and
+structuring it to be flexible enough for a variety of use cases. Our goal here
+is to use the process of implementing the network from top to bottom to get a
+"full stack" understanding of these networks, limiting ourselves to using just
+the Go standard library so that the mathematical pieces are all laid out as
+well.
 
-While we will be implementing the network from scratch, I'll be linking out to
+While we will be implementing this network from scratch, I'll be linking out to
 other fantastic resources out there that can provide further detail on the
 various implementation aspects if the network, including deeper walkthroughs of
 the concepts and intuition behind neural networks and more detailed walkthroughs
@@ -37,12 +39,13 @@ The network that is created over the course of this post can be found here:
 
 ## What is a neural network?
 
-Neural networks are a machine learning system that is modeled after a basic
-understanding of the human brain. They operate as a series of neurons, most
-commonly organized in layers, that perform basic compute functions and based on
-inputs, and pass on their outputs to other neurons in the network. The network
-as a whole takes in a set of inputs and produces a set of outputs, the result of
-the values passing through the network neurons.
+Neural networks are a type of machine learning system that is modeled after a
+basic understanding of the human brain. They are made up of a sets of neurons,
+each of which performs basic compute functions to it's inputs and passes on its
+"activations" to subsequent neurons in the network. The network as a whole thus
+in a set of inputs and produces a set of output predictions as the "activations"
+of the final layer, the result of the values passing through the network
+neurons.
 
 {{< img file=3-single-layer-perceptron.png alt="Single Layer Perceptron" loc=right width=50% >}}
 
@@ -61,19 +64,27 @@ basically just relay values into the network, and the method by which we
 propagate those values to the following layers is where the actual computation
 happens.
 
+While naming conventions for neural networks can be used in different ways,
+Perceptrons are generally thought of as a sub-class of [feed-forward neural
+networks][feedForwardWiki], where the neurons are organized into a series of
+discrete layers, with activations from one layer passed as inputs to the next.
+
 ### Understanding neurons
 
 Each of the nodes in the above graph is often referred to as a "neuron", as they
 are intended to roughly mimic the structures within a simplified model of the
-brain. Let's dive a bit deeper into how those function at a high level. We will
-cover each of these in detail throughout this post.
+brain. Let's dive a bit deeper into how these artificial neurons function (and
+perhaps more importantly the eges between them) which will be covered in more
+increasing detail throughout the post.
 
 1. Define a weight parameter \\(w_{i,j}^{L}\\) for each edge in the network for each
    layer \\(L\\).
 1. For each node in the next layer, take the sum of the inputs from the prior
-   layer, multiplied by the weights on each corresponding edge.
-1. Add a bias to the weighted value.
-1. Apply an “activation function” to the sum.
+   layer, multiplied by the weights on each edge, roughly corresponding to the
+   importance of that input.
+1. Add a bias to the weighted value, shifting it one way or the other.
+1. Apply an “activation function” to the sum to add more predictive power to the
+   overall network.
 1. Pass the result to the next layer.
 
 {{< img file=4-basic-neuron-operation.png alt="Basic Neuron Operation" loc=center width=45% >}}
@@ -83,46 +94,47 @@ cover each of these in detail throughout this post.
 {{< img file=Logistic-curve.svg alt="Logistic Curve" loc=right width=50% caption="By Qef (talk) - Created from scratch with gnuplot, Public Domain, https://commons.wikimedia.org/w/index.php?curid=4310325" >}}
 
 A key element of the above diagram is the activation function that modifies the
-summation of the incoming values and weights. Activation functions are
+combination of the incoming values, weights, and biases. Activation functions are
 non-linear functions that transform these values in a way that gives the network
 more expressive power. Without their addition of a non-linear component in the
-network, we just have a series of linear transformations, which limits the types
+network we just have a series of linear transformations, which limits the types
 of problems we can solve.
 
 This diagram shows the Logistic activation function, also known as sigmoid,
 which is what we will be using in our network implementation. The output is
-represented in the y axis and the input on the x axis. The smoothing of more
+represented in the y-axis and the input on the x-axis. The smoothing of more
 extreme input values is critical to the learning ability of the network.
 
 ### Adding layers to the network
 
-To make this network morecapable, we can extend the model of a single-layer
-perceptron by adding more layers, creating a multi-layer perceptron. The number
-and size of layers in this network are defined as the "network architecture",
-and such configurations are often referred to as "hyperparameters". As in the
-single-layer example, the first layer in the network is termed out "input"
-layer, and the last layer in the network is termed our "output" layer. The new
-interior layers are commonly referred to as "hidden" layers, as they are
-internal to the network.
+To make this network more capable, we can extend the model of a single-layer
+perceptron by adding more layers, creating a [multi-layer perceptron][mlpWiki].
+The number and size of layers in this network are referred to as as the "network
+architecture", and such configurations values are often referred to as
+"hyperparameters". As in the single-layer example, the first layer in the
+network is termed out "input" layer, and the last layer in the network is termed
+our "output" layer. The new interior layers are commonly referred to as "hidden"
+layers, as they are internal to the network.
 
-More layers add capabilities to the network, facilitating the handling of much
-more complex use cases for the network, and will be instrumental in tackling the
+More layers add capabilities to the network and facilitate much more complex use
+cases. The ability to add in hidden layers will be instrumental in tackling the
 MNIST dataset.
 
-In the rest of this post, we will build out an implementation of this network
-that is flexible with respect to the network architecture, allowing for an
-artibtrary number of layers at arbitrary sizes.
+In the rest of this post, we will build out an implementation of Multi-Layer
+Perceptrons in this style that is flexible with respect to the network
+architecture, allowing for an artibtrary number of layers at arbitrary sizes.
 
 {{< img file="6-multi-layer-preceptron.png" alt="Multi-layer Perceptron" loc=center width=50% >}}
 
 ## Let's build
 
-As we mentioned in the intro, at their most basic level, neural networks take in
+As we mentioned in the intro, at their most basic level neural networks take in
 a set of inputs and produce a set of outputs. In the process of constructing a
 network, we can center our development around a basic set of unit tests that
-emulate this behavior. We'll use two basic classes of tests, one to verify our
+validate this behavior. We'll use two basic classes of tests, one to verify our
 ability learn the outputs of common boolean functions, and then later on we'll
-add test cases to train and predict on the MNIST dataset.
+add test cases to train and predict handwriting recognition on the MNIST
+dataset.
 
 ### Boolean test cases
 
@@ -130,19 +142,28 @@ Here is an example of the basic test cases we will build on for the boolean
 inputs and the corresponding output labels that different instantiations of the
 network can learn.
 
+We define these using a [`lin.Frame`][linFrameGoPkg] type that represents a 2D
+Matrix of data. Our [`lin`] package will be used to capture various types to
+help with the linear algebra involved in network creation. The first declaration
+is the set of all possible inputs for two boolean values. The subsequent
+declarations outline different types of boolean functions. Each of these
+functions is something that a different instantiation of a network will be able
+to iteratively learn.
+
 {{< emgithub "https://github.com/kujenga/goml/blob/0fc9ceb246d1bf1e1104f576b4622a824bf013da/neural/mlp_test.go#L34-L58" >}}
 
 ### MNIST test cases
 
-In contrast to these examples of replicating basic boolean logic, the MNIST
-dataset is a real machine learning problem, where you must learn to predict the
-hand-written digit between 0-9 for a given input image. This dataset is a great
-example of where a basic neural network performs well relative to other
-approaches.
+In contrast to these examples of replicating basic boolean logic, the [MNIST
+dataset][mnistWiki] is a real machine learning problem where you must learn to
+predict the digit between 0-9 for a given image of a hand-written number. This
+dataset is a great example of where a basic neural network performs well
+relative to other approaches, and is one of the classic datasets for training
+models on.
 
-One caveat here is that the MNIST dataset is in a unique format, which we will
-need to deserialize in order to make use of it in a test case. We will walk
-through that later in the post.
+One caveat here is that the MNIST dataset distributed in a unique binary format,
+which we will need to deserialize in order to make use of it in a test case. We
+will walk through that later in the post.
 
 {{< img file="MnistExamples.png" alt="MNIST Examples" loc=center caption="Josef Steppan, CC BY-SA 4.0 <https://creativecommons.org/licenses/by-sa/4.0>, via Wikimedia Commons" >}}
 
@@ -157,27 +178,27 @@ pieces of functionality we need to provide:
   providing an inferenced output.
 
 In addition to these basic functionalities, we also want to build it in a
-flexible manner that can facilitate any number of layers, so that we can create
-networks of different architectures in the future, with an eye towards future
-iterations into more complex types neural networks, a possible topic for future
-posts.
+flexible manner that can facilitate any number of layers. By doing so, we can
+create networks of different architectures to facilitate different use cases.
+This may also facilitate iterations to support more complex types neural
+networks, a possible topic for future posts.
 
 For this implementation we will favor clarity over optimizations, aligned with
 the goal of this project as a way to learn the details of how networks operate.
 
-The primary struct controlling our network is the `MLP` struct, representing our
-Multi-Layer Perceptron, and is fairly simple. It holds an array of layers
-which form the structure of the network and hold state for training and
-prediction. The `LearningRate` variable is a network-level hyperparameter
-controlling the training process, and the `Introspect` function allows us to
-look at incremental training progress.
+Starting off, the primary struct controlling our network is the `MLP` struct,
+representing our Multi-Layer Perceptron, and is fairly simple. It holds an array
+of layers which form the structure of the network and hold state for training
+and prediction. The `LearningRate` variable is a network-level hyperparameter
+controlling the training process which we'll look at more closely later, and the
+`Introspect` function allows us to look at incremental training progress.
 
 {{< emgithub "https://github.com/kujenga/goml/blob/fc6bc437686cf50dc0ba9f3bb7f7e7ee23bc611d/neural/mlp.go#L21-L39" >}}
 
 Diving deeper into the implementation, the `Layer` struct represents a single
-layer within the network. Here things start to get more complex, as there is
-quite a bit of state that needs to be managed to facilitate the training
-process.
+layer within our feed-forward network. Here things start to get more complex, as
+there is quite a bit of state that needs to be managed to facilitate the
+entirety of the training process.
 
 The key elements to capture within this data structure are:
 - Parameters that define the layer behavior, including the width of the network
@@ -194,101 +215,111 @@ The key elements to capture within this data structure are:
 
 With these two structures defined, we can look at how the training process
 works. The entrypoint is the `Train` function which iterates for a given number
-of "epochs". Training happens iteratively, with each step containing two passes.
+of "epochs". Each epoch is a pass over the entire dataset. Training happens
+iteratively, with each step containing two passes.
 
 For each input, we first propagate the weights and subsqeuent layer outputs
 forward through the network to get the current predictions of the network for
 the given input. Once that is complete, we propagate the error values we compute
 based on the corresponding labels _backwards_ though the network, and update the
-weights in the direction that looks like it will reduce the error we saw for
-that input.
+weight parameters within the network in a way that would have reduced the error
+we saw for that given input.
+
+Bear with me here, as we will dive into the details of what those crucial
+`ForwardProp` and `BackProp` functions are doing in detail momentarily.
 
 {{<emgithub "https://github.com/kujenga/goml/blob/fc6bc437686cf50dc0ba9f3bb7f7e7ee23bc611d/neural/mlp.go#L70-L123" >}}
 
-Once the network is trained, we can use it for making predictions! There is some
-neat symmetry in the implementation here, as the `Predict` function is identical
-to the first part of the inner loop of the `Train` function where we are
-propagate our inputs forwards through the network.
+Once the network is trained with the above method, we can use it for making
+predictions! There is some neat symmetry in the implementation here, as the
+`Predict` function is identical to the first part of the inner loop of the
+`Train` function where we are propagate our inputs forwards through the network.
 
 {{<emgithub "https://github.com/kujenga/goml/blob/fc6bc437686cf50dc0ba9f3bb7f7e7ee23bc611d/neural/mlp.go#L125-L140" >}}
 
 One note on this approach is that the `float32` type was chosen as full float64
-precision isn't needed here. Manh state of the art ML platforms are using even
-lower precision for increased memory efficient, as well as "mixed precision"
-schemes[^mixedPrecision] that combine multiple precision levels. When Go adds
-support for generics[^goGenerics] that could be something made parameterizable.
+precision isn't needed here. Many state of the art ML platforms are using even
+lower precision for increased memory efficiency, or even delving into "mixed
+precision" schemes[^mixedPrecision] that combine multiple precision levels as
+needed. When Go adds support for generics[^goGenerics] this value could be
+something made parameterizable.
 
 ## Forward Propagation: Making predictions
 
-We will now be implementing this forward propagation step, where we transform a
-set of inputs passed into this network into a set of outputs.
+We will now be diving into the implementation of the forward propagation step,
+where we transform a set of inputs passed into a layer of the network into a set
+of "activation" outputs.
 
-One thing I have found confusing in some portrayals of neural networks is that
-so much of the focus on the "neurons" themselves, represented as nodes in the
-network graph. The real magic is all in the edges! The weights attached to the
-edges, the activation function that they pass through, and the bias values
-shifting the output, are what give these networks their power. The nodes
-themselves are just representations of state, which is what this diagram
-attempts to show:
+As an aside, one thing I have found confusing in some portrayals of neural
+networks is that so much of the focus on the "neurons" themselves, represented
+as nodes in the network graph. The real magic is all in the edges! The weights
+attached to the edges, the activation function that they pass through, and the
+bias values shifting the output, are what give these networks their power. The
+nodes themselves are really just representations of state, which is what this
+diagram attempts to show:
 
 {{< img file=4-basic-neuron-operation.png alt="Basic Neuron Operation" loc=center width=60% >}}
 
-With that in mind, we iterate through each input value we are recieving from the
-last layer and calculate the activations. This is skipped for the input layer,
-since it is just recieving the raw values into the network. The combination of
-the weights and input values into a single value is most clearly expressed as a
-dot-product, and the `Z` value is used to record the linear combination of the
-weights with the bias added in before the activation function. Both this `Z`
-value and the activation value itself are stored, not for use in the forward
-propagation, but for use later in the backpropagation process.
+In order to turn this structure into code, we iterate through each input value
+we are receiving from the last layer and calculate the new activations. This is
+skipped for the input layer, since it is just recieving the raw values into the
+network and there are no corresponding weights. The combination of the weights
+and input values into a single value is most clearly expressed as a [dot
+product][dotProductWiki], and the `Z` value is used to record the linear
+combination of the weights with the bias added in before the activation
+function. Both this `Z` value and the activation value itself are stored, not
+for use in the forward propagation, but for use later in the backpropagation
+training process.
 
 {{< emgithub "https://github.com/kujenga/goml/blob/b73f6122025613f0ffe91033a959b8d0093baab4/neural/mlp.go#L247-L268" >}}
 
 ## Backpropagation: Training the network
 
-Being able to compute a set of outputs given a set of inputs is great, but in
-order to give meaning to these outputs, we need to train the network to give it
-the behavior that we expect. The way most all machine learning models are
-trained is through a series of iterative steps, where each step tweaks the
-parameters of the model a way that decreases the "loss" of the network, and
-we'll be doing that same process here.
+Being able to compute a set of outputs given a set of inputs is a big step
+forward, but in order to give meaning to these outputs, we need to train the
+network to match the predictive behavior that we expect. The way most all
+machine learning models are trained is through a series of iterative steps,
+where each step tweaks the parameters of the model a way that decreases the
+"loss" of the network, and we'll be doing that same process here.
 
 In each of those iterative steps, our goal is to update the parameters in the
 network, primarily the weights and biases, to minimize the error. Moving
-backwards through this three layer network to do that, our conceptual steps
+_backwards_ through this three layer network to do that, our conceptual steps
 corresponding to the diagram below are:
-1. Compute the error at the output layer, comparing output activations vs. the
-   provided labels.
-1. Update the weights in a way that will decrease the computed error.
-1. Propagate the error backwards through the network in order to repeat the
-   process of weight updates.
-1. Update the next set of weights to minimize propagation error from that
+1. Compute the error at the output layer by comparing the activations of the
+   last layer with the provided truth labels from the dataset.
+1. Update the weights and biases in a way that will decrease the computed error.
+   We do this using derivatives, which tell us how to move the weights and
+   biases for this to happen.
+1. Continue to propagate the error backwards through the network, weighting it
+   through the edges that contributed to the eventual error.
+1. Iteratively update the next set of weights to minimize errors caused by that
    earlier layer.
 
 {{< img file="20-backprop-overall.png" alt="Backpropagation Overview" loc=center
 width=70% >}}
 
-If this still isn't totally clear and you'd like to go into more depth with
-understanding the intuition behind backpropagation, watch this video!
-[Backpropagation explained | Part 1 - The
+If you'd like to go into more depth with understanding the intuition behind
+backpropagation, watch this video! I found in very helpful in understanding the
+process. [Backpropagation explained | Part 1 - The
 intuition][deeplizardBackPropIntuition]
 
 ### Introducing Loss Functions
 
 In the above diagram, we talk about propagating the "error" back through the
 network. This presents a slight hiccup however, as the simplest way to calculate
-error values, the difference between the expected labeled output and the output
-we recieved from the network, can be either a positive or negative value. In
-order to determine how well the network is doing, we need to be able to look at
-the aggregate of these errors. We do this using a Loss Function, which
-transforms the raw error from the network into something more mathematically
-useful to us.
+error values, computing the difference between the expected labeled output and
+the output we recieved from the network, can be either a positive or negative
+value that can cancel each other out in undesirable ways when combined. In order
+to determine how well the network is doing, we need to be able to look at the
+aggregate of these errors. We do this using a Loss Function, which transforms
+the raw error from the network into something more mathematically useful to us.
 
 For our network, we will be using the Mean Squared Error (MSE) loss function,
 which is just what it sounds like, taking the average of the squared values from
-each output, so that the summed errors in the average always correctly indicate
-that the network is doing better or worse and there is no cancellation. The
-formula for MSE is as follows:
+each output. By squaring the error values, the summed errors in the average
+always correctly indicate that the network is doing better or worse and there is
+no cancellation. The formula for MSE is as follows:
 
 <!-- LaTex rendered by MathJax -->
 <div>
@@ -310,13 +341,14 @@ as [Gradient Descent][gradientDescentWiki].
 {{< img file=Gradient_descent.svg alt="Gradient Descent" loc=right width=50% >}}
 <!-- https://en.wikipedia.org/wiki/Gradient_descent#/media/File:Gradient_descent.svg -->
 
-Conceptually, this gradient can be thought of as a hilly landscape, which we
-represent here from the top in two dimensions. The vertical axis represents the
-loss, where lower is better, and the horizontal access represents the space of
-possible parameters that we can move around within as we look for the point to
-minimize this loss. In reality, the number dimensions in this graph is the same
-as the number of parameters we are trying to tweak, but this conceptual
-understanding remains valid as the model scales.
+Conceptually, the gradient we are referring to can be thought of as a hilly
+landscape representing the loss of the network, which we represent here from the
+top in two dimensions. The vertical axis represents the loss, where lower is
+better, and the horizontal access represents the space of possible parameters
+that we can move around within as we look for the point to minimize this loss.
+In reality, the number dimensions in this graph is the same as the number of
+parameters we are trying to tweak, but this conceptual understanding remains
+valid as the model scales.
 
 In the training process, the goal is to find the point in this landscape that minimizes the loss for the inputs that we care about.
 
@@ -331,38 +363,43 @@ well, so we skip those for the scope of this post.
 ### Backpropagation in more detail
 
 To get into the details of what our backpropgation implementation will actually
-look like, first we look at a single layer, going from the outputs back to the
-inputs from the previous. The basic steps for this are:
+look like, first we look at a single layer, going from the output activations
+back to the inputs from the previous. The basic steps for this are:
 
-1. Labels are used to compute errors in the output, transformed using loss
-   function.
-1. Those errors are used to inform updates to teh the weight and bias parameters
-   in a way that would have decreased the computed error.
+1. Compute errors in the output against labels from the training data and
+   transform these error values with the loss function.
+1. Use that loss to inform updates to the weight and bias parameters in a way
+   that decreases the loss, and thus the error.
 
-This is equivalent to the first back-propagation step in Multi-layer backpropagation.
+This is what is needed for the to the first back-propagation step in Multi-layer
+backpropagation.
 
 {{< img file="22-backprop-single-layer.png" alt="Backpropagation in a Single Layer" loc=center width=60% >}}
 
 In order to extend this to multiple layers within the whole network, we
 simply propagate error values back another layer. For each node in the previous
 layer, we use the dot product of the errors and the weights on the corresponding
-edges, which has a sort of symmertry with how the outputs were computed in the
+edges, which has a logical symmetry with how the outputs were computed in the
 first place.
 
 {{< img file="23-backprop-multi-layer.png" alt="Backpropagation in Multiple Layers" loc=center width=60% >}}
 
 ### Calculating with Calculus
 
-So, being able to iteratively walk down hill in our loss landscape and update
-weights to move towards a better and better network sounds great, but how do we
-actually go about finding what that landscape actually looks like and which
-direction to move in? All the feed-forward process implementation we have looked
-at so far gives us is our current location in the loss landscape. This is where
-derivatives come into play, allowing us to compute a closed form solution for
-updating the weights for a given set of errors.
+So, being able to iteratively walk down the gradient hill in our loss landscape
+and update weights to move towards a better and better network sounds great, but
+how do we actually go about finding what that landscape actually looks like and
+which direction moves us down the hill?
+
+All the feed-forward process implementation we have looked at so far gives us is
+our current point location in the loss landscape, no sense of what the slope of
+that point is. This is where derivatives come into play, allowing us to compute
+a closed form solution for the slope of the point, and thus a way to updating
+the weights for a given set of errors.
 
 To capture all of our formulas in one place, here are the three equations that
-will be differentiated.
+will be differentiated, representing the forward-propagation implementation
+steps we walked through above.
 
 <!-- LaTex rendered by MathJax -->
 <div>
@@ -410,8 +447,9 @@ $$
 
 #### Calculating the derivative
 
-Armed with these new equations, we can implement each component of these partial
-derivatives to be combined for the final weight and bias updates.
+Armed with these new equations, we can implement the computation for each
+individual _component_ of these partial derivatives. With those in hand, we can
+combine them to compute the final weight and bias updates.
 
 Via the [Power Rule][powerRule] on the MSE function, we have the following
 result for the first component.
@@ -432,7 +470,8 @@ $$\frac{\partial Activations}{\partial Z} = f_{activation}^{'}(Z)$$
 
 As this is a configurable "hyperparameter" of the network, it is a pre-defined
 value that needs to be specified at network initialization. In our test cases
-outlined further below, the value is \\(sigmoid^{'}(Z)\\).
+outlined further below, the value is \\(sigmoid^{'}(Z)\\), which we implement
+and pass in ahead of time based on the well-known formula for it.
 
 <!-- ∂a/∂z -->
 {{< emgithub "https://github.com/kujenga/goml/blob/fc6bc437686cf50dc0ba9f3bb7f7e7ee23bc611d/neural/mlp.go#L294-L296" >}}
@@ -450,8 +489,8 @@ $$\frac{\partial Z}{\partial Weights} = Activations$$
 Now that we have the components, we can combine them per the original equation
 for our partial derivative that we arrived at via the chain rule. using these
 combined values, we update both the weights and the biases accordingly,
-multiplied by our _learning rate_, which is critical to the success of these
-iterations as we will see next.
+multiplied by our _learning rate_, which is critical to iteratively improving
+the network successfully.
 
 {{< emgithub "https://github.com/kujenga/goml/blob/fc6bc437686cf50dc0ba9f3bb7f7e7ee23bc611d/neural/mlp.go#L310-L322" >}}
 
@@ -464,7 +503,7 @@ When we calculate the derivative for a given point in the loss landscape, we
 need to make sure we are not overly trusting of what that derivative tells us.
 Looking again at this diagram from earlier, we _could_ use the inferred slope of
 the loss from the computed gradient at a given point to attempt to jump straight
-to the values that will set the loss to zero along that plane within the
+to the values that will set the loss to zero along that plane for that
 gradient. As we can see here though, that would overshoot our desired minimized
 loss value and bounce around more than is desired, represented by the thicker
 red lines. If we were to continue that process, we may never reach the minimum
@@ -496,7 +535,9 @@ First we set up a basic MLP network to test against with just an input layer and
 single output layer with weights doing computation.
 
 We iterate over the boolean test cases and assert that the network can learn the
-outputs in each case.
+outputs in each case. The `predictionTestBool` function is a simple helper that
+asserts that the output of the network always matches the output of the labeled
+data for the corresponding boolean function.
 
 {{< emgithub "https://github.com/kujenga/goml/blob/b73f6122025613f0ffe91033a959b8d0093baab4/neural/mlp_test.go#L152-L179" >}}
 
@@ -504,10 +545,6 @@ A test case for the multi-layer network it set up the same way, just adding in a
 hidden layer to the network.
 
 {{< emgithub "https://github.com/kujenga/goml/blob/b73f6122025613f0ffe91033a959b8d0093baab4/neural/mlp_test.go#L209-L238" >}}
-
-The `predictionTestBool` function is a simple helper that asserts that the
-output of the network always matches the output of the labeled data for the
-corresponding boolean function.
 
 Below is the output of these tests (with the `Introspect` function ommitted). We
 can observe how the predictions trend toward the correct labels. The assertions
@@ -548,8 +585,8 @@ ok  	github.com/kujenga/goml/neural	0.243s
 
 ## Validating on MNIST
 
-Now that we have established that our network can learn boolean functions, let's
-crank things up a few notches and take on the MNIST dataset.
+Now that we have established that our network can learn basic boolean functions,
+let's crank things up a few notches and take on the MNIST dataset.
 
 {{< img file="MnistExamples.png" alt="MNIST Examples" loc=center caption="Josef Steppan, CC BY-SA 4.0 <https://creativecommons.org/licenses/by-sa/4.0>, via Wikimedia Commons" >}}
 
@@ -573,20 +610,27 @@ returns the following data structure for use in tests.
 
 This parsing code is based directly on the MNIST spec and is all specified in
 the files linked to from the snippets just above, with corresponding test cases
-in those packages as well.
+in those packages as well. Feel free to click through and explore the source
+code there if you are curious.
 
 ### One-hot encoding
 
+While we now have the raw data from the MNIST dataset, we still need to do a bit
+of transformation and data prep to be ready to train.
+
 {{< img file="35-mnist-one-hot.png" alt="MNIST One-hot encoding" loc=right width=50% >}}
 
-Neural Networks are generally weaker when you are trying to predict a range of
-outputs from a single neuron. As an example of why this is the case, let's look
-at the numbers `7` and `8`. Numerically, they are right next to each other, but
-when visually represented, there is nothing about those two numbers which makes
-them closer together than any other pair of numbers in the range 0-9. Because
-our network is a mathematical combination of predictions, it would be difficult
-to have a network that could output a single numeric value quantized 0-9 to
-represent these digits.
+Neural networks are generally weaker when trying to predict a range of outputs
+from a single neuron, if those outputs are not meaningfully correlated with the
+inputs from a numerical perspective.
+
+As an example of why this is the case, let's look at the numbers `7` and `8`.
+Numerically, they are right next to each other, but when visually represented,
+there is nothing about those two numbers which makes them closer together than
+any other pair of numbers in the range 0-9. Because our network is a
+mathematical combination of predictions, it would be difficult to have a network
+that could output a single numeric value quantized 0-9 to represent these
+digits.
 
 One-hot encoding solves this problem. It uses a vector of binary values to make
 all the possible categorical outcomes independent of each other, as shown in
@@ -598,10 +642,12 @@ will use here for representing MNIST.
 
 Now that we have our dataset ready, we can start architecting our network. The
 following diagram depicts about what our network will look like conceptually,
-and is based on the network architectures documented on the MNIST page
-[^mnistArchive], one of which is `2-layer NN, 300 hidden units, mean square
-error`, which we will replicate here, though modifications of this architecture
-with a different number of layers, layer sizes, etc. still do perform well!
+and is based on the network architectures documented on the MNIST
+page which compiles past results, maintained by Yann LeCun[^mnistArchive].
+
+One of these architectures is `2-layer NN, 300 hidden units, mean square error`,
+which we will replicate here, though modifications of this architecture with a
+different number of layers, layer sizes, etc. still can perform well!
 
 {{< img file="36-mnist-architecture.png" alt="MNIST Network Architecture" loc=center width=70% >}}
 
@@ -626,7 +672,13 @@ Validating our network performance is a bit more involved here than it was for
 the boolean test cases, as we need to compute an _error rate_ for the network as
 a whole, rather than just asserting that it must be correct all the time as we
 did with the boolean test cases. Our test can then assert that the error rate is
-below a given threshold. The `predictionTestOneHot` function does this for us:
+below a given threshold.
+
+The `predictionTestOneHot` function does this for us. First we transform the
+one-hot output values into a digit representing the label from the dataset, and
+record whether or not it was a match. With those in hand, we can compute the
+ratio of correct results to incorrect results, giving us a score for how well
+the network did.
 
 {{< emgithub "https://github.com/kujenga/goml/blob/fc6bc437686cf50dc0ba9f3bb7f7e7ee23bc611d/neural/mlp_test.go#L128-L148" >}}
 
@@ -648,11 +700,11 @@ PASS
 ok  	github.com/kujenga/goml/neural	86.409s
 ```
 
-A score of `0.9644` is equivalent to an error rate of 3.56 percent, which is a
-bit better than the equivalent network architecture listed on the MNIST site! I
-would call that a success.
+The score of `0.9644` we get here is equivalent to an error rate of 3.56%, which
+is a bit better than the equivalent network architecture listed on the MNIST
+site! I would call that a definite success.
 
-## Conclusions and Future work
+## Conclusions and future explorations
 
 At this point, we've walked through the full lifecycle of creating a fully
 functioning neural network in Go from scratch, using just the tools given to us
@@ -681,11 +733,17 @@ understanding of the basics of neural networks.
 
 ## Resources
 
-Source code for this project cam be found here: https://github.com/kujenga/goml
+Source code for this project can be found here: https://github.com/kujenga/goml
+and the corresponding documentation is available here:
+https://pkg.go.dev/github.com/kujenga/goml
 
-The corresponding documentation is available here: https://pkg.go.dev/github.com/kujenga/goml
+Additionally, this post is based on a talk given for [Boston
+Golang](http://bostongolang.org/) in [Sept.
+2021](https://www.meetup.com/bostongo/events/280522108/), the slides for which
+can be found here: [Building a Neural Network in Go][slideDeck]
 
-References and further learning:
+Here is a list of references I found useful in exploring these topics, which can
+be delved into for further learning:
 - The [Backpropagation explained][deeplizardBackPropExplained] YouTube series by
   [Deeplizard][deeplizardPage] is a great reference to go into even more detail
   on the concept and math behind the derivation process for backpropagation.
@@ -693,26 +751,30 @@ References and further learning:
   Tariq Rashid that goes into more detail and background on this topic, and
   creates a functional network written in Python, exploring additional
   applications of linear algebra as well.
-- [Build an Artificial Neural Network From Scratch: Part 1][annFromScratch] is a helpful blog post from KDNuggets for walking through a simplified example of single layer networks.
-- The MNIST dataset, originally from [Yann Lecun][yannLeCunMNIST], and is also
-  mirrored at: https://deepai.org/dataset/mnist
-
-> Additionally, this post is based on a talk given for [Boston
-> Golang](http://bostongolang.org/) in [Sept.
-> 2021](https://www.meetup.com/bostongo/events/280522108/), the slides for which
-> can be found here: [Building a Neural Network in Go][slideDeck]
+- [Build an Artificial Neural Network From Scratch: Part 1][annFromScratch] is a
+  helpful blog post from KDNuggets for walking through a simplified example of
+  single layer networks.
+- [Creating a Neural Network from Scratch in Python][nninPython] is a simpler
+  walkthrough of a single-layer network in Python.
+- The MNIST dataset documentation, originally from [Yann Lecun][yannLeCunMNIST],
+  and also mirrored at: https://deepai.org/dataset/mnist
 
 <!-- Footnotes -->
 [^mixedPrecision]: https://developer.nvidia.com/blog/mixed-precision-training-deep-neural-networks/
 [^goGenerics]: https://go.dev/blog/generics-proposal
 [^lossFunctions]: https://www.theaidream.com/post/loss-functions-in-neural-networks
 [^gradientDescentTypes]: https://www.analyticsvidhya.com/blog/2021/03/variants-of-gradient-descent-algorithm/
-[^mnistArchive]: https://web.archive.org/web/20211125025603/http://yann.lecun.com/exdb/mnist/ (We utilize a link to the archive page here as the original website is observed to sometimes give authorization errors)
+[^mnistArchive]: https://web.archive.org/web/20211125025603/http://yann.lecun.com/exdb/mnist/ (I am providing a link to the archive page here as the original website is observed to sometimes give authorization errors)
 
 <!-- Links -->
 [repo]: https://github.com/kujenga/goml
 [slideDeck]: https://docs.google.com/presentation/d/1fFeRehIzcdtE_ujWfvYhrytWLYZrXDeQ4AvZnDqCKfc/edit
+[feedForwardWiki]: https://en.wikipedia.org/wiki/Feedforward_neural_network
 [perceptronWiki]: https://en.wikipedia.org/wiki/Perceptron
+[mlpWiki]: https://en.wikipedia.org/wiki/Multilayer_perceptron
+[linFrameGoPkg]: https://pkg.go.dev/github.com/kujenga/goml@v0.1.0/lin#Frame
+[mnistWiki]: https://en.wikipedia.org/wiki/MNIST_database
+[dotProductWiki]: https://en.wikipedia.org/wiki/Dot_product#Algebraic_definition
 [gradientDescentWiki]: https://en.wikipedia.org/wiki/Gradient_descent
 [deeplizardPage]: https://www.youtube.com/deeplizard
 [deeplizardBackPropIntuition]: https://www.youtube.com/watch?v=XE3krf3CQls
@@ -723,6 +785,7 @@ References and further learning:
 [gopkgMNIST]: https://pkg.go.dev/github.com/kujenga/goml@v0.0.0-20210928201159-b73f61220256/mnist
 [myoNNTariqRashid]: https://smile.amazon.com/Make-Your-Own-Neural-Network/dp/1530826608/
 [annFromScratch]: https://www.kdnuggets.com/2019/11/build-artificial-neural-network-scratch-part-1.html
+[nninPython]: https://stackabuse.com/creating-a-neural-network-from-scratch-in-python/
 [yannLeCunMNIST]: https://yann.lecun.com/exdb/mnist/
 [tensorflow]: https://www.tensorflow.org/learn
 [pytorch]: https://pytorch.org/docs/stable/index.html
