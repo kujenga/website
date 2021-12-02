@@ -19,27 +19,6 @@ body {
   font-family: 'Lato', sans-serif;
 }
 
-/* Set font sizes for headers to the desired value */
-h1 {
-  font-size: 2.25rem;
-}
-
-h2 {
-  font-size: 1.875rem;
-}
-
-h3 {
-  font-size: 1.5rem;
-}
-
-h4 {
-  font-size: 1.125rem;
-}
-
-p {
-  font-size: 0.9rem;
-}
-
 a {
   color: $links;
 }
@@ -185,6 +164,29 @@ nav.navbar {
   .hljs-ln td.hljs-ln-numbers {
     // Matches the pre-existing padding-right;
     padding-left: 1.25rem;
+  }
+}
+
+/* Set font sizes for headers in the about page to the desired value */
+.type-about {
+  h1 {
+    font-size: 2.25rem;
+  }
+
+  h2 {
+    font-size: 1.875rem;
+  }
+
+  h3 {
+    font-size: 1.5rem;
+  }
+
+  h4 {
+    font-size: 1.125rem;
+  }
+
+  p {
+    font-size: 0.9rem;
   }
 }
 

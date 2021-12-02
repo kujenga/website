@@ -1,6 +1,7 @@
 +++
 date = "2015-06-16T22:59:46-04:00"
 title = "About"
+type = "about"
 subtitle = "I've been building things all my life"
 description = """
 Today, my work focuses on bringing collaborative AI to the Salesforce platform
