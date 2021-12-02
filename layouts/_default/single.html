@@ -5,10 +5,13 @@
     <div class="row">
         <div class="col-md-9">
             <div id="main" class="kind-{{ .Page.Kind }} type-{{ .Page.Type }}">
-                <h1>{{ .Title }}<br> <small>{{ .Description }}</small></h1>
+                <h1>{{ .Title }}</h1>
+                <h2><small>{{ .Description }}</small></h2>
                 {{ partial "toc.html" . }}
                 <hr>
-                {{ .Content }}
+                <div id="content">
+                    {{ .Content }}
+                </div>
                 <br>
             </div>
             {{ partial "comments.html" . }}
