@@ -8,7 +8,7 @@
           {{- if eq (.Get "loc") "right" }} float-right{{ end -}}
           {{- if eq (.Get "loc") "center" }} mx-auto d-block{{ end -}}
     "
-    style="{{ with .Get "max-width" }}max-width: {{ . }};{{ end }}"
+    style="{{ with .Get "width" }}min-width: {{ . }}; max-width: {{ . }};{{ end }}"
 >
     <img
         class="figure-img img-fluid

@@ -44,7 +44,7 @@ inputs, and pass on their outputs to other neurons in the network. The network
 as a whole takes in a set of inputs and produces a set of outputs, the result of
 the values passing through the network neurons.
 
-{{< img file=3-single-layer-perceptron.png alt="Single Layer Perceptron" loc=right max-width=50% >}}
+{{< img file=3-single-layer-perceptron.png alt="Single Layer Perceptron" loc=right width=50% >}}
 
 A single-layer [Perceptron][perceptronWiki] is the simplest useful network, the
 idea for which was first introduced in 1958(!). It can solve basic linearly
@@ -76,11 +76,11 @@ cover each of these in detail throughout this post.
 1. Apply an “activation function” to the sum.
 1. Pass the result to the next layer.
 
-{{< img file=4-basic-neuron-operation.png alt="Basic Neuron Operation" loc=center max-width=45% >}}
+{{< img file=4-basic-neuron-operation.png alt="Basic Neuron Operation" loc=center width=45% >}}
 
 ### Activation Functions
 
-{{< img file=Logistic-curve.svg alt="Logistic Curve" loc=right max-width=50% >}}
+{{< img file=Logistic-curve.svg alt="Logistic Curve" loc=right width=50% caption="By Qef (talk) - Created from scratch with gnuplot, Public Domain, https://commons.wikimedia.org/w/index.php?curid=4310325" >}}
 
 A key element of the above diagram is the activation function that modifies the
 summation of the incoming values and weights. Activation functions are
@@ -93,10 +93,6 @@ This diagram shows the Logistic activation function, also known as sigmoid,
 which is what we will be using in our network implementation. The output is
 represented in the y axis and the input on the x axis. The smoothing of more
 extreme input values is critical to the learning ability of the network.
-
-
-> By Qef (talk) - Created from scratch with gnuplot, Public Domain,
-> https://commons.wikimedia.org/w/index.php?curid=4310325
 
 ### Adding layers to the network
 
@@ -117,7 +113,7 @@ In the rest of this post, we will build out an implementation of this network
 that is flexible with respect to the network architecture, allowing for an
 artibtrary number of layers at arbitrary sizes.
 
-{{< img file="6-multi-layer-preceptron.png" alt="Multi-layer Perceptron" loc=center max-width=50% >}}
+{{< img file="6-multi-layer-preceptron.png" alt="Multi-layer Perceptron" loc=center width=50% >}}
 
 ## Let's build
 
@@ -235,7 +231,7 @@ shifting the output, are what give these networks their power. The nodes
 themselves are just representations of state, which is what this diagram
 attempts to show:
 
-{{< img file=4-basic-neuron-operation.png alt="Basic Neuron Operation" loc=center max-width=60% >}}
+{{< img file=4-basic-neuron-operation.png alt="Basic Neuron Operation" loc=center width=60% >}}
 
 With that in mind, we iterate through each input value we are recieving from the
 last layer and calculate the activations. This is skipped for the input layer,
@@ -270,7 +266,7 @@ corresponding to the diagram below are:
    earlier layer.
 
 {{< img file="20-backprop-overall.png" alt="Backpropagation Overview" loc=center
-max-width=70% >}}
+width=70% >}}
 
 If this still isn't totally clear and you'd like to go into more depth with
 understanding the intuition behind backpropagation, watch this video!
@@ -311,7 +307,7 @@ poorly) the network is doing, we can apply this process repeatedly to
 iteratively improve our network's performance. That iterative process is known
 as [Gradient Descent][gradientDescentWiki].
 
-{{< img file=Gradient_descent.svg alt="Gradient Descent" loc=right max-width=50% >}}
+{{< img file=Gradient_descent.svg alt="Gradient Descent" loc=right width=50% >}}
 <!-- https://en.wikipedia.org/wiki/Gradient_descent#/media/File:Gradient_descent.svg -->
 
 Conceptually, this gradient can be thought of as a hilly landscape, which we
@@ -345,7 +341,7 @@ inputs from the previous. The basic steps for this are:
 
 This is equivalent to the first back-propagation step in Multi-layer backpropagation.
 
-{{< img file="22-backprop-single-layer.png" alt="Backpropagation in a Single Layer" loc=center max-width=60% >}}
+{{< img file="22-backprop-single-layer.png" alt="Backpropagation in a Single Layer" loc=center width=60% >}}
 
 In order to extend this to multiple layers within the whole network, we
 simply propagate error values back another layer. For each node in the previous
@@ -353,7 +349,7 @@ layer, we use the dot product of the errors and the weights on the corresponding
 edges, which has a sort of symmertry with how the outputs were computed in the
 first place.
 
-{{< img file="23-backprop-multi-layer.png" alt="Backpropagation in Multiple Layers" loc=center max-width=60% >}}
+{{< img file="23-backprop-multi-layer.png" alt="Backpropagation in Multiple Layers" loc=center width=60% >}}
 
 ### Calculating with Calculus
 
@@ -462,7 +458,7 @@ iterations as we will see next.
 ### Why learning rate matters
 
 {{< img file="27-learning-rate-matters.png" alt="Why learning rate matters"
-loc=right max-width=40% >}}
+loc=right width=40% >}}
 
 When we calculate the derivative for a given point in the loss landscape, we
 need to make sure we are not overly trusting of what that derivative tells us.
@@ -581,7 +577,7 @@ in those packages as well.
 
 ### One-hot encoding
 
-{{< img file="35-mnist-one-hot.png" alt="MNIST One-hot encoding" loc=right max-width=50% >}}
+{{< img file="35-mnist-one-hot.png" alt="MNIST One-hot encoding" loc=right width=50% >}}
 
 Neural Networks are generally weaker when you are trying to predict a range of
 outputs from a single neuron. As an example of why this is the case, let's look
@@ -607,7 +603,7 @@ and is based on the network architectures documented on the MNIST page
 error`, which we will replicate here, though modifications of this architecture
 with a different number of layers, layer sizes, etc. still do perform well!
 
-{{< img file="36-mnist-architecture.png" alt="MNIST Network Architecture" loc=center max-width=70% >}}
+{{< img file="36-mnist-architecture.png" alt="MNIST Network Architecture" loc=center width=70% >}}
 
 ### MNIST Test cases
 
