@@ -13,8 +13,14 @@ VERSION="$(./scripts/version)"
 DEPLOY_ID=''
 
 PARAM='--no-promote'
+ENVIRONMENT='staging'
+TRANSIENT='true'
+PRODUCTION='false'
 if [ "$CIRCLE_BRANCH" = "main" ]; then
   PARAM='--promote'
+  ENVIRONMENT='production'
+  TRANSIENT='false'
+  PRODUCTION='true'
 fi
 
 # Helper to create the Deployment object:
@@ -23,12 +29,18 @@ create_deployment() {
   local PAYLOAD
   PAYLOAD="$(jq -n \
     --arg ref "$CIRCLE_SHA1" \
+    --arg environment "$ENVIRONMENT" \
     --arg description "$1" \
+    --argjson transient_environment "$TRANSIENT" \
+    --argjson production_environment "$PRODUCTION" \
     '{
       ref: $ref,
       auto_merge: false,
       required_contexts: ["ci/circleci: build"],
-      description: $description
+      environment: $environment,
+      description: $description,
+      transient_environment: $transient_environment,
+      production_environment: $production_environment
     }' )"
   echo "Creating Deployment: $PAYLOAD"
   local RESP
@@ -49,13 +61,15 @@ update_status() {
   PAYLOAD="$(jq -n \
     --arg state "$1" \
     --arg log_url "$CIRCLE_BUILD_URL" \
-    --arg environment_url "$2" \
-    --arg description "$3" \
+    --arg description "$2" \
+    --arg environment "$ENVIRONMENT" \
+    --arg environment_url "$3" \
     '{
       state: $state,
       log_url: $log_url,
-      environment_url: $environment_url,
-      description: $description
+      description: $description,
+      environment: $environment,
+      environment_url: $environment_url
     }' )"
   echo "Setting Deployment Status: $PAYLOAD"
   curl -f \
@@ -73,8 +87,8 @@ create_deployment \
 # Update GitHub status to mark an in-progress deployment.
 update_status \
   "in_progress" \
-  "" \
-  "Deploying to Google App Engine..."
+  "Deploying to Google App Engine..." \
+  ""
 
 # Deploy to Google App Engine
 set -x
@@ -92,5 +106,5 @@ VERSION_URL="$(gcloud app versions describe "$VERSION" \
 # Update GitHub status to mark a successful deployment.
 update_status \
   "success" \
-  "$VERSION_URL" \
-  "Deployed to Google App Engine!"
+  "Deployed to Google App Engine!" \
+  "$VERSION_URL"
