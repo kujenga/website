@@ -107,6 +107,6 @@ Assembly Language, Distributed Systems, iOS Development, Relational Databases
 years), Williams Cycling Club, Williams Sailing Team, Williams Nordic Ski Club,
 Hiking, Film
 
-<script src="//platform.linkedin.com/in.js" type="text/javascript"></script>
+<script src="//platform.linkedin.com/in.js"></script>
 <script type="IN/MemberProfile" data-id="https://www.linkedin.com/in/ataylor0123" data-format="inline"></script>
 

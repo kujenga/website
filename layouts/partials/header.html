@@ -38,8 +38,16 @@
     }} - {{ .Title }}{{ end }} {{- end -}}
   </title>
 
-  {{ partial "newrelic.html" . }} {{ partial "mathjax.html" . }} {{ template
-  "_internal/google_analytics.html" . }} {{ partial "newrelic.html" . }} {{
-  partial "mathjax.html" . }} {{ template "_internal/google_analytics.html" . }}
+  <!-- prettier-ignore -->
+  {{ partial "newrelic.html" . }}
+  <!-- prettier-ignore -->
+  {{ template "_internal/google_analytics.html" . }}
+  <!-- prettier-ignore -->
+  {{ partial "newrelic.html" . }}
+  <!-- prettier-ignore -->
+  {{ partial "mathjax.html" . }}
+  <!-- prettier-ignore -->
+  {{ template "_internal/google_analytics.html" . }}
+  <!-- prettier-ignore -->
   {{ partial "header.includes.html" . }}
 </head>
