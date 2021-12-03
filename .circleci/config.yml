@@ -97,6 +97,9 @@ jobs:
       # to the specific storage buckets, ref:
       # https://cloud.google.com/appengine/docs/standard/go/roles#recommended_role_for_application_deployment
       - gcp-cli/initialize
+      - run:
+          name: Disable gcloud CLI prompts
+          command: gcloud config set core/disable_prompts true
       - checkout
       - attach_workspace:
           at: .
