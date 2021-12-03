@@ -1,48 +1,41 @@
-{{ partial "header.html" . }}
-<body>
-  {{ partial "nav.html" . }}
-  <div class="container">
-    <div class="row">
-      <div class="col-md-9">
-        <div id="main" class="kind-{{ .Page.Kind }} type-{{ .Page.Type }}">
-          <h1>{{ .Title }}</h1>
-          <h2><small>{{ .Description }}</small></h2>
-          {{ partial "toc.html" . }}
-          <hr />
-          <div id="content">{{ .Content }}</div>
-          <br />
-        </div>
-        {{ partial "comments.html" . }}
-      </div>
+{{ define "main" }}
+<div class="row">
+  <div class="col-md-9">
+    <div id="main" class="kind-{{ .Page.Kind }} type-{{ .Page.Type }}">
+      <h1>{{ .Title }}</h1>
+      <h2><small>{{ .Description }}</small></h2>
+      {{ partial "toc.html" . }}
+      <hr />
+      <div id="content">{{ .Content }}</div>
+      <br />
+    </div>
+    {{ partial "comments.html" . }}
+  </div>
 
-      <!-- Sidebar -->
-      <div class="col-md-3">
-        {{ partial "sidebar.html" . }}
-        <div class="">
-          <!-- Post-specific stats -->
-          <br />
-          <h5>{{ .Date.Format "January 2, 2006" }}</h5>
-          {{ .ReadingTime }} min - {{ .WordCount }} words
-          <!-- <hr>
+  <!-- Sidebar -->
+  <div class="col-md-3">
+    {{ partial "sidebar.html" . }}
+    <div class="">
+      <!-- Post-specific stats -->
+      <br />
+      <h5>{{ .Date.Format "January 2, 2006" }}</h5>
+      {{ .ReadingTime }} min - {{ .WordCount }} words
+      <!-- <hr>
                 <strong>Categories</strong>
                 <ul class="list-unstyled">
                 {{ range .Params.categories }}
                     <li><a href="/categories/{{ . | urlize }}">{{ . }}</a></li>
                 {{ end }}
                 </ul> -->
-          <hr />
-          <strong>Tags</strong><br />
-          {{ range .Params.tags }}<a
-            class="label label-default"
-            href="/tags/{{ . | urlize }}"
-            >{{ . }}</a
-          >
-          {{ end }}
-        </div>
-      </div>
+      <hr />
+      <strong>Tags</strong><br />
+      {{ range .Params.tags }}<a
+        class="label label-default"
+        href="/tags/{{ . | urlize }}"
+        >{{ . }}</a
+      >
+      {{ end }}
     </div>
-    {{ partial "footer.social.html" . }}
   </div>
-  <!-- /container -->
-  {{ partial "footer.html" . }}
-</body>
+</div>
+{{ end }}

@@ -1,21 +1,14 @@
-{{ partial "header.html" . }}
-<body>
-  {{ partial "nav.html" . }}
-  <div class="container">
-    <div class="row">
-      <div class="col-md-9">
-        <ul class="list-unstyled">
-          {{ range .Data.Pages }}
-          <li>{{ .Render "summary" }}</li>
-          {{ end}}
-        </ul>
-      </div>
-
-      <!-- Sidebar -->
-      <div class="col-md-3">{{ partial "sidebar.html" . }}</div>
-    </div>
-    {{ partial "footer.social.html" . }}
+{{ define "main" }}
+<div class="row">
+  <div class="col-md-9">
+    <ul class="list-unstyled">
+      {{ range .Data.Pages }}
+      <li>{{ .Render "summary" }}</li>
+      {{ end}}
+    </ul>
   </div>
-  <!-- /container -->
-  {{ partial "footer.html" . }}
-</body>
+
+  <!-- Sidebar -->
+  <div class="col-md-3">{{ partial "sidebar.html" . }}</div>
+</div>
+{{ end }}

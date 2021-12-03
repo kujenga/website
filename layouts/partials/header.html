@@ -1,47 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="{{ .Description }}" />
-    <meta name="author" content="Aaron Taylor" />
-    <meta name="generator" content="{{ hugo.Generator }}" />
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="{{ .Description }}" />
+  <meta name="author" content="Aaron Taylor" />
+  <meta name="generator" content="{{ hugo.Generator }}" />
 
-    <meta
-      name="google-site-verification"
-      content="tiuapB3N9vmYdU9_nwX6t_iHEqjDsOaSi8sRQ_CppY4"
-    />
+  <meta
+    name="google-site-verification"
+    content="tiuapB3N9vmYdU9_nwX6t_iHEqjDsOaSi8sRQ_CppY4"
+  />
 
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
 
-    <link rel="canonical" href="{{ .Permalink }}" />
+  <link rel="canonical" href="{{ .Permalink }}" />
 
-    <meta property="og:title" content="{{ .Title }}" />
-    <meta property="og:description" content="{{ .Description }}" />
+  <meta property="og:title" content="{{ .Title }}" />
+  <meta property="og:description" content="{{ .Description }}" />
 
-    {{- /* To emulate the production server, we mirror the CSP in dev */}} {{-
-    $csp := getenv "CONTENT_SECURITY_POLICY" }} {{- if and (eq hugo.Environment
-    "development") (not (eq $csp "")) }}
-    <meta http-equiv="Content-Security-Policy" content="{{ $csp }}" />
-    {{- end }} {{ with .OutputFormats.Get "RSS" }}
-    <link
-      href="{{ .RelPermalink }}"
-      rel="alternate"
-      type="application/rss+xml"
-      title="{{ $.Site.Title }}"
-    />
-    {{ end }}
+  {{- $csp := getenv "CONTENT_SECURITY_POLICY" }} {{- if and (eq
+  hugo.Environment "development") (not (eq $csp "")) }}
+  <!-- To emulate the production server, we mirror the CSP in dev -->
+  <meta http-equiv="Content-Security-Policy" content="{{ $csp }}" />
+  {{- end }} {{ with .OutputFormats.Get "RSS" -}}
+  <link
+    href="{{ .RelPermalink }}"
+    rel="alternate"
+    type="application/rss+xml"
+    title="{{ $.Site.Title }}"
+  />
+  {{- end }}
 
-    <title>
-      {{ .Site.Title }}{{ if not (eq .Site.Title .Title) }} - {{ .Title }}{{ end
-      }}
-    </title>
+  <title>
+    {{- block "title" . -}} {{ .Site.Title }}{{ if not (eq .Site.Title .Title)
+    }} - {{ .Title }}{{ end }} {{- end -}}
+  </title>
 
-    {{ partial "newrelic.html" . }} {{ partial "mathjax.html" . }} {{ template
-    "_internal/google_analytics.html" . }} {{ partial "header.includes.html" .
-    }}
-  </head>
-</html>
+  {{ partial "newrelic.html" . }} {{ partial "mathjax.html" . }} {{ template
+  "_internal/google_analytics.html" . }} {{ partial "newrelic.html" . }} {{
+  partial "mathjax.html" . }} {{ template "_internal/google_analytics.html" . }}
+  {{ partial "header.includes.html" . }}
+</head>
