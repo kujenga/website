@@ -1,48 +1,80 @@
 #!/bin/bash
 
-set -e
+set -euo pipefail
 
 # This assumes the built-in CircleCI environment variables:
 # https://circleci.com/docs/2.0/env-vars/#built-in-environment-variables
 
 BASE_URL="https://api.github.com/repos/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME"
 
-# Helper to create the "Status" object
-# https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#create-a-commit-status
-update_status() {
-  STATUS="$(jq -n \
-    --arg state "$1" \
-    --arg description "$2" \
-    --arg target_url "$3" \
-    --arg context "$4" \
-    '{
-      state: $state,
-      target_url: $target_url,
-      description: $description,
-      context: $context
-    }' )"
-  echo "Setting Commit Status: $STATUS"
-  curl -f \
-    -u "$CIRCLE_PROJECT_USERNAME:$GITHUB_TOKEN" \
-    -X POST \
-    -H "Accept: application/vnd.github.v3+json" \
-    "$BASE_URL/statuses/$CIRCLE_SHA1" \
-    -d "$STATUS"
-}
-
-# Update GitHub status to mark a pending deployment.
-update_status \
-  "pending" \
-  "Deploying to Google App Engine..." \
-  "$CIRCLE_BUILD_URL" \
-  "deploy: appengine"
-
 VERSION="$(./scripts/version)"
+
+# Global variables for state management.
+DEPLOY_ID=''
 
 PARAM='--no-promote'
 if [ "$CIRCLE_BRANCH" = "main" ]; then
   PARAM='--promote'
 fi
+
+# Helper to create the Deployment object:
+# https://docs.github.com/en/rest/reference/repos#create-a-deployment
+create_deployment() {
+  local PAYLOAD
+  PAYLOAD="$(jq -n \
+    --arg ref "$CIRCLE_SHA1" \
+    --arg description "$1" \
+    '{
+      ref: $ref,
+      auto_merge: false,
+      required_contexts: ["ci/circleci: build"],
+      description: $description
+    }' )"
+  echo "Creating Deployment: $PAYLOAD"
+  local RESP
+  RESP="$(curl -f \
+    -u "$CIRCLE_PROJECT_USERNAME:$GITHUB_TOKEN" \
+    -X POST \
+    -H "Accept: application/vnd.github.v3+json" \
+    "$BASE_URL/deployments" \
+    -d "$PAYLOAD")"
+  echo "$RESP"
+  DEPLOY_ID="$(echo "$RESP" | jq -r '.id')"
+}
+
+# Helper to create the "Deployment Status" object
+# https://docs.github.com/en/rest/reference/repos#create-a-deployment-status
+update_status() {
+  local PAYLOAD
+  PAYLOAD="$(jq -n \
+    --arg state "$1" \
+    --arg log_url "$CIRCLE_BUILD_URL" \
+    --arg environment_url "$2" \
+    --arg description "$3" \
+    '{
+      state: $state,
+      log_url: $log_url,
+      environment_url: $environment_url,
+      description: $description
+    }' )"
+  echo "Setting Deployment Status: $PAYLOAD"
+  curl -f \
+    -u "$CIRCLE_PROJECT_USERNAME:$GITHUB_TOKEN" \
+    -X POST \
+    -H "Accept: application/vnd.github.v3+json" \
+    "$BASE_URL/deployments/$DEPLOY_ID/statuses" \
+    -d "$PAYLOAD"
+}
+
+# Update GitHub status to mark a pending deployment.
+create_deployment \
+  "Google App Engine deployment" \
+
+# Update GitHub status to mark an in-progress deployment.
+update_status \
+  "in_progress" \
+  "" \
+  "Deploying to Google App Engine..."
 
 # Deploy to Google App Engine
 set -x
@@ -60,6 +92,5 @@ VERSION_URL="$(gcloud app versions describe "$VERSION" \
 # Update GitHub status to mark a successful deployment.
 update_status \
   "success" \
-  "Deployed to Google App Engine!" \
   "$VERSION_URL" \
-  "deploy: appengine"
+  "Deployed to Google App Engine!"
