@@ -83,7 +83,7 @@ jobs:
           # Skip this step on the main branch, where we always deploy.
           condition:
             not:
-              equal: [ main, << pipeline.git.branch >> ]
+              equal: [main, << pipeline.git.branch >>]
           steps:
             - run:
                 name: Abort on non-main branch if a PR is not open

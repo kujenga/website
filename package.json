@@ -7,9 +7,11 @@
     "postinstall": "./scripts/postinstall.sh",
     "start": "./scripts/start",
     "start:prod": "cd app && go run -v main.go --dev",
-    "lint": "npm run lint:style && npm run lint:html",
+    "lint": "npm run lint:style && npm run lint:html && npm run lint:fmt",
     "lint:style": "stylelint assets/**/*.[s]css",
     "lint:html": "npm run build && html-validate app/public",
+    "lint:fmt": "prettier -c .",
+    "fix:fmt": "prettier -w .",
     "build": "hugo",
     "deploy:gh-pages": "npm run build && ./scripts/deploy-gh-pages.sh",
     "deploy:appengine": "npm run build && gcloud app deploy ./app/ --project"
