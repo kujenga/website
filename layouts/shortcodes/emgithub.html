@@ -1,16 +1,16 @@
 <!-- Embed snippets: https://emgithub.com/ -->
 <!-- Based on: https://github.com/gohugoio/hugo/blob/master/tpl/tplimpl/embedded/templates/shortcodes/gist.html -->
 <!-- We embed the upstream project within this repository in order to self-host the snippet: https://gohugo.io/hugo-pipes/js/#examples -->
-{{ $opts := dict "targetPath" "emgithub/embed.js" }}
-{{ $built := resources.Get "embed-like-gist/embed.js" | js.Build $opts }}
+{{ $opts := dict "targetPath" "emgithub/embed.js" }} {{ $built := resources.Get
+"embed-like-gist/embed.js" | js.Build $opts }}
 <script
-    type="text/javascript"
-    src="{{ $built.RelPermalink }}?target=
-        {{- .Get "target" | default (.Get 0) | urlquery -}}
-        &style={{ .Get "style" | default "github-gist" -}}
-        &showBorder={{ .Get "showBorder" | default "on" -}}
-        &showLineNumbers={{ .Get "showLineNumbers" | default "on" -}}
-        &showFileMeta={{ .Get "showFileMeta" | default "on" -}}
-        &showCopy={{ .Get "showCopy" | default "off" -}}
-    ">
-</script>
+  type="text/javascript"
+  src="{{ $built.RelPermalink }}?target=
+        {{- .Get `target` | default (.Get 0) | urlquery -}}
+        &style={{ .Get `style` | default `github-gist` -}}
+        &showBorder={{ .Get `showBorder` | default `on` -}}
+        &showLineNumbers={{ .Get `showLineNumbers` | default `on` -}}
+        &showFileMeta={{ .Get `showFileMeta` | default `on` -}}
+        &showCopy={{ .Get `showCopy` | default `off` -}}
+    "
+></script>

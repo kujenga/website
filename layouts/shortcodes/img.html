@@ -2,22 +2,22 @@
 <!-- https://gohugo.io/templates/shortcode-templates/ -->
 <!-- https://getbootstrap.com/docs/4.1/content/figures/ -->
 <figure
-    class="figure
-          {{- with .Get "class" }} {{ . }}{{ end -}}
-          {{- if eq (.Get "loc") "left" }} float-left{{ end -}}
-          {{- if eq (.Get "loc") "right" }} float-right{{ end -}}
-          {{- if eq (.Get "loc") "center" }} mx-auto d-block{{ end -}}
+  class="figure
+          {{- with .Get `class` }} {{ . }}{{ end -}}
+          {{- if eq (.Get `loc`) `left` }} float-left{{ end -}}
+          {{- if eq (.Get `loc`) `right` }} float-right{{ end -}}
+          {{- if eq (.Get `loc`) `center` }} mx-auto d-block{{ end -}}
     "
-    style="{{ with .Get "width" }}min-width: {{ . }}; max-width: {{ . }};{{ end }}"
+  style="{{ with .Get `width` }}min-width: {{ . }}; max-width: {{ . }};{{ end }}"
 >
-    <img
-        class="figure-img img-fluid
-              {{- if eq (.Get "loc") "center" }} mx-auto d-block{{ end -}}
+  <img
+    class="figure-img img-fluid
+              {{- if eq (.Get `loc`) `center` }} mx-auto d-block{{ end -}}
         "
-        src="/img{{ $.Page.RelPermalink }}{{ .Get "file" }}"
-        alt="{{ .Get "alt" }}"
-    >
-    {{- with .Get "caption" }}
-    <figcaption class="figure-caption">{{ . }}</figcaption>
-    {{- end }}
+    src="/img{{ $.Page.RelPermalink }}{{ .Get `file` }}"
+    alt="{{ .Get `alt` }}"
+  />
+  {{- with .Get "caption" }}
+  <figcaption class="figure-caption">{{ . }}</figcaption>
+  {{- end }}
 </figure>

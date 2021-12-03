@@ -1,26 +1,27 @@
 {{ partial "header.html" . }}
 <body>
-{{ partial "nav.html" . }}
+  {{ partial "nav.html" . }}
 
-<div class="jumbotron">
-  <div class="container">
-    <h1>Hi, I'm Aaron.</h1>
-    <p class="lead">
-      I am an entrepreneur and computer scientist who
-      <br>
-      loves working with amazing people to build incredible products.
-    </p>
+  <div class="jumbotron">
+    <div class="container">
+      <h1>Hi, I'm Aaron.</h1>
+      <p class="lead">
+        I am an entrepreneur and computer scientist who
+        <br />
+        loves working with amazing people to build incredible products.
+      </p>
+    </div>
   </div>
-</div>
 
-<div class="container" id="projects">
-  <!-- Example row of columns -->
-  <div class="row">
-    {{ range .Site.Taxonomies.categories.homepage }}
-        {{ .Page.Render "summary" }}
-    {{ end}}
+  <div class="container" id="projects">
+    <!-- Example row of columns -->
+    <div class="row">
+      {{ range .Site.Taxonomies.categories.homepage }} {{ .Page.Render "summary"
+      }} {{ end}}
+    </div>
+    <hr />
+    {{ partial "footer.social.html" . }}
   </div>
-  <hr>
-{{ partial "footer.social.html" . }}
-</div> <!-- /container -->
-{{ partial "footer.html" . }}
+  <!-- /container -->
+  {{ partial "footer.html" . }}
+</body>
