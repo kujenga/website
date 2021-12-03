@@ -3,23 +3,34 @@
 # This script deletes older app engine versions, based on:
 # https://almcc.me/blog/2017/05/04/removing-older-versions-on-google-app-engine/
 
-VERSIONS=$(gcloud app versions list --service $1 --sort-by '~version' --format 'value(version.id)')
+# NOTE: the -e flag does not work well with the maths here.
+set -uo pipefail
+
+SERVICE="$1"
+TO_KEEP="$2"
+
+VERSIONS=$(gcloud app versions list \
+    --service "$SERVICE" \
+    --filter='traffic_split=0.0' \
+    --sort-by '~last_deployed_time.datetime' \
+    --format 'value(version.id)')
 
 COUNT=0
 
-echo "Keeping the $2 latest versions of the $1 service"
+echo "Keeping the $TO_KEEP latest versions of the $SERVICE service"
 
 for VERSION in $VERSIONS
 do
     ((COUNT++))
-    if [ $COUNT -gt $2 ]
+    if [ "$COUNT" -gt "$TO_KEEP" ]
     then
-      echo "Going to delete version $VERSION of the $1 service."
-      gcloud app versions delete \
-          "$VERSION" \
-          --service \
-          "$1"
+        echo "Deleting version $VERSION of the $SERVICE service."
+        set -x
+        gcloud app versions delete \
+            --service "$SERVICE" \
+            "$VERSION"
+        set +x
     else
-      echo "Going to keep version $VERSION of the $1 service."
+      echo "Keeping version $VERSION of the $SERVICE service."
     fi
 done
