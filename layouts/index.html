@@ -14,8 +14,18 @@
     <div class="container" id="projects">
       <!-- Example row of columns -->
       <div class="row">
-        {{ range .Site.Taxonomies.categories.homepage }} {{ .Page.Render
-        "summary" }} {{ end}}
+        <!-- Homepage content -->
+        <div class="col-md-6">{{ .Content }}</div>
+        <!-- Other pages -->
+        <div class="col-md-6">
+          <h3>Posts</h3>
+          <ul class="list-unstyled">
+            <!-- Pages for the homepage: https://gohugo.io/variables/taxonomy/ -->
+            {{ range .Site.Taxonomies.categories.homepage }}
+            <!-- Render "li" content: https://gohugo.io/templates/views/ -->
+            {{ .Page.Render "li" }} {{ end}}
+          </ul>
+        </div>
       </div>
       <hr />
       {{ partial "footer.social.html" . }}

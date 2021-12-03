@@ -4,8 +4,8 @@ title = "Building a Neural Network in Go"
 description = """
 Creating a basic neural network from scratch, with just the Go standard library.
 """
-categories = []
-tags = []
+categories = ['homepage']
+tags = ['Go', 'AI', 'Neural Networks']
 mathjax = true
 toc = true
 +++
