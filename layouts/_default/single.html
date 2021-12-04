@@ -19,22 +19,24 @@
       <!-- Post-specific stats -->
       <br />
       <h5>{{ .Date.Format "January 2, 2006" }}</h5>
-      {{ .ReadingTime }} min - {{ .WordCount }} words
-      <!-- <hr>
-                <strong>Categories</strong>
-                <ul class="list-unstyled">
-                {{ range .Params.categories }}
-                    <li><a href="/categories/{{ . | urlize }}">{{ . }}</a></li>
-                {{ end }}
-                </ul> -->
+      <div>{{ .ReadingTime }} min - <small>{{ .WordCount }} words</small></div>
+      <!-- <hr /> -->
+      <!-- <strong>Categories</strong> -->
+      <!-- <ul class="list-unstyled"> -->
+      <!--   {{ range .Params.categories }} -->
+      <!--   <li><a href="/categories/{{ . | urlize }}">{{ . }}</a></li> -->
+      <!--   {{ end }} -->
+      <!-- </ul> -->
       <hr />
       <strong>Tags</strong><br />
-      {{ range .Params.tags }}<a
-        class="label label-default"
-        href="/tags/{{ . | urlize }}"
-        >{{ . }}</a
-      >
-      {{ end }}
+      {{ range $index, $tag := .Params.tags -}}
+      <!-- Add commas: https://gohugo.io/templates/taxonomy-templates/#example-comma-delimit-tags-in-a-single-page-template -->
+      {{- if gt $index 0 }}, {{ end -}}
+      <!-- TODO: The <a> elements can be enabled when the taxonomy pages are working. -->
+      <!-- <a class="label label-default" href="/tags/{{ . | urlize }}">  -->
+      {{- $tag -}}
+      <!-- </a> -->
+      {{- end }}
     </div>
   </div>
 </div>
