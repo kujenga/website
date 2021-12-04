@@ -20,6 +20,8 @@ handlers:
   # Configure App Engine to serve any static assets.
   - url: /css
     static_dir: public/css
+  - url: /styles
+    static_dir: public/styles
   - url: /img
     static_dir: public/img
 
