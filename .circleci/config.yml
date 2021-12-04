@@ -43,8 +43,8 @@ jobs:
       # Install
       - restore_cache:
           keys:
-            - v4-go-deps-{{ checksum "app/go.mod" }}-{{ checksum "tools/go.mod" }}
-            - v4-go-deps-
+            - v1-go-{{ checksum "app/go.mod" }}-{{ checksum "tools/go.mod" }}
+            - v1-go-
       - run:
           name: Install Go-based tooling
           working_directory: 'tools'
@@ -54,7 +54,7 @@ jobs:
           working_directory: 'app'
           command: go install -v
       - save_cache:
-          key: v4-go-deps-{{ checksum "app/go.mod" }}-{{ checksum "tools/go.mod" }}
+          key: v1-go-{{ checksum "app/go.mod" }}-{{ checksum "tools/go.mod" }}
           paths:
             # Observed from `go env` output, above
             - ~/go
