@@ -18,9 +18,9 @@ create a network that performs well on the MNIST dataset, which measures
 performance at recognizing handwritten digits.
 
 While there are a number of resources available that cover either the
-implementation of basic single layer networks or the the concepts and math
-behind neural networks generally, there seems to be scant resources available
-online which cover both concept and implementation of multi-layer networks,
+implementation of basic single layer networks or the concepts and math behind
+neural networks generally, there seems to be scant resources available online
+which cover both concept and implementation of multi-layer networks,
 particularly in a way that goes into the details of backpropagation and
 structuring it to be flexible enough for a variety of use cases. Our goal here
 is to use the process of implementing the network from top to bottom to get a
@@ -30,9 +30,9 @@ well.
 
 While we will be implementing this network from scratch, I'll be linking out to
 other fantastic resources out there that can provide further detail on the
-various implementation aspects if the network, including deeper walkthroughs of
-the concepts and intuition behind neural networks and more detailed walkthroughs
-for deriving back-propagation.
+various implementation aspects if the network, including a deeper walk through of
+the concepts and intuition behind neural networks and more detailed on deriving
+back-propagation.
 
 The network that is created over the course of this post can be found here:
 [github.com/kujenga/goml][repo]
@@ -74,7 +74,7 @@ discrete layers, with activations from one layer passed as inputs to the next.
 Each of the nodes in the above graph is often referred to as a "neuron", as they
 are intended to roughly mimic the structures within a simplified model of the
 brain. Let's dive a bit deeper into how these artificial neurons function (and
-perhaps more importantly the eges between them) which will be covered in more
+perhaps more importantly the edges between them) which will be covered in more
 increasing detail throughout the post.
 
 1. Define a weight parameter \\(w_{i,j}^{L}\\) for each edge in the network for each
@@ -122,7 +122,7 @@ MNIST dataset.
 
 In the rest of this post, we will build out an implementation of Multi-Layer
 Perceptrons in this style that is flexible with respect to the network
-architecture, allowing for an artibtrary number of layers at arbitrary sizes.
+architecture, allowing for an arbitrary number of layers at arbitrary sizes.
 
 {{< img file="6-multi-layer-preceptron.png" alt="Multi-layer Perceptron" loc=center width=50% >}}
 
@@ -162,7 +162,7 @@ relative to other approaches, and is one of the classic datasets for training
 models on.
 
 One caveat here is that the MNIST dataset distributed in a unique binary format,
-which we will need to deserialize in order to make use of it in a test case. We
+which we will need to de-serialize in order to make use of it in a test case. We
 will walk through that later in the post.
 
 {{< img file="MnistExamples.png" alt="MNIST Examples" loc=center caption="Josef Steppan, CC BY-SA 4.0 <https://creativecommons.org/licenses/by-sa/4.0>, via Wikimedia Commons" >}}
@@ -175,7 +175,7 @@ pieces of functionality we need to provide:
   values.
 - Train the network, iteratively improving the network output based on inputs.
 - Make predictions using the trained network, taking a set of inputs and
-  providing an inferenced output.
+  providing a computed output.
 
 In addition to these basic functionalities, we also want to build it in a
 flexible manner that can facilitate any number of layers. By doing so, we can
@@ -214,11 +214,11 @@ The key elements to capture within this data structure are:
 {{<emgithub "https://github.com/kujenga/goml/blob/fc6bc437686cf50dc0ba9f3bb7f7e7ee23bc611d/neural/mlp.go#L156-L198" >}}
 
 With these two structures defined, we can look at how the training process
-works. The entrypoint is the `Train` function which iterates for a given number
+works. The entry point is the `Train` function which iterates for a given number
 of "epochs". Each epoch is a pass over the entire dataset. Training happens
 iteratively, with each step containing two passes.
 
-For each input, we first propagate the weights and subsqeuent layer outputs
+For each input, we first propagate the weights and subsequent layer outputs
 forward through the network to get the current predictions of the network for
 the given input. Once that is complete, we propagate the error values we compute
 based on the corresponding labels _backwards_ though the network, and update the
@@ -262,7 +262,7 @@ diagram attempts to show:
 
 In order to turn this structure into code, we iterate through each input value
 we are receiving from the last layer and calculate the new activations. This is
-skipped for the input layer, since it is just recieving the raw values into the
+skipped for the input layer, since it is just receiving the raw values into the
 network and there are no corresponding weights. The combination of the weights
 and input values into a single value is most clearly expressed as a [dot
 product][dotProductWiki], and the `Z` value is used to record the linear
@@ -309,7 +309,7 @@ intuition][deeplizardBackPropIntuition]
 In the above diagram, we talk about propagating the "error" back through the
 network. This presents a slight hiccup however, as the simplest way to calculate
 error values, computing the difference between the expected labeled output and
-the output we recieved from the network, can be either a positive or negative
+the output we received from the network, can be either a positive or negative
 value that can cancel each other out in undesirable ways when combined. In order
 to determine how well the network is doing, we need to be able to look at the
 aggregate of these errors. We do this using a Loss Function, which transforms
@@ -321,7 +321,7 @@ each output. By squaring the error values, the summed errors in the average
 always correctly indicate that the network is doing better or worse and there is
 no cancellation. The formula for MSE is as follows:
 
-<!-- LaTex rendered by MathJax -->
+<!-- LaTeX rendered by MathJax -->
 <div>
 $$\frac{1}{N} \sum_{i=1}^N (labels_{i} - outputs_{i})^2$$
 </div>
@@ -362,7 +362,7 @@ well, so we skip those for the scope of this post.
 
 ### Backpropagation in more detail
 
-To get into the details of what our backpropgation implementation will actually
+To get into the details of what our backpropagation implementation will actually
 look like, first we look at a single layer, going from the output activations
 back to the inputs from the previous. The basic steps for this are:
 
@@ -401,7 +401,7 @@ To capture all of our formulas in one place, here are the three equations that
 will be differentiated, representing the forward-propagation implementation
 steps we walked through above.
 
-<!-- LaTex rendered by MathJax -->
+<!-- LaTeX rendered by MathJax -->
 <div>
 $$Z = Weights \cdot Inputs + Biases$$
 $$Activations = f_{activation}(Z)$$
@@ -410,9 +410,9 @@ $$Loss = \frac{1}{N} \sum_{i=1}^N (labels_{i} - outputs_{i})^2$$
 
 Based on these equations, we use the chain rule to expand the derivative of the
 loss with respect to weights out into a series of functions we can compute. For
-a fantastic explaination of this differentiation process in more detail, watch:
+a fantastic explanation of this differentiation process in more detail, watch:
 [Backpropagation explained | Part 4 - Calculating the
-gradient][deeplizardBackPropGradient] as well as preceeding videos in that
+gradient][deeplizardBackPropGradient] as well as preceding videos in that
 series. To cover this briefly, the derivatives that we wish to compute are as
 follows.
 
@@ -420,7 +420,7 @@ For updating the _weights_, we need to compute the derivative of the loss with
 respect to the derivative of the weights. In other words, how to we change the
 weights to decrease the loss?
 
-<!-- LaTex rendered by MathJax -->
+<!-- LaTeX rendered by MathJax -->
 <!-- ∂L/∂w = ∂L/∂a * ∂a/∂z * ∂z/∂w -->
 <div>
 $$
@@ -435,7 +435,7 @@ For updating the _bias_, we calculate the derivative of the loss with respect to
 the derivative of the inner \\(Z\\) value, which is directly influenced by the
 bias. In other words, how do we shift the values to decrease the loss?
 
-<!-- LaTex rendered by MathJax -->
+<!-- LaTeX rendered by MathJax -->
 <!-- ∂L/∂z = ∂L/∂a * ∂a/∂z -->
 <div>
 $$
@@ -487,7 +487,7 @@ $$\frac{\partial Z}{\partial Weights} = Activations$$
 {{< emgithub "https://github.com/kujenga/goml/blob/fc6bc437686cf50dc0ba9f3bb7f7e7ee23bc611d/neural/mlp.go#L306-L308" >}}
 
 Now that we have the components, we can combine them per the original equation
-for our partial derivative that we arrived at via the chain rule. using these
+for our partial derivative that we arrived at via the chain rule. Using these
 combined values, we update both the weights and the biases accordingly,
 multiplied by our _learning rate_, which is critical to iteratively improving
 the network successfully.
@@ -496,8 +496,7 @@ the network successfully.
 
 ### Why learning rate matters
 
-{{< img file="27-learning-rate-matters.png" alt="Why learning rate matters"
-loc=right width=40% >}}
+{{< img file="27-learning-rate-matters.png" alt="Why learning rate matters" loc=right width=40% >}}
 
 When we calculate the derivative for a given point in the loss landscape, we
 need to make sure we are not overly trusting of what that derivative tells us.
@@ -546,10 +545,10 @@ hidden layer to the network.
 
 {{< emgithub "https://github.com/kujenga/goml/blob/b73f6122025613f0ffe91033a959b8d0093baab4/neural/mlp_test.go#L209-L238" >}}
 
-Below is the output of these tests (with the `Introspect` function ommitted). We
+Below is the output of these tests (with the `Introspect` function omitted). We
 can observe how the predictions trend toward the correct labels. The assertions
-in the test verify this, using fuzzy mathing logic with cutoffs to classify the
-network output one way ot the other.
+in the test verify this, using fuzzy math logic with cutoffs to classify the
+network output one way to the other.
 
 ```
 $ go test -v ./neural -run TestMLPMultiLayerBool
@@ -602,7 +601,7 @@ disk.
 
 {{< emgithub "https://github.com/kujenga/goml/blob/fc6bc437686cf50dc0ba9f3bb7f7e7ee23bc611d/idx/idx.go#L16-L24" >}}
 
-Secong, we create an [mnist][gopkgMNIST] package which builds on IDX parser to
+Second, we create an [mnist][gopkgMNIST] package which builds on IDX parser to
 read in the specific MNIST dataset using the capabilities of the IDX reader, and
 returns the following data structure for use in tests.
 
@@ -634,15 +633,15 @@ digits.
 
 One-hot encoding solves this problem. It uses a vector of binary values to make
 all the possible categorical outcomes independent of each other, as shown in
-thiws diagram, where "8" is mapped to a single "1" value within a vector.
+this diagram, where "8" is mapped to a single "1" value within a vector.
 One-hot encodings are very useful for categorical variables, and that is what we
 will use here for representing MNIST.
 
 ### MNIST Network Architecture
 
-Now that we have our dataset ready, we can start architecting our network. The
-following diagram depicts about what our network will look like conceptually,
-and is based on the network architectures documented on the MNIST
+Now that we have our dataset ready, we can start creating the architecture for
+our network. The following diagram depicts about what our network will look like
+conceptually, and is based on the network architectures documented on the MNIST
 page which compiles past results, maintained by Yann LeCun[^mnistArchive].
 
 One of these architectures is `2-layer NN, 300 hidden units, mean square error`,
@@ -706,7 +705,7 @@ site! I would call that a definite success.
 
 ## Conclusions and future explorations
 
-At this point, we've walked through the full lifecycle of creating a fully
+At this point, we've walked through the full life cycle of creating a fully
 functioning neural network in Go from scratch, using just the tools given to us
 in the Go standard library.
 
@@ -755,7 +754,7 @@ be delved into for further learning:
   helpful blog post from KDNuggets for walking through a simplified example of
   single layer networks.
 - [Creating a Neural Network from Scratch in Python][nninPython] is a simpler
-  walkthrough of a single-layer network in Python.
+  walk through of a single-layer network in Python.
 - The MNIST dataset documentation, originally from [Yann Lecun][yannLeCunMNIST],
   and also mirrored at: https://deepai.org/dataset/mnist
 
