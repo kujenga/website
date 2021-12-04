@@ -14,7 +14,15 @@
     class="figure-img img-fluid
               {{- if eq (.Get `loc`) `center` }} mx-auto d-block{{ end -}}
         "
-    src="/img{{ $.Page.RelPermalink }}{{ .Get `file` }}"
+    src="
+      {{- if (.Get `file`) -}}
+        /img{{ $.Page.RelPermalink }}{{ .Get `file` }}
+      {{- else if (.Get `resource`) -}}
+        {{ (resources.Get (.Get `resource`)).RelPermalink }}
+      {{- else -}}
+        {{ .Get `src` }}
+      {{- end -}}
+    "
     alt="{{ .Get `alt` }}"
   />
   {{- with .Get "caption" }}

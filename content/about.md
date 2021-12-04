@@ -2,28 +2,39 @@
 date = "2015-06-16T22:59:46-04:00"
 title = "About"
 type = "about"
-subtitle = "I've been building things all my life"
-description = """
-Today, my work focuses on bringing collaborative AI to the Salesforce platform
-by building AI capabilities and user experiences that harness information in
-unstructured content. I joined Salesforce when Diffeo was acquired in November
-2019.
-
-I co-founded Diffeo and Meta Search with the goal of helping to make sense of
-the world's information, leading our engineering teams to build a platform to
-that end.
-"""
-profileImg = "images/me/hawaii-500px.jpeg"
-
 +++
 
+<div class="row">
+
+<div class="col-md-7">
+
+## About
+### I've been building things all my life
+
+Today my work focuses on bringing Collaborative AI to the Salesforce platform.
+I am leading engineering teams in building machine learning and information
+retrieval systems to create user experiences that harness information from
+unstructured content. I joined Salesforce as part of the Diffeo acquisition in
+November 2019.
+
+Prior to joining Salesforce, I co-founded Diffeo and Meta Search to help to make
+sense of the world's information.
+</div>
+
+<div class="col-md-5">
+{{< img resource="images/me/hawaii-500px.jpeg" alt="Hawaii" >}}
+</div>
+
+</div>
+
+<hr>
 
 ## Experience
 
 ### [Salesforce](https://www.salesforce.com/)
 #### Senior Director, Software Engineering <small>February 2021 - Present</small>
 Bringing Collaborative AI to the Salesforce platform, scaling Einstein
-Relationship Insights to bring it to a wider audience.
+Relationship Insights.
 #### Director, Software Engineering <small>November 2019 - February 2021</small>
 After being acquired by Salesforce, integrating Diffeo technologies to launch
 [Einstein Relationship Insights][ERI].
@@ -54,7 +65,7 @@ information and event-based communication.
 ### [New Signature](https://newsignature.com)
 #### Winter Intern <small>January 2014</small>
 Designed a system for knowledge management and intellectual property creation
-for diagnostic, configurational, and procedural toolsets with goals of internal
+for diagnostic, configurational, and procedural tool sets with goals of internal
 efficiency and expanded services in the field of IT consulting.
 
 ### [Berkshire Productions](http://berkshireproductions.com/)
