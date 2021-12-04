@@ -6,6 +6,7 @@ googleAnalytics = "UA-56787812-1"
 copyright = "© Aaron Taylor 2015-{year}"
 publishDir = "app/public"
 relativeURLs = true
+enableGitInfo = true
 
 # allow HTML to be used in markdown files
 [markup.goldmark.renderer]
