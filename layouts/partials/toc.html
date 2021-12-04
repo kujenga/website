@@ -1,7 +1,10 @@
 <!-- https://gohugo.io/content-management/toc/ -->
 {{ if and (gt .WordCount 400 ) (.Params.toc) }}
 <aside>
-  <a data-toggle="collapse" data-target="#toc" href="#">Table of Contents</a>
+  <a data-toggle="collapse" data-target="#toc" href="#">
+    Table of Contents
+    <i class="fa fa-plus" aria-hidden="true"></i>
+  </a>
   <div id="toc" class="collapse">{{.TableOfContents}}</div>
 </aside>
 {{ end }}
