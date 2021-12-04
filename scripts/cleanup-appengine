@@ -10,10 +10,10 @@ SERVICE="$1"
 TO_KEEP="$2"
 
 VERSIONS=$(gcloud app versions list \
-    --service "$SERVICE" \
+    --service="$SERVICE" \
+    --sort-by='~version.createTime' \
     --filter='traffic_split=0.0' \
-    --sort-by '~last_deployed_time.datetime' \
-    --format 'value(version.id)')
+    --format='value(version.id)')
 
 COUNT=0
 
