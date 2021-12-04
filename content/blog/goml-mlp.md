@@ -321,7 +321,7 @@ function. Both this `Z` value and the activation value itself are stored, not
 for use in the forward propagation, but for use later in the backpropagation
 training process.
 
-{{< emgithub "https://github.com/kujenga/goml/blob/b73f6122025613f0ffe91033a959b8d0093baab4/neural/mlp.go#L247-L268" >}}
+{{< emgithub "https://github.com/kujenga/goml/blob/cb3eeee9a094151672fd80d326baba360e39b84b/neural/mlp.go#L250-L282" >}}
 
 ## Backpropagation: Training the network
 
@@ -346,8 +346,7 @@ corresponding to the diagram below are:
 1. Iteratively update the next set of weights to minimize errors caused by that
    earlier layer.
 
-{{< img file="20-backprop-overall.png" alt="Backpropagation Overview" loc=center
-width=70% >}}
+{{< img file="20-backprop-overall.png" alt="Backpropagation Overview" loc=center width=70% >}}
 
 If you'd like to go into more depth with understanding the intuition behind
 backpropagation, watch this video! I found in very helpful in understanding the
@@ -509,7 +508,7 @@ $$\frac{\partial Loss}{\partial Activations} = 2 * Error$$
 </div>
 
 <!-- ∂L/∂a -->
-{{< emgithub "https://github.com/kujenga/goml/blob/fc6bc437686cf50dc0ba9f3bb7f7e7ee23bc611d/neural/mlp.go#L274-L292" >}}
+{{< emgithub "https://github.com/kujenga/goml/blob/b7ef5639232f10b2f45a9425624038f828dadd80/neural/mlp.go#L290-L314" >}}
 
 For the derivative of the activations w.r.t. the intermediate Z values, we
 simply take the derivative of the activation function.
@@ -524,25 +523,25 @@ outlined further below, the value is \\(sigmoid^{'}(Z)\\), which we implement
 and pass in ahead of time based on the well-known formula for it.
 
 <!-- ∂a/∂z -->
-{{< emgithub "https://github.com/kujenga/goml/blob/fc6bc437686cf50dc0ba9f3bb7f7e7ee23bc611d/neural/mlp.go#L294-L296" >}}
+{{< emgithub "https://github.com/kujenga/goml/blob/b7ef5639232f10b2f45a9425624038f828dadd80/neural/mlp.go#L316-L321" >}}
 
 Lastly, we have the derivative of the Z values with respect to the weights,
-which simply comes out to the activation values from the previous layer.
+which simply comes out to the activation values from the previous layer, shown
+in the next code snippet.
 
 <div>
 $$\frac{\partial Z}{\partial Weights} = Activations$$
 </div>
 
-<!-- ∂z/∂w -->
-{{< emgithub "https://github.com/kujenga/goml/blob/fc6bc437686cf50dc0ba9f3bb7f7e7ee23bc611d/neural/mlp.go#L306-L308" >}}
+Now that we have all the components of the derivative, we can combine them per
+the original equations for our partial derivatives for weights and biases
+respectively that we arrived at via the chain rule. Using these terms,
+we update both the weights and the biases accordingly, multiplied by our
+_learning rate_, which is critical to iteratively improving the network
+successfully.
 
-Now that we have the components, we can combine them per the original equation
-for our partial derivative that we arrived at via the chain rule. Using these
-combined values, we update both the weights and the biases accordingly,
-multiplied by our _learning rate_, which is critical to iteratively improving
-the network successfully.
-
-{{< emgithub "https://github.com/kujenga/goml/blob/fc6bc437686cf50dc0ba9f3bb7f7e7ee23bc611d/neural/mlp.go#L310-L322" >}}
+<!-- ∂z/∂w and final updates -->
+{{< emgithub "https://github.com/kujenga/goml/blob/b7ef5639232f10b2f45a9425624038f828dadd80/neural/mlp.go#L330-L353" >}}
 
 ### Why learning rate matters
 
