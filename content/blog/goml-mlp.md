@@ -242,7 +242,57 @@ precision isn't needed here. Many state of the art ML platforms are using even
 lower precision for increased memory efficiency, or even delving into "mixed
 precision" schemes[^mixedPrecision] that combine multiple precision levels as
 needed. When Go adds support for generics[^goGenerics] this value could be
-something made parameterizable.
+something made configurable.
+
+Next we'll look at how the network internals are initialized, and then dive in
+the details of forward and backward propagation.
+
+## Initialization: data structures for learning
+
+Neural networks require a lot of internal state that holds network parameters
+that encode the predictive power of the network, as well as temporary values
+used in the training process. Here we'll look at what those values are and how
+we set them up.
+
+Initialization of the `MLP` as a whole is done with a basic iteration over the
+layers, initializing each one as shown here. As we'll see later on, the pointers
+to the previous and next layers are critical in the training process, so those
+are passed in at this point in time to connect the layers together.
+
+{{< emgithub "https://github.com/kujenga/goml/blob/at/mlp-blog-commenting/neural/mlp.go#L52-L68" >}}
+
+The `initialize` function on each layer performs the bulk of the setup work for
+the network. First, we initialize the basic pointers to network state, keeping
+track of the `MLP` itself as well as the passed in next and previous layers, as
+well as configuring a default activation function and it's corresponding
+derivative if they were not already specified.
+
+With those basic values in place, we move on to initializing the data structures
+for the networks internal parameters. Here we initialize the weights and biases
+to random values. To understand why random initial values make sense, I find it
+helpful to imagine setting all the weights to the same value, say `1.0`. In
+order to train any network, you need to figure out which weights are
+contributing the most to the resulting error, but if all the weights are the
+same, you end up in a situations where multiple weights might be able to be
+tweaked for similar effect, and it is thus either unclear which weights to move
+in which directions and slow down the overall training process. Another aspect
+of the initialization is the scaling the weights by the "connectedness" of the
+node. To understand why this is helpful, think back to the shape of the sigmoid
+[activation function]({{< ref "#activation-functions" >}}), and what happens as
+the input "x" values get larger. The "y" values get asymptotically closer and
+closer to 1.0, and the differences between them get smaller, meaning that
+changes to the weights have less of an ability to effect the network output,
+which can make it harder to train and converge. By keeping the weights
+proportionally smaller, we leverage more of the curved portion of the sigmoid
+function and give the calculations more discriminative power. It is worth noting
+that this limitation is somewhat specific to asymptotic activations functions
+like sigmoid, but it shouldn't hurt with others that are not.
+
+Lastly, we initialize data structures to keep track of the last seen error
+(`lastE`) and loss (`lastL`) values for the layer, which are a critical
+component of backwards propagation as we will see later on.
+
+{{< emgithub "https://github.com/kujenga/goml/blob/3fb5af144a1568a1a3a747d829038e12293270e0/neural/mlp.go#L200-L248" >}}
 
 ## Forward Propagation: Making predictions
 
