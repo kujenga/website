@@ -12,10 +12,17 @@ toc = true
 
 This post covers the creation of a basic neural network written in Go. We will
 walk through the basics of what neural networks are and how they work,
-specifically looking at feed-forward neural networks, and walk through the
-implementation of a Multi-Layer Perceptron (MLP). Our goal in this process is to
-create a network that performs well on the MNIST dataset, which measures
-performance at recognizing handwritten digits.
+specifically looking at feed-forward neural networks, the earliest type of
+network to be invented, and walk through the implementation of a Multi-Layer
+Perceptron (MLP). Our goal in this process is to create a network that performs
+well at recognizing handwritten digits on the MNIST dataset.
+
+Neural networks are at the heart of most recent advancements in machine learning
+systems, but the fantastic ecosystem of libraries and tools available to
+implement and experiment with them can obscure the inner details of how they
+function. This post goes into the full details of how basic feed-forward neural
+networks function, aiming to give a concrete understanding of the details as a
+foundation for more deeply engaging with the current state of the field.
 
 While there are a number of resources available that cover either the
 implementation of basic single layer networks or the concepts and math behind
@@ -29,32 +36,36 @@ the Go standard library so that the mathematical pieces are all laid out as
 well.
 
 While we will be implementing this network from scratch, I'll be linking out to
-other fantastic resources out there that can provide further detail on the
-various implementation aspects if the network, including a deeper walk through of
-the concepts and intuition behind neural networks and more detailed on deriving
+other fantastic resources that can provide further detail on the
+various implementation aspects of the network, including a deeper walk through of
+the concepts and intuition behind neural networks and more detail on deriving
 back-propagation.
 
+This is a fairly long post, so do feel free to expand the table of contents
+above and skip around!
+
 The network that is created over the course of this post can be found here:
-[github.com/kujenga/goml][repo]
+[github.com/kujenga/goml][repo]. Snippets throughout the post will link out to
+relevant sections as we walk through the implementation there.
 
 ## What is a neural network?
 
 Neural networks are a type of machine learning system that is modeled after a
-basic understanding of the human brain. They are made up of a sets of neurons,
-each of which performs basic compute functions to it's inputs and passes on its
+basic understanding of the human brain. They are made up of sets of neurons,
+each of which performs basic compute functions to its inputs and passes on its
 "activations" to subsequent neurons in the network. The network as a whole thus
-in a set of inputs and produces a set of output predictions as the "activations"
+is a set of inputs and produces a set of output predictions as the "activations"
 of the final layer, the result of the values passing through the network
 neurons.
 
-{{< img file=3-single-layer-perceptron.png alt="Single Layer Perceptron" loc=right width=50% >}}
-
 A single-layer [Perceptron][perceptronWiki] is the simplest useful network, the
-idea for which was first introduced in 1958(!). It can solve basic linearly
+idea for which was first introduced in 1958! It can solve basic linearly
 separable problems, meaning that you could draw straight line(s) to bisect the
 different categories in the output.
 
-The following diagram illustrates the basic structure of a single-layer
+{{< img file=3-single-layer-perceptron.png alt="Single Layer Perceptron" loc=right width=50% >}}
+
+The diagram to the right illustrates the basic structure of a single-layer
 perceptron. Inputs come in on the left-hand side of the network, are passed to
 the next layer via the edges represented with directional lines, and are passed
 into the output nodes that represent the predictions of the network. As we're
@@ -65,7 +76,7 @@ propagate those values to the following layers is where the actual computation
 happens.
 
 While naming conventions for neural networks can be used in different ways,
-Perceptrons are generally thought of as a sub-class of [feed-forward neural
+perceptrons are generally thought of as a sub-class of [feed-forward neural
 networks][feedForwardWiki], where the neurons are organized into a series of
 discrete layers, with activations from one layer passed as inputs to the next.
 
@@ -73,19 +84,32 @@ discrete layers, with activations from one layer passed as inputs to the next.
 
 Each of the nodes in the above graph is often referred to as a "neuron", as they
 are intended to roughly mimic the structures within a simplified model of the
-brain. Let's dive a bit deeper into how these artificial neurons function (and
-perhaps more importantly the edges between them) which will be covered in more
-increasing detail throughout the post.
+brain. Let's dive a bit deeper into how these artificial neurons, and more
+importantly the edges between them, function. The image below illustrates each
+of the following steps.
 
-1. Define a weight parameter \\(w_{i,j}^{L}\\) for each edge in the network for each
-   layer \\(L\\).
-1. For each node in the next layer, take the sum of the inputs from the prior
-   layer, multiplied by the weights on each edge, roughly corresponding to the
-   importance of that input.
-1. Add a bias to the weighted value, shifting it one way or the other.
-1. Apply an “activation function” to the sum to add more predictive power to the
-   overall network.
-1. Pass the result to the next layer.
+One note on that diagram is that by convention, edges and their corresponding
+weights belong to the nodes that the directional arrows are pointing to. In this
+diagram we are looking at layer \\(L^{1}\\), where layer \\(L^{0}\\) is the
+input layer which simply passes values forward without computation.
+
+1. First we define weight parameters \\(w_{j,k}^{(l)}\\) for each layer of the
+   network \\(l\\), where \\(j\\) is the index of the node in the previous layer
+   \\(l - 1\\), and \\(k\\) is the index of the node in the current layer
+   \\(l\\).
+1. Next, for each node in the current layer \\(L^{1}\\) (the input layer is
+   always skipped), we take the sum of the values from the prior layer,
+   multiplied by the weights on each corresponding edge.
+1. We then add a bias \\(b_{k}^{(l)}\\) to the weighted value, shifting it one
+   way or the other.
+1. Now we apply an “activation function” \\(a\\) to the sum, which adds
+   non-linearity and thus more predictive power to the overall network.
+1. If this is the last layer in the network, the resulting values are the output
+   of the network! Otherwise, they are passed on to subsequent layers and this
+   process is repeated.
+
+Here we see these steps laid out with specific example values to illustrate the
+process:
 
 {{< img file=4-basic-neuron-operation.png alt="Basic Neuron Operation" loc=center width=45% >}}
 
@@ -96,14 +120,14 @@ increasing detail throughout the post.
 A key element of the above diagram is the activation function that modifies the
 combination of the incoming values, weights, and biases. Activation functions are
 non-linear functions that transform these values in a way that gives the network
-more expressive power. Without their addition of a non-linear component in the
+more expressive power. Without the addition of a non-linear component in the
 network we just have a series of linear transformations, which limits the types
 of problems we can solve.
 
-This diagram shows the Logistic activation function, also known as sigmoid,
-which is what we will be using in our network implementation. The output is
-represented in the y-axis and the input on the x-axis. The smoothing of more
-extreme input values is critical to the learning ability of the network.
+In our network implementation we will be using a logistic activation function,
+also known as sigmoid, which is displayed in the diagram to the right. The
+output is represented on the y-axis and the input on the x-axis. The smoothing
+of more extreme input values is critical to the learning ability of the network.
 
 ### Adding layers to the network
 
@@ -132,7 +156,7 @@ As we mentioned in the intro, at their most basic level neural networks take in
 a set of inputs and produce a set of outputs. In the process of constructing a
 network, we can center our development around a basic set of unit tests that
 validate this behavior. We'll use two basic classes of tests, one to verify our
-ability learn the outputs of common boolean functions, and then later on we'll
+ability to learn the outputs of common boolean functions, and then later on we'll
 add test cases to train and predict handwriting recognition on the MNIST
 dataset.
 
@@ -180,7 +204,7 @@ pieces of functionality we need to provide:
 In addition to these basic functionalities, we also want to build it in a
 flexible manner that can facilitate any number of layers. By doing so, we can
 create networks of different architectures to facilitate different use cases.
-This may also facilitate iterations to support more complex types neural
+This may also facilitate iterations to support more complex types of neural
 networks, a possible topic for future posts.
 
 For this implementation we will favor clarity over optimizations, aligned with
@@ -188,7 +212,7 @@ the goal of this project as a way to learn the details of how networks operate.
 
 Starting off, the primary struct controlling our network is the `MLP` struct,
 representing our Multi-Layer Perceptron, and is fairly simple. It holds an array
-of layers which form the structure of the network and hold state for training
+of layers that form the structure of the network and hold state for training
 and prediction. The `LearningRate` variable is a network-level hyperparameter
 controlling the training process which we'll look at more closely later, and the
 `Introspect` function allows us to look at incremental training progress.
@@ -214,7 +238,7 @@ The key elements to capture within this data structure are:
 {{<emgithub "https://github.com/kujenga/goml/blob/fc6bc437686cf50dc0ba9f3bb7f7e7ee23bc611d/neural/mlp.go#L156-L198" >}}
 
 With these two structures defined, we can look at how the training process
-works. The entry point is the `Train` function which iterates for a given number
+works. The entry point is the `Train` function, which iterates for a given number
 of "epochs". Each epoch is a pass over the entire dataset. Training happens
 iteratively, with each step containing two passes.
 
@@ -259,7 +283,7 @@ layers, initializing each one as shown here. As we'll see later on, the pointers
 to the previous and next layers are critical in the training process, so those
 are passed in at this point in time to connect the layers together.
 
-{{< emgithub "https://github.com/kujenga/goml/blob/at/mlp-blog-commenting/neural/mlp.go#L52-L68" >}}
+{{< emgithub "https://github.com/kujenga/goml/blob/6f7022bd4284f48cfd6cace2d464c2d9411a8043/neural/mlp.go#L52-L68" >}}
 
 The `initialize` function on each layer performs the bulk of the setup work for
 the network. First, we initialize the basic pointers to network state, keeping
@@ -752,13 +776,16 @@ The score of `0.9644` we get here is equivalent to an error rate of 3.56%, which
 is a bit better than the equivalent network architecture listed on the MNIST
 site! I would call that a definite success.
 
-## Conclusions and future explorations
+## Conclusions and future exploration
 
 At this point, we've walked through the full life cycle of creating a fully
 functioning neural network in Go from scratch, using just the tools given to us
 in the Go standard library.
 
-Future work may explore extensions of this network to provide additional
+If you have any questions, comments, or other feedback, I would love to hear it
+in the comments below!
+
+Future blog posts may explore extensions of this network to provide additional
 functionality, such as batch and mini-batch approaches to the gradient descent
 phase.
 
@@ -776,7 +803,7 @@ libraries like [golearn][golearn], or some of the flagship libraries like
 have the same code be runnable by a variety of execution backends like GPUs.
 
 These may be topics for future posts! If you've made it this far, thanks for
-following along and I hope you found this helpful in gaining a deeper
+following along! I hope you found this helpful in gaining a deeper
 understanding of the basics of neural networks.
 
 ## Resources
@@ -812,7 +839,7 @@ be delved into for further learning:
 [^goGenerics]: https://go.dev/blog/generics-proposal
 [^lossFunctions]: https://www.theaidream.com/post/loss-functions-in-neural-networks
 [^gradientDescentTypes]: https://www.analyticsvidhya.com/blog/2021/03/variants-of-gradient-descent-algorithm/
-[^mnistArchive]: https://web.archive.org/web/20211125025603/http://yann.lecun.com/exdb/mnist/ (I am providing a link to the archive page here as the original website is observed to sometimes give authorization errors)
+[^mnistArchive]: https://web.archive.org/web/20211125025603/http://yann.lecun.com/exdb/mnist/ (I am providing a link to the archive page here as the original website is observed to sometimes ask for credentials)
 
 <!-- Links -->
 [repo]: https://github.com/kujenga/goml
