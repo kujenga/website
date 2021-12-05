@@ -88,7 +88,7 @@ Teaching Assistant for introductory computer science courses.
 
 ### Neural Network in Go
 Wrote a neural network [implementation](https://github.com/kujenga/goml) from
-scratch in Go. Read more about it [on the blog]({{< ref "/blog/goml-mlp.md" >}})!
+scratch in Go. Read more about it [on the blog]({{< ref "/blog/go-mlp.md" >}})!
 
 ### Compiling Interpreter for x86 machine code written in ARM assembly language
 Created the fastest interpreter in my Computer Architecture class by compiling
