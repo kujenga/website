@@ -12,7 +12,8 @@
     "lint:html": "npm run build && html-validate app/public",
     "lint:fmt": "prettier -c .",
     "fix:fmt": "prettier -w .",
-    "build": "hugo",
+    "build": "./scripts/build",
+    "build:prod": "ENVIRONMENT=production ./scripts/build",
     "deploy:gh-pages": "npm run build && ./scripts/deploy-gh-pages.sh",
     "deploy:appengine": "npm run build && gcloud app deploy ./app/ --project"
   },

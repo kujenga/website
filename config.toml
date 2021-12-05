@@ -7,6 +7,7 @@ copyright = "© Aaron Taylor 2015-{year}"
 publishDir = "app/public"
 relativeURLs = true
 enableGitInfo = true
+enableRobotsTXT = true
 
 # allow HTML to be used in markdown files
 [markup.goldmark.renderer]

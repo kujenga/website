@@ -1,0 +1,10 @@
+# robots.txt file for ataylor.io
+{{ if hugo.IsProduction -}}
+# Welcome!
+User-agent: *
+Disallow:
+{{- else -}}
+# Begone! This ain't ready yet.
+User-agent: *
+Disallow: /
+{{- end -}}

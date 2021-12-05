@@ -1,0 +1,19 @@
+#!/bin/bash
+
+set -euo pipefail
+
+# Allow explicit override through an environment variable.
+if [ -n "${ENVIRONMENT-}" ]; then
+    echo "${ENVIRONMENT}"
+    exit 0
+fi
+
+# Builds on the main branch are considered production builds.
+if [ "$(git symbolic-ref --short HEAD)" = "main" ]; then
+    echo 'production'
+    exit 0
+fi
+
+# Default to calling non-production builds "staging".
+echo 'staging'
+exit 0
