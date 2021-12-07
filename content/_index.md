@@ -5,7 +5,7 @@ I love working with amazing people to build incredible products.
 """
 +++
 
-My work focuses on building software systems at the nexus of artificial
+My work focuses on building software systems at the intersection of artificial
 intelligence, information retrieval, and user experience.
 
 Today I'm working to bring [Collaborative AI][eriProduct] to the
@@ -15,7 +15,7 @@ Today I'm working to bring [Collaborative AI][eriProduct] to the
 information.
 
 I'm deeply interested in what we can do to carve a path out of the climate
-crisis. When I'm not at my computer, you can likely find me on a bike or rock
+crisis. When I'm not at my computer, you are likely to find me on a bike or rock
 wall.
 
 
