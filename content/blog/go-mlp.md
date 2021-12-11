@@ -102,10 +102,10 @@ input layer which simply passes values forward without computation.
    multiplied by the weights on each corresponding edge.
 1. We then add a bias \\(b_{k}^{(l)}\\) to the weighted value, shifting it one
    way or the other.
-1. Now we apply an “activation function” \\(a\\) to the sum, which adds
-   non-linearity and thus more predictive power to the overall network.
-1. If this is the last layer in the network, the resulting values are the output
-   of the network! Otherwise, they are passed on to subsequent layers and this
+1. Now we apply an “activation function” \\(a\\) to the prior result, which adds
+   non-linearity and enables us to build a network with more than a single layer.
+1. If this is the last layer in the network, the resulting values are the predictions
+   made by the network! Otherwise, they are passed on to subsequent layers and this
    process is repeated.
 
 Here we see these steps laid out with specific example values to illustrate the
@@ -187,7 +187,10 @@ models on.
 
 One caveat here is that the MNIST dataset distributed in a unique binary format,
 which we will need to de-serialize in order to make use of it in a test case. We
-will walk through that later in the post.
+will walk through that later in the post.  To pass the data into the model we'll 
+need feed the MNIST data into the neural net as a multi-demnsional array.  Since 
+MNIST is 28x28 pixels and uses Greyscale which is represented as a 1 for black
+and 0 for white our array will be 28x28x1. *Not sure if you want this section but here it is*
 
 {{< img file="MnistExamples.png" alt="MNIST Examples" loc=center caption="Josef Steppan, CC BY-SA 4.0 <https://creativecommons.org/licenses/by-sa/4.0>, via Wikimedia Commons" >}}
 
@@ -292,7 +295,7 @@ well as configuring a default activation function and it's corresponding
 derivative if they were not already specified.
 
 With those basic values in place, we move on to initializing the data structures
-for the networks internal parameters. Here we initialize the weights and biases
+for the network's internal parameters. Here we initialize the weights and biases
 to random values. To understand why random initial values make sense, I find it
 helpful to imagine setting all the weights to the same value, say `1.0`. In
 order to train any network, you need to figure out which weights are
@@ -419,7 +422,7 @@ landscape representing the loss of the network, which we represent here from the
 top in two dimensions. The vertical axis represents the loss, where lower is
 better, and the horizontal access represents the space of possible parameters
 that we can move around within as we look for the point to minimize this loss.
-In reality, the number dimensions in this graph is the same as the number of
+In reality, the number of dimensions in this graph is the same as the number of
 parameters we are trying to tweak, but this conceptual understanding remains
 valid as the model scales.
 
@@ -444,7 +447,7 @@ back to the inputs from the previous. The basic steps for this are:
 1. Use that loss to inform updates to the weight and bias parameters in a way
    that decreases the loss, and thus the error.
 
-This is what is needed for the to the first back-propagation step in Multi-layer
+This is what is needed for the first back-propagation step in Multi-layer
 backpropagation.
 
 {{< img file="22-backprop-single-layer.png" alt="Backpropagation in a Single Layer" loc=center width=60% >}}
