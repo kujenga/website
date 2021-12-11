@@ -103,7 +103,8 @@ input layer which simply passes values forward without computation.
 1. We then add a bias \\(b_{k}^{(l)}\\) to the weighted value, shifting it one
    way or the other.
 1. Now we apply an “activation function” \\(a\\) to the prior result, which adds
-   non-linearity and enables us to build a network with more than a single layer.
+   non-linearity and enables us to build a network with more than a single
+   layer[^whyActivationFuncs].
 1. If this is the last layer in the network, the resulting values are the predictions
    made by the network! Otherwise, they are passed on to subsequent layers and this
    process is repeated.
@@ -187,10 +188,11 @@ models on.
 
 One caveat here is that the MNIST dataset distributed in a unique binary format,
 which we will need to de-serialize in order to make use of it in a test case. We
-will walk through that later in the post.  To pass the data into the model we'll 
-need feed the MNIST data into the neural net as a multi-demnsional array.  Since 
-MNIST is 28x28 pixels and uses Greyscale which is represented as a 1 for black
-and 0 for white our array will be 28x28x1. *Not sure if you want this section but here it is*
+will walk through that later in the post. Each of the digits seen in the image
+below is a case from the dataset, represented as a 28x28 pixel image, with
+values in integer form from 0-255. To pass the data into the model we'll need to
+represent this as an array, and normalize the values into floating point numbers
+better suited for transformation.
 
 {{< img file="MnistExamples.png" alt="MNIST Examples" loc=center caption="Josef Steppan, CC BY-SA 4.0 <https://creativecommons.org/licenses/by-sa/4.0>, via Wikimedia Commons" >}}
 
@@ -838,6 +840,7 @@ be delved into for further learning:
   and also mirrored at: https://deepai.org/dataset/mnist
 
 <!-- Footnotes -->
+[^whyActivationFuncs]: https://towardsdatascience.com/why-do-neural-networks-need-an-activation-function-3a5f6a5f00a provides a great explanation of why activation functions are critical to making a multi-layered network.
 [^mixedPrecision]: https://developer.nvidia.com/blog/mixed-precision-training-deep-neural-networks/
 [^goGenerics]: https://go.dev/blog/generics-proposal
 [^lossFunctions]: https://www.theaidream.com/post/loss-functions-in-neural-networks
