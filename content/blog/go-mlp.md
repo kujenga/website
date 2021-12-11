@@ -189,7 +189,7 @@ models on.
 One caveat here is that the MNIST dataset distributed in a unique binary format,
 which we will need to de-serialize in order to make use of it in a test case. We
 will walk through that later in the post. Each of the digits seen in the image
-below is a case from the dataset, represented as a 28x28 pixel image, with
+below is an example from the dataset, represented as a 28x28 pixel image, with
 values in integer form from 0-255. To pass the data into the model we'll need to
 represent this as an array, and normalize the values into floating point numbers
 better suited for transformation.
@@ -356,30 +356,30 @@ training process.
 
 Being able to compute a set of outputs given a set of inputs is a big step
 forward, but in order to give meaning to these outputs, we need to train the
-network to match the predictive behavior that we expect. The way most all
-machine learning models are trained is through a series of iterative steps,
-where each step tweaks the parameters of the model a way that decreases the
-"loss" of the network, and we'll be doing that same process here.
+network to match the predictive behavior that we expect. Nearly all machine
+learning models are trained through a series of iterative steps, where each step
+tweaks the parameters of the model a way that decreases the "loss" of the
+network. We'll be doing that same process here our network.
 
-In each of those iterative steps, our goal is to update the parameters in the
-network, primarily the weights and biases, to minimize the error. Moving
-_backwards_ through this three layer network to do that, our conceptual steps
-corresponding to the diagram below are:
-1. Compute the error at the output layer by comparing the activations of the
-   last layer with the provided truth labels from the dataset.
+In each iterative step, our goal is to update the weight and bias parameters in
+the network to minimize the error. Looking now at the diagram below and moving
+_backwards_ through this three layer network, our conceptual steps are:
+
+1. Compute the output _error_ by comparing the activation values of the
+   output _layer_ with the truth labels from the dataset.
 1. Update the weights and biases in a way that will decrease the computed error.
-   We do this using derivatives, which tell us how to move the weights and
-   biases for this to happen.
-1. Continue to propagate the error backwards through the network, weighting it
-   through the edges that contributed to the eventual error.
+   We do this using derivatives which we will walk through next, which tell us
+   how to move the weights and biases for this to happen.
+1. Continue to propagate different, computed error values backwards through the
+   network, weighting it through the edges that contributed to the output error.
 1. Iteratively update the next set of weights to minimize errors caused by that
-   earlier layer.
+   earlier layer, and repeat as needed for subsequent layers.
 
 {{< img file="20-backprop-overall.png" alt="Backpropagation Overview" loc=center width=70% >}}
 
 If you'd like to go into more depth with understanding the intuition behind
-backpropagation, watch this video! I found in very helpful in understanding the
-process. [Backpropagation explained | Part 1 - The
+backpropagation, watch this video. I found it very helpful in understanding the
+process: [Backpropagation explained | Part 1 - The
 intuition][deeplizardBackPropIntuition]
 
 ### Introducing Loss Functions
@@ -388,16 +388,17 @@ In the above diagram, we talk about propagating the "error" back through the
 network. This presents a slight hiccup however, as the simplest way to calculate
 error values, computing the difference between the expected labeled output and
 the output we received from the network, can be either a positive or negative
-value that can cancel each other out in undesirable ways when combined. In order
-to determine how well the network is doing, we need to be able to look at the
-aggregate of these errors. We do this using a Loss Function, which transforms
-the raw error from the network into something more mathematically useful to us.
+value. These values can cancel each other out in undesirable ways when combined.
+In order to determine how well the network is performing, we need to be able to
+look at the aggregate of all the errors we observe in the output. We do this
+using a Loss Function, which transforms the raw error from the network into
+something more mathematically useful to us.
 
 For our network, we will be using the Mean Squared Error (MSE) loss function,
 which is just what it sounds like, taking the average of the squared values from
-each output. By squaring the error values, the summed errors in the average
-always correctly indicate that the network is doing better or worse and there is
-no cancellation. The formula for MSE is as follows:
+each output. By squaring the error values we make them all positive, and the
+summed errors in the average always correctly indicate that the network is doing
+better or worse and there is no cancellation. The formula for MSE is as follows:
 
 <!-- LaTeX rendered by MathJax -->
 <div>
@@ -406,14 +407,14 @@ $$\frac{1}{N} \sum_{i=1}^N (labels_{i} - outputs_{i})^2$$
 
 There are all sorts of different loss function with varying properties which can
 be used as well. More can be read about different loss functions in other
-resources around the web [^lossFunctions].
+resources around the web[^lossFunctions].
 
 ### Understanding Gradient Descent
 
 Now that we have the basic concepts of propagating error values back through the
 network to update parameters and using loss functions to calculate how well (or
 poorly) the network is doing, we can apply this process repeatedly to
-iteratively improve our network's performance. That iterative process is known
+iteratively improve our network's performance. This iterative process is known
 as [Gradient Descent][gradientDescentWiki].
 
 {{< img file=Gradient_descent.svg alt="Gradient Descent" loc=right width=50% >}}
@@ -432,24 +433,24 @@ In the training process, the goal is to find the point in this landscape that mi
 
 There are a few different approaches to Gradient Descent, but the one we will be
 starting off with here is the simplest, called Stochastic Gradient Descent
-(SGD). With SGD, you look at one input at a time and update the network based on
-the loss from that input/label pair. Other types of gradient descent such as
-batch and mini-batch look at multiple inputs and label pairs at a time, which
-can have various advantages[^gradientDescentTypes], but introduce complexity as
-well, so we skip those for the scope of this post.
+(SGD). With SGD, you look at one input at a time from your dataset, and update
+the network based on the loss from that input/label pair. Other types of
+gradient descent such as batch and mini-batch look at multiple inputs and label
+pairs at a time, which can have various advantages[^gradientDescentTypes], but
+introduce complexity as well, so we skip those for the scope of this post.
 
 ### Backpropagation in more detail
 
 To get into the details of what our backpropagation implementation will actually
-look like, first we look at a single layer, going from the output activations
-back to the inputs from the previous. The basic steps for this are:
+look like, first let's look at a single layer, going from the output activations
+back to the inputs from the previous. The basic steps for this process are:
 
 1. Compute errors in the output against labels from the training data and
    transform these error values with the loss function.
 1. Use that loss to inform updates to the weight and bias parameters in a way
    that decreases the loss, and thus the error.
 
-This is what is needed for the first back-propagation step in Multi-layer
+This is what is needed for the first back-propagation step in multi-layer
 backpropagation.
 
 {{< img file="22-backprop-single-layer.png" alt="Backpropagation in a Single Layer" loc=center width=60% >}}
@@ -469,15 +470,15 @@ and update weights to move towards a better and better network sounds great, but
 how do we actually go about finding what that landscape actually looks like and
 which direction moves us down the hill?
 
-All the feed-forward process implementation we have looked at so far gives us is
-our current point location in the loss landscape, no sense of what the slope of
-that point is. This is where derivatives come into play, allowing us to compute
-a closed form solution for the slope of the point, and thus a way to updating
-the weights for a given set of errors.
+All the implementation we have looked at so far gives us is our current point
+location in the loss landscape, no sense of what the slope is at that location.
+Finding that slope is where [derivatives][partialDeriv] come into play, allowing
+us to compute a closed form solution for the slope of the current point, and
+thus a way to updating the weights for a given set of errors.
 
-To capture all of our formulas in one place, here are the three equations that
-will be differentiated, representing the forward-propagation implementation
-steps we walked through above.
+To capture all of our formulas that will be involved here in one place, here are
+the three equations that will be differentiated, representing a mathematical
+form of the forward-propagation implementation steps we walked through above.
 
 <!-- LaTeX rendered by MathJax -->
 <div>
@@ -491,12 +492,12 @@ loss with respect to weights out into a series of functions we can compute. For
 a fantastic explanation of this differentiation process in more detail, watch:
 [Backpropagation explained | Part 4 - Calculating the
 gradient][deeplizardBackPropGradient] as well as preceding videos in that
-series. To cover this briefly, the derivatives that we wish to compute are as
+series. To cover it briefly here, the derivatives that we wish to compute are as
 follows.
 
 For updating the _weights_, we need to compute the derivative of the loss with
-respect to the derivative of the weights. In other words, how to we change the
-weights to decrease the loss?
+respect to the derivative of the weights. In other words, how should we be
+modifying the input values with the weights to decrease the loss?
 
 <!-- LaTeX rendered by MathJax -->
 <!-- ∂L/∂w = ∂L/∂a * ∂a/∂z * ∂z/∂w -->
@@ -511,7 +512,8 @@ $$
 
 For updating the _bias_, we calculate the derivative of the loss with respect to
 the derivative of the inner \\(Z\\) value, which is directly influenced by the
-bias. In other words, how do we shift the values to decrease the loss?
+bias. In other words, how do we by shifting the input values with the biases to
+decrease the loss?
 
 <!-- LaTeX rendered by MathJax -->
 <!-- ∂L/∂z = ∂L/∂a * ∂a/∂z -->
@@ -527,7 +529,9 @@ $$
 
 Armed with these new equations, we can implement the computation for each
 individual _component_ of these partial derivatives. With those in hand, we can
-combine them to compute the final weight and bias updates.
+combine them to compute the final weight and bias updates. In this section I
+will present the computed partial derivatives. Circle back to the video linked
+above if you want to understand more about the actual differentiation process.
 
 Via the [Power Rule][powerRule] on the MSE function, we have the following
 result for the first component.
@@ -549,7 +553,8 @@ $$\frac{\partial Activations}{\partial Z} = f_{activation}^{'}(Z)$$
 As this is a configurable "hyperparameter" of the network, it is a pre-defined
 value that needs to be specified at network initialization. In our test cases
 outlined further below, the value is \\(sigmoid^{'}(Z)\\), which we implement
-and pass in ahead of time based on the well-known formula for it.
+and pass in ahead of time based on the [well-known formula][sigmoidDeriv] for
+it.
 
 <!-- ∂a/∂z -->
 {{< emgithub "https://github.com/kujenga/goml/blob/b7ef5639232f10b2f45a9425624038f828dadd80/neural/mlp.go#L316-L321" >}}
@@ -565,8 +570,8 @@ $$\frac{\partial Z}{\partial Weights} = Activations$$
 Now that we have all the components of the derivative, we can combine them per
 the original equations for our partial derivatives for weights and biases
 respectively that we arrived at via the chain rule. Using these terms,
-we update both the weights and the biases accordingly, multiplied by our
-_learning rate_, which is critical to iteratively improving the network
+we update both the weights and the biases in the indicated directions, adjusted
+by our _learning rate_, which is critical to iteratively improving the network
 successfully.
 
 <!-- ∂z/∂w and final updates -->
@@ -578,21 +583,21 @@ successfully.
 
 When we calculate the derivative for a given point in the loss landscape, we
 need to make sure we are not overly trusting of what that derivative tells us.
-Looking again at this diagram from earlier, we _could_ use the inferred slope of
-the loss from the computed gradient at a given point to attempt to jump straight
-to the values that will set the loss to zero along that plane for that
-gradient. As we can see here though, that would overshoot our desired minimized
-loss value and bounce around more than is desired, represented by the thicker
-red lines. If we were to continue that process, we may never reach the minimum
-point in the center where error is most greatly reduced, because with every step
-we are likely to overshoot it.
+Looking again at this diagram from earlier, we _could_ take the inferred slope
+of the loss from the computed gradient at our location, and attempt to jump
+straight to the location that that would set the loss to zero along that plane.
+However, as seen in the example to the right represented in the thicker red
+lines, that would overshoot our desired minimized loss value and bounce around
+more than is desired. If we were to continue that process, we may never reach
+the minimum point in the center where overall error is most greatly reduced,
+because with every step we are likely to overshoot it rather than converging.
 
 In this diagram, the use of a learning rate is shown through the smaller
 iterations on the thinner light red lines, where we move by a few percentage
 points of the amount predicted by the gradient to get closer and closer to the
 minima iteratively.
 
-With these pieces in place, we are now ready to start testing our network!
+With all these pieces in place, we are now ready to start testing our network!
 
 ## Validating on Boolean test cases
 
@@ -608,8 +613,8 @@ be setup and executed in a repeated table-driven style with the following cases:
 
 {{< emgithub "https://github.com/kujenga/goml/blob/fc6bc437686cf50dc0ba9f3bb7f7e7ee23bc611d/neural/mlp_test.go#L80-L100" >}}
 
-First we set up a basic MLP network to test against with just an input layer and
-single output layer with weights doing computation.
+First we set up a basic network to test against with just an input layer and
+single output layer.
 
 We iterate over the boolean test cases and assert that the network can learn the
 outputs in each case. The `predictionTestBool` function is a simple helper that
@@ -618,15 +623,17 @@ data for the corresponding boolean function.
 
 {{< emgithub "https://github.com/kujenga/goml/blob/b73f6122025613f0ffe91033a959b8d0093baab4/neural/mlp_test.go#L152-L179" >}}
 
-A test case for the multi-layer network it set up the same way, just adding in a
-hidden layer to the network.
+A test case for the multi-layer network it set up the same way, just adding the
+`hidden1` layer to the network within the definition for the `Layers` array
+within the `MLP`.
 
 {{< emgithub "https://github.com/kujenga/goml/blob/b73f6122025613f0ffe91033a959b8d0093baab4/neural/mlp_test.go#L209-L238" >}}
 
-Below is the output of these tests (with the `Introspect` function omitted). We
-can observe how the predictions trend toward the correct labels. The assertions
-in the test verify this, using fuzzy math logic with cutoffs to classify the
-network output one way to the other.
+Below is the output of these tests (with the `Introspect` function omitted for
+brevity). We can observe how the predictions trend toward the correct labels.
+The assertions in the test verify this, using fuzzy rounding logic with cutoffs
+to classify the network output one way to the other, and assert that it matches
+our expectations.
 
 ```
 $ go test -v ./neural -run TestMLPMultiLayerBool
@@ -663,15 +670,19 @@ ok  	github.com/kujenga/goml/neural	0.243s
 ## Validating on MNIST
 
 Now that we have established that our network can learn basic boolean functions,
-let's crank things up a few notches and take on the MNIST dataset.
+let's crank things up a few notches and take on the MNIST digits dataset.
 
 {{< img file="MnistExamples.png" alt="MNIST Examples" loc=center caption="Josef Steppan, CC BY-SA 4.0 <https://creativecommons.org/licenses/by-sa/4.0>, via Wikimedia Commons" >}}
 
 ### Parsing MNIST
 
 Before we can start working with the MNIST dataset directly, we need to parse it
-into a usable form. The dataset is stored in a rather unique binary format,
-which we handle as two separate parsing steps.
+into a usable form. As mentioned above, the format of the data is a set of
+images represented as 28x28 pixel 2-dimensional arrays, where each value is a
+`uint8` between 0-255 representing the color of the pixel. It also contains the
+corresponding label definitions, represented as `uint8` values 0-9. The dataset
+is also stored in a rather unique binary format, which we handle as two separate
+parsing steps.
 
 First, we create a parser for the binary [idx][gopkgIDX] dataset format, which
 returns the following parsed data structure from the binary files read out from
@@ -687,8 +698,8 @@ returns the following data structure for use in tests.
 
 This parsing code is based directly on the MNIST spec and is all specified in
 the files linked to from the snippets just above, with corresponding test cases
-in those packages as well. Feel free to click through and explore the source
-code there if you are curious.
+in those packages as well. Feel free to click through these code snippets into
+GitHub and explore the source code there if you are curious.
 
 ### One-hot encoding
 
@@ -697,23 +708,25 @@ of transformation and data prep to be ready to train.
 
 {{< img file="35-mnist-one-hot.png" alt="MNIST One-hot encoding" loc=right width=50% >}}
 
-Neural networks are generally weaker when trying to predict a range of outputs
-from a single neuron, if those outputs are not meaningfully correlated with the
-inputs from a numerical perspective.
+Neural networks are generally weaker when trying to predict a set of discrete
+outputs from a single neuron, if those outputs are not meaningfully correlated
+with the inputs from a numerical perspective.
 
 As an example of why this is the case, let's look at the numbers `7` and `8`.
-Numerically, they are right next to each other, but when visually represented,
-there is nothing about those two numbers which makes them closer together than
-any other pair of numbers in the range 0-9. Because our network is a
-mathematical combination of predictions, it would be difficult to have a network
-that could output a single numeric value quantized 0-9 to represent these
-digits.
+Numerically, they are right next to each other, meaning that the network outputs
+would need to be mathematically very close, while network outputs for `8` and
+`0` would need to be mathematically very far away. In terms of the visual
+representations of these numbers however, there is nothing about them which
+makes them closer together than any other pair of numbers in the range 0-9.
+Because our network is a mathematical combination of predictions, it would be
+difficult to have a network that could output a single numeric value quantized
+0-9 to represent these digits.
 
 One-hot encoding solves this problem. It uses a vector of binary values to make
 all the possible categorical outcomes independent of each other, as shown in
-this diagram, where "8" is mapped to a single "1" value within a vector.
-One-hot encodings are very useful for categorical variables, and that is what we
-will use here for representing MNIST.
+this diagram, where "8" is mapped to a single "1" value within a vector, and all
+other values are set to 0. One-hot encodings are very useful for categorical
+variables, and that is what we will use here for representing MNIST.
 
 ### MNIST Network Architecture
 
@@ -723,19 +736,25 @@ conceptually, and is based on the network architectures documented on the MNIST
 page which compiles past results, maintained by Yann LeCun[^mnistArchive].
 
 One of these architectures is `2-layer NN, 300 hidden units, mean square error`,
-which we will replicate here, though modifications of this architecture with a
-different number of layers, layer sizes, etc. still can perform well!
+which we will replicate here. It is worth noting though that modifications of
+this architecture with a different number of layers, layer sizes, etc. still can
+perform well!
 
 {{< img file="36-mnist-architecture.png" alt="MNIST Network Architecture" loc=center width=70% >}}
 
 ### MNIST Test cases
 
-In a similar manner to the boolean test cases above, we lay out our network
-architecture for the MNIST network, execute the training process, and then
-validate our network performance.
+To implement our test cases for MNIST, in a similar manner to the boolean test
+cases above we lay out our network architecture for the MNIST network, execute
+the training process, and then validate our network performance. The input layer
+is the width of an array of all the pixels in a given 28x28 image from the
+dataset, and the output layer produces a vector with a one-hot encoding of the
+digit.
 
 One key difference here is that we are training and validating on separate
-datasets, which are given to us separately by the MNIST dataset itself.
+datasets, which are given to us separately by the MNIST dataset itself. This is
+a critical step forward towards tackling more realistic machine learning
+problems[^properTesting].
 
 > For speed of execution in CI systems, the following test case limits the
 > dataset size to 1/6 of what it normally would be, with 60k total examples.
@@ -783,12 +802,9 @@ site! I would call that a definite success.
 
 ## Conclusions and future exploration
 
-At this point, we've walked through the full life cycle of creating a fully
-functioning neural network in Go from scratch, using just the tools given to us
-in the Go standard library.
-
-If you have any questions, comments, or other feedback, I would love to hear it
-in the comments below!
+At this point, we've walked through the creating a fully functioning neural
+network in Go from scratch, using just the tools given to us in the Go standard
+library.
 
 Future blog posts may explore extensions of this network to provide additional
 functionality, such as batch and mini-batch approaches to the gradient descent
@@ -811,19 +827,21 @@ These may be topics for future posts! If you've made it this far, thanks for
 following along! I hope you found this helpful in gaining a deeper
 understanding of the basics of neural networks.
 
+If you have any questions, comments, or other feedback, I would love to hear it
+in the comments below!
+
 ## Resources
 
 Source code for this project can be found here: https://github.com/kujenga/goml
 and the corresponding documentation is available here:
 https://pkg.go.dev/github.com/kujenga/goml
 
-Additionally, this post is based on a talk given for [Boston
-Golang](http://bostongolang.org/) in [Sept.
-2021](https://www.meetup.com/bostongo/events/280522108/), the slides for which
-can be found here: [Building a Neural Network in Go][slideDeck]
+This post is based on a talk given for [Boston Golang](http://bostongolang.org/)
+in [Sept. 2021](https://www.meetup.com/bostongo/events/280522108/), the slides
+for which can be found here: [Building a Neural Network in Go][slideDeck]
 
-Here is a list of references I found useful in exploring these topics, which can
-be delved into for further learning:
+This is a list of references I found useful in exploring the topics covered in
+this post, which can be delved into for further learning:
 - The [Backpropagation explained][deeplizardBackPropExplained] YouTube series by
   [Deeplizard][deeplizardPage] is a great reference to go into even more detail
   on the concept and math behind the derivation process for backpropagation.
@@ -843,9 +861,10 @@ be delved into for further learning:
 [^whyActivationFuncs]: https://towardsdatascience.com/why-do-neural-networks-need-an-activation-function-3a5f6a5f00a provides a great explanation of why activation functions are critical to making a multi-layered network.
 [^mixedPrecision]: https://developer.nvidia.com/blog/mixed-precision-training-deep-neural-networks/
 [^goGenerics]: https://go.dev/blog/generics-proposal
-[^lossFunctions]: https://www.theaidream.com/post/loss-functions-in-neural-networks
+[^lossFunctions]: This article walks through examples of different loss functions: https://www.theaidream.com/post/loss-functions-in-neural-networks
 [^gradientDescentTypes]: https://www.analyticsvidhya.com/blog/2021/03/variants-of-gradient-descent-algorithm/
 [^mnistArchive]: https://web.archive.org/web/20211125025603/http://yann.lecun.com/exdb/mnist/ (I am providing a link to the archive page here as the original website is observed to sometimes ask for credentials)
+[^properTesting]: For more complex problems, or any sort of model that is expected to be deployed in production systems, just having separate train and test sets is usually not enough. Keeping separate "holdout" sets that you do not look at at all, as well as approaches like cross-validation are common to avoid common pitfalls with over-fitting to training data. You can read more about cross-validation here: https://towardsdatascience.com/what-is-cross-validation-60c01f9d9e75
 
 <!-- Links -->
 [repo]: https://github.com/kujenga/goml
@@ -861,7 +880,9 @@ be delved into for further learning:
 [deeplizardBackPropIntuition]: https://www.youtube.com/watch?v=XE3krf3CQls
 [deeplizardBackPropGradient]: https://www.youtube.com/watch?v=Zr5viAZGndE
 [deeplizardBackPropExplained]: https://www.youtube.com/playlist?list=PLZbbT5o_s2xq7LwI2y8_QtvuXZedL6tQU
+[partialDeriv]: https://www.khanacademy.org/math/multivariable-calculus/multivariable-derivatives/partial-derivative-and-gradient-articles/a/introduction-to-partial-derivatives
 [powerRule]: https://en.wikipedia.org/wiki/Power_rule
+[sigmoidDeriv]: https://towardsdatascience.com/derivative-of-the-sigmoid-function-536880cf918e
 [gopkgIDX]: https://pkg.go.dev/github.com/kujenga/goml@v0.0.0-20210928201159-b73f61220256/idx
 [gopkgMNIST]: https://pkg.go.dev/github.com/kujenga/goml@v0.0.0-20210928201159-b73f61220256/mnist
 [myoNNTariqRashid]: https://smile.amazon.com/Make-Your-Own-Neural-Network/dp/1530826608/
