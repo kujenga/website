@@ -1,30 +1,45 @@
 #!/bin/bash
+#
+# This script outputs a version for use in the Google App Engine deployment.
+
+set -euo pipefail
 
 # Directory containing this script.
-D=$(cd "$(dirname "$0")" && pwd -P)
+D=$( cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P )
 # Root of this repository.
 R=$(cd "$D/.." && pwd -P)
 
+# Here we build the components for constructing various types of version
+# strings for use in App Engine deployment.
+#
+# NOTE: The rules for version validation (from CLI output) state:
+#
+#     May only contain lowercase letters, digits, and hyphens. Must begin and
+#     end with a letter or digit. Must not exceed 63 characters.
+
 DATE="$(date '+%Y%m%dt%H%M%S')"
+
+ENVIRONMENT="$("$D/environment")"
 
 GIT_HASH="g$(git rev-parse --short HEAD)"
 
-PRE='branch'
-if [[ "$CIRCLE_BRANCH" = 'main' ]]; then
-    PRE="main-${CIRCLE_BUILD_NUM}"
-fi
+BRANCH="$(git symbolic-ref --short HEAD | tr / -)"
 
 BUILD='local'
 if [[ -n "$CIRCLE_BUILD_NUM" ]]; then
     BUILD="ci${CIRCLE_BUILD_NUM}"
 fi
 
-# NOTE: The rules for version validation (from CLI output) state:
-#
-#     May only contain lowercase letters, digits, and hyphens. Must begin and
-#     end with a letter or digit. Must not exceed 63 characters.
-
-VERSION="$PRE-$BUILD-$GIT_HASH-$DATE"
+# Construct versions, making unique versions for production builds and stable
+# ones for evolving branches.
+if [[ "$ENVIRONMENT" = 'production' ]]; then
+    VERSION="$ENVIRONMENT-$BUILD-$GIT_HASH-$DATE"
+else
+    # For branch versioning, we utilize the same string based on the name of
+    # the branch, so that we override whatever is there and the URL stays
+    # constant for reference by myself and any reviewers as changes happen.
+    VERSION="$ENVIRONMENT-$BRANCH"
+fi
 
 # Write the version to a file.
 echo "$VERSION" > "$R/VERSION"

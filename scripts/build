@@ -2,11 +2,11 @@
 
 set -euo pipefail
 
-DIR=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+D=$( cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P )
 
 set -x
 
-ENVIRONMENT="$("$DIR/environment")"
+ENVIRONMENT="$("$D/environment")"
 
 hugo \
     --environment="$ENVIRONMENT"
