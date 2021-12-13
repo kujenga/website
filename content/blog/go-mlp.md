@@ -302,8 +302,6 @@ track of the `MLP` itself as well as the passed in next and previous layers, as
 well as configuring a default activation function and it's corresponding
 derivative if they were not already specified.
 
-{{< img file=Logistic-curve.svg alt="Logistic Curve" loc=right width=50% caption="By Qef, Public Domain, https://commons.wikimedia.org/w/index.php?curid=4310325" >}}
-
 With those basic values in place, we move on to initializing the data structures
 for the network's internal parameters. Here we initialize the weights and biases
 to random values. To understand why random initial values make sense, I find it
@@ -314,17 +312,20 @@ same, you end up in a situations where multiple weights might be able to be
 tweaked for similar effect. In such cases you can conceptual imagine it being
 unclear which weights to move in which directions, and this can slow down the
 overall training process. Another aspect of the initialization is the scaling
-the weights by the "connectedness" of the node. To understand why this is
-helpful, think back to the shape of the sigmoid [activation function]({{< ref
-"#activation-functions" >}}), and what happens as the input "x" values get
-larger. The "y" values get asymptotically closer and closer to 1.0, and the
-differences between them get smaller, meaning that changes to the weights have
-less of an ability to effect the network output, which can make it harder to
-train and converge. By keeping the weights proportionally smaller, we leverage
-more of the curved portion of the sigmoid function and give the calculations
-more discriminative power. It is worth noting that this limitation is somewhat
-specific to asymptotic activations functions like sigmoid, but it shouldn't hurt
-with others that are not.
+the weights by the "connectedness" of the node.
+
+{{< img file=Logistic-curve.svg alt="Logistic Curve" loc=right width=50% caption="By Qef, Public Domain, https://commons.wikimedia.org/w/index.php?curid=4310325" >}}
+
+To understand why this is helpful, think back to the shape of the sigmoid
+[activation function]({{< ref "#activation-functions" >}}), shown here again,
+and what happens as the input "x" values get larger. The "y" values get
+asymptotically closer and closer to 1.0, and the differences between them get
+smaller, meaning that changes to the weights have less of an ability to effect
+the network output, which can make it harder to train and converge. By keeping
+the weights proportionally smaller, we leverage more of the curved portion of
+the sigmoid function and give the calculations more discriminative power. It is
+worth noting that this limitation is somewhat specific to asymptotic activations
+functions like sigmoid, but it shouldn't hurt with others that are not.
 
 Lastly, we initialize data structures to keep track of the last seen error
 (`lastE`) and loss (`lastL`) values for the layer, which are a critical
