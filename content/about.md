@@ -8,21 +8,33 @@ type = "about"
 
 <div class="col-md-7">
 
-## About
+## About me
 ### I've been building things all my life
 
 Today my work focuses on bringing Collaborative AI to the Salesforce platform.
 I am leading engineering teams in building machine learning and information
 retrieval systems to create user experiences that harness information from
 unstructured content. I joined Salesforce as part of the Diffeo acquisition in
-November 2019.
+November 2019. Prior to joining Salesforce, I co-founded Diffeo and Meta Search
+to help to make sense of the world's information.
 
-Prior to joining Salesforce, I co-founded Diffeo and Meta Search to help to make
-sense of the world's information.
 </div>
 
 <div class="col-md-5">
 {{< img resource="images/me/hawaii-500px.jpeg" alt="Hawaii" >}}
+</div>
+
+<div class="col-md-12">
+
+I'm deeply interested in what we can do to carve a path out of the climate
+crisis, and I see driving innovation forward as our greatest hope to create the
+level of monumental changes needed to address the threat of climate change.
+
+When I'm not at my computer, you are likely to find me out on a bike or working
+my way up a rock wall.
+
+<!-- TODO: reference revamped project page as well -->
+
 </div>
 
 </div>
