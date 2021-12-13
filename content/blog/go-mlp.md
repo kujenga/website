@@ -1,5 +1,5 @@
 +++
-date = "2021-11-22T07:32:55-05:00"
+date = "2021-12-12T22:16:40-05:00"
 title = "Building a Neural Network in Go"
 description = """
 Creating a basic neural network from scratch, with just the Go standard library.
