@@ -133,6 +133,11 @@ nav.navbar {
   }
 }
 
+// stylelint-disable-next-line selector-class-pattern
+.MathJax {
+  overflow: scroll;
+}
+
 /* Set font sizes for headers in the about page to the desired value */
 .type-about {
   h1 {
