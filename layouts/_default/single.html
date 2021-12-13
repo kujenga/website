@@ -1,37 +1,44 @@
-{{ partial "header.html" . }}
-<body>
-{{ partial "nav.html" . }}
-<div class="container">
-    <div class="row">
-        <div class="col-md-9">
-            <div id="blog-post" class="">
-                    <h1>{{ .Title }}<br> <small>{{ .Description }}</small></h1>
-                    <hr>
-                    {{ .Content }}
-                    <br>
-            </div>
-            {{ partial "comments.html" . }}
-        </div>
-
-        <!-- Sidebar -->
-        <div class="col-md-3">
-            {{ partial "sidebar.html" . }}
-            <div class=""> <!-- Post-specific stats -->
-                <h4>{{ .Date.Format "January 2, 2006" }}<br>
-                <small>{{ .WordCount }} words</small></h4>
-                <!-- <hr>
-                <strong>Categories</strong>
-                <ul class="list-unstyled">
-                {{ range .Params.categories }}
-                    <li><a href="/categories/{{ . | urlize }}">{{ . }}</a></li>
-                {{ end }}
-                </ul> -->
-                <hr>
-                <strong>Tags</strong><br>
-                {{ range .Params.tags }}<a class="label label-default" href="/tags/{{ . | urlize }}">{{ . }}</a> {{ end }}
-            </div>
-        </div>
+{{ define "main" }}
+<div class="row">
+  <div class="col-md-9">
+    <div id="main" class="kind-{{ .Page.Kind }} type-{{ .Page.Type }}">
+      <h1>{{ .Title }}</h1>
+      <h2><small>{{ .Description }}</small></h2>
+      {{ partial "toc.html" . }}
+      <hr />
+      <div id="content">{{ .Content }}</div>
+      <br />
     </div>
-{{ partial "footer.social.html" . }}
-</div> <!-- /container -->
-{{ partial "footer.html" . }}
+    {{ partial "comments.html" . }}
+  </div>
+
+  <!-- Sidebar -->
+  <div class="col-md-3">
+    {{ partial "sidebar.html" . }}
+    <div class="">
+      <!-- Post-specific stats -->
+      <br />
+      <h5>{{ .Date.Format "January 2, 2006" }}</h5>
+      <!-- NOTE: Reading time removed as it does not seem accurate, and word count is not that informative on it's own -->
+      <!-- <div>{{ .ReadingTime }} min - <small>{{ .WordCount }} words</small></div> -->
+      <!-- <hr /> -->
+      <!-- <strong>Categories</strong> -->
+      <!-- <ul class="list-unstyled"> -->
+      <!--   {{ range .Params.categories }} -->
+      <!--   <li><a href="/categories/{{ . | urlize }}">{{ . }}</a></li> -->
+      <!--   {{ end }} -->
+      <!-- </ul> -->
+      <hr />
+      <strong>Tags</strong><br />
+      {{ range $index, $tag := .Params.tags -}}
+      <!-- Add commas: https://gohugo.io/templates/taxonomy-templates/#example-comma-delimit-tags-in-a-single-page-template -->
+      {{- if gt $index 0 }}, {{ end -}}
+      <!-- TODO: The <a> elements can be enabled when the taxonomy pages are working. -->
+      <!-- <a class="label label-default" href="/tags/{{ . | urlize }}">  -->
+      {{- $tag -}}
+      <!-- </a> -->
+      {{- end }}
+    </div>
+  </div>
+</div>
+{{ end }}

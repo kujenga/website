@@ -1,15 +1,13 @@
 <!DOCTYPE html>
-<html>
-<head>
-	<title>{{ .Title }}</title>
-</head>
-<body>
-<div class="container">
-{{ range .Data }}
-	<div>
-		{{ . }}
-	</div>
-{{ end }}
-</div>
-</body>
+<html lang="en">
+  <head>
+    <title>{{ .Title }}</title>
+  </head>
+  <body>
+    <div class="container">
+      {{ range .Data }}
+      <div>{{ . }}</div>
+      {{ end }}
+    </div>
+  </body>
 </html>

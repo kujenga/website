@@ -1,0 +1,6 @@
+{{ define "main" }}
+<div id="main" class="row kind-{{ .Page.Kind }} type-{{ .Page.Type }}">
+  <div class="col-md-9">{{ .Content }}</div>
+  <div class="col-md-3">{{ partial "sidebar.html" . }}</div>
+</div>
+{{ end }}

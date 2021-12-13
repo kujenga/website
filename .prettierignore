@@ -1,0 +1,11 @@
+# Submodule that we do not control directly.
+assets/embed-like-gist/
+
+# Built or static assets
+static/
+resources/
+app/public/
+
+# Not wanted on .md content currently
+*.md
+content/

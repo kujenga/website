@@ -1,28 +1,53 @@
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script
+  src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+  integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+  crossorigin="anonymous"
+></script>
+<script
+  src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+  integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+  crossorigin="anonymous"
+></script>
 <!-- Latest compiled and minified JavaScript -->
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+<script
+  src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+  integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+  crossorigin="anonymous"
+></script>
+<!-- Add anchor links to posts: https://www.bryanbraun.com/anchorjs/ -->
+<script
+  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js"
+  integrity="sha256-0WMZ9PF4b2hTF66Eglv/9H5Vwk6lnOG4AbmCJxo96WQ="
+  crossorigin="anonymous"
+></script>
 
-<script type="text/javascript">
+<script>
+  // Add anchor links to any desired content, comma-separated.
+  anchors.add(
+    '.type-blog #content h1, .type-blog #content h2, .type-blog #content h3, .type-blog #content h4'
+  );
+</script>
+
+<script>
   var jumboHeight = $('.jumbotron').outerHeight();
-  function parallax(){
-      var scrolled = $(window).scrollTop();
-      $('.bg').css('height', (jumboHeight-scrolled) + 'px');
+  function parallax() {
+    var scrolled = $(window).scrollTop();
+    $('.bg').css('height', jumboHeight - scrolled + 'px');
   }
 
-  $(window).scroll(function(e){
-      parallax();
+  $(window).scroll(function (e) {
+    parallax();
   });
 </script>
 
-<script type="text/javascript">
-	// highlight menu bar appropriately: http://stackoverflow.com/questions/11813498/make-twitter-bootstrap-navbar-link-active#answer-25082875
-	$(document).ready(function() {
-	    $('a[href="' + this.location.pathname + '"]').parent().addClass('active');
-	});
+<script>
+  // highlight menu bar appropriately: http://stackoverflow.com/questions/11813498/make-twitter-bootstrap-navbar-link-active#answer-25082875
+  $(document).ready(function () {
+    $('a[href="' + this.location.pathname + '"]')
+      .parent()
+      .addClass('active');
+  });
 </script>
-</body>
-</html>

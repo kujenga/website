@@ -1,0 +1,3 @@
+[submodule "third/embed-like-gist"]
+	path = assets/embed-like-gist
+	url = git@github.com:kujenga/embed-like-gist.git

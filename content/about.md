@@ -1,72 +1,106 @@
 +++
 date = "2015-06-16T22:59:46-04:00"
 title = "About"
-subtitle = "I've been building things all my life"
-description = """
-Today, my work focuses on bringing collaborative AI to the Salesforce platform
-by building AI capabilities and user experiences that harness information in
-unstructured content. I joined Salesforce when Diffeo was acquired in November
-2019.
-
-I co-founded Diffeo and Meta Search with the goal of helping to make sense of
-the world's information, leading our engineering teams to build a platform to
-that end.
-"""
-profileImg = "images/me/hawaii-500px.jpeg"
-
+type = "about"
 +++
 
+<div class="row">
+
+<div class="col-md-7">
+
+## About me
+### I've been building things all my life
+
+Today my work focuses on bringing Collaborative AI to the Salesforce platform.
+I am leading engineering teams in building machine learning and information
+retrieval systems to create user experiences that harness information from
+unstructured content. I joined Salesforce as part of the Diffeo acquisition in
+November 2019. Prior to joining Salesforce, I co-founded Diffeo and Meta Search
+to help to make sense of the world's information.
+
+</div>
+
+<div class="col-md-5">
+{{< img resource="images/me/hawaii-500px.jpeg" alt="Hawaii" >}}
+</div>
+
+<div class="col-md-12">
+
+I'm deeply interested in what we can do to carve a path out of the climate
+crisis, and I see driving innovation forward as our greatest hope to create the
+level of monumental changes needed to address the threat of climate change.
+
+When I'm not at my computer, you are likely to find me out on a bike or working
+my way up a rock wall.
+
+<!-- TODO: reference revamped project page as well -->
+
+</div>
+
+</div>
+
+<hr>
 
 ## Experience
 
-### Director, Software Engineering, [Salesforce](https://www.salesforce.com/)
-#### November 2019 - Present
-Bringing Collaborative AI to the Salesforce platform.
+### [Salesforce](https://www.salesforce.com/)
+#### Senior Director, Software Engineering <small>February 2021 - Present</small>
+Bringing Collaborative AI to the Salesforce platform, scaling Einstein
+Relationship Insights.
+#### Director, Software Engineering <small>November 2019 - February 2021</small>
+After being acquired by Salesforce, integrating Diffeo technologies to launch
+[Einstein Relationship Insights][ERI].
 
-### VP Engineering and Co-Founder, [Diffeo](https://diffeo.com) <small>(Acquired by Salesforce)</small>
-#### September 2016 - November 2019
-Building search and discovery tools that use collaborative machine intelligence
-to solve the challenges of disparate data. My focus is on expanding our platform
-as a robust set of cloud services, providing the power of Diffeo on a broader
-scale and building a data platform connecting the world's information.
+### [Diffeo](https://diffeo.com) <small>(Acquired by Salesforce)</small>
+#### Co-Founder, VP Engineering <small>September 2016 - November 2019</small>
+Diffeo provides a recommender engine using collaborative machine intelligence to
+solve the challenges of disparate unstructured data. Diffeo provides
+recommendations in-context with existing user workflows to augment analysts and
+researchers, uncovering crucial insights and accelerating their work.
 
-### CTO and Co-Founder, [Meta](https://meta.sc) <small>(Acquired by Diffeo)</small>
-#### January 2015 - September 2016
+### [Meta](https://meta.sc) <small>(Acquired by Diffeo)</small>
+#### Co-Founder, CTO <small>January 2015 - September 2016</small>
 Developing a cloud platform that brings the power of a search engine to a user's
 own files. Architecting a service-based backend to provide a single user
 experience for file search and organization. It analyzes files with a similar
 intent to how a search engine would analyze the web, providing SmartTags based
 on found concepts and ideas.
 
-### Head Developer and Co-Founder, [Peck](https://itunes.apple.com/tr/app/peck-social-calendaring-event/id912464190)
-#### Fall 2013 - January 2015
+### [Peck](https://itunes.apple.com/tr/app/peck-social-calendaring-event/id912464190)
+#### Co-Founder, Head Developer <small>Fall 2013 - January 2015</small>
 Won the annual Williams College Business Plan Competition and hired a team of 5
 to work out of [Lever](http://www.leverinc.org). Lead development of a mobile
 app for iOS and Android with Ruby on Rails backend. Now live on the iOS App
 Store. Peck is a social calendaring service for college students providing
 information and event-based communication.
 
-### Winter Intern, [New Signature](https://newsignature.com)
-#### January 2014
+### [New Signature](https://newsignature.com)
+#### Winter Intern <small>January 2014</small>
 Designed a system for knowledge management and intellectual property creation
-for diagnostic, configurational, and procedural toolsets with goals of internal
+for diagnostic, configurational, and procedural tool sets with goals of internal
 efficiency and expanded services in the field of IT consulting.
 
-### Filmmaker, [Berkshire Productions](http://berkshireproductions.com/)
-#### 2007-2014
+### [Berkshire Productions](http://berkshireproductions.com/)
+#### Filmmaker <small>2007-2014</small>
 Founded a filmmaking and videography business with more than 160 jobs for over
 40 clients, learning about marketing and content creation, and a wide variety of
 cinema technologies, hardware, and software.
 
-### iOS app development, Williams College Computer Science Department
-#### Spring 2013 - Fall 2013
+### [Williams College Computer Science Department](https://csci.williams.edu/)
+#### iOS App Development <small>Spring 2013 - Fall 2013</small>
 Created an app,
 [HungryEph](https://itunes.apple.com/us/app/hungryeph/id440288933), to provide a
 simpler and more intuitive interface for daily and late night snack bar menus
 that uses data scraped from the existing online dining resources. Currently in
 use by Williams students.
+#### Computer Science Teaching Assistant <small>Fall 2013 - Spring 2014</small>
+Teaching Assistant for introductory computer science courses.
 
 ## Projects
+
+### Neural Network in Go
+Wrote a neural network [implementation](https://github.com/kujenga/goml) from
+scratch in Go. Read more about it [on the blog]({{< ref "/blog/go-mlp.md" >}})!
 
 ### Compiling Interpreter for x86 machine code written in ARM assembly language
 Created the fastest interpreter in my Computer Architecture class by compiling
@@ -88,24 +122,33 @@ control board, motor mount, and drive train assembly.
 
 ## Education
 
-### [Williams College](https://www.google.com/webhp?hl=en#hl=en&q=Williams+College) 2016'
+### [Williams College](https://www.google.com/search?q=Williams+College) 16'
 
-#### Majoring in Computer Science
-**Selected Coursework:** Distributed Systems, Data Mining, Computer
+#### Majoring in Computer Science and Political Economy
+**Selected CS Coursework:** Distributed Systems, Data Mining, Computer
 Architecture, Principles of Programming Languages, Mobile App Development, Intro
 to Cryptography, Computer Graphics, Computer Vision
 
-**TA:** Principles of Programming Languages (Spring 2015), Intro to Computer
-Science (Fall 2013, Spring 2014)
+**TA:** Intro to Computer Science (Fall 2013, Spring 2014)
 
-#### Skills
-**Computer Science:** Objective-C, Swift, Ruby, Java, C/C++, Python, Bash,
-Assembly Language, Distributed Systems, iOS Development, Relational Databases
+#### Extracurriculars
 
-**Other Interests:** Metalworking and Fabrication, Woodworking, Piano (15
-years), Williams Cycling Club, Williams Sailing Team, Williams Nordic Ski Club,
-Hiking, Film
+Williams Cycling Club, Williams Sailing Team, Williams Nordic Ski Club, Williams
+Track Team (freshman year)
 
-<script src="//platform.linkedin.com/in.js" type="text/javascript"></script>
+## Skills
+
+**Computer Science:** Go, Python, Machine Learning, Natural Language, IR, Google
+Cloud Platform, Amazon Web Services, Objective-C, Swift, Ruby, Java, C/C++,
+Bash, Assembly Language, Distributed Systems, iOS Development, Relational
+Databases
+
+**Other interests:** Road and Mountain Biking, Rock Climbing, Amateur Radio,
+Metalworking and Fabrication, Woodworking, Piano (15 years)
+
+<script src="//platform.linkedin.com/in.js"></script>
 <script type="IN/MemberProfile" data-id="https://www.linkedin.com/in/ataylor0123" data-format="inline"></script>
 
+
+<!-- Links -->
+[ERI]: https://www.salesforce.com/products/sales-cloud/tools/einstein-relationship-insights/

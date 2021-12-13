@@ -16,28 +16,7 @@ $accent3: #c0c5bb;
 $links: #2d70b9;
 
 body {
-  font-family: 'Lato', sans-serif;
-}
-
-/* Set font sizes for headers to the desired value */
-h1 {
-  font-size: 2.25rem;
-}
-
-h2 {
-  font-size: 1.875rem;
-}
-
-h3 {
-  font-size: 1.5rem;
-}
-
-h4 {
-  font-size: 1.125rem;
-}
-
-p {
-  font-size: 0.9rem;
+  font-family: Lato, sans-serif;
 }
 
 a {
@@ -46,6 +25,11 @@ a {
 
 small {
   color: #777;
+}
+
+figcaption {
+  color: #777 !important;
+  font-size: 0.8rem !important;
 }
 
 nav.navbar {
@@ -67,18 +51,15 @@ nav.navbar {
   color: black;
 
   /* text-shadow: #444 0 1px 1px; */
-  background: url('../img/view-med-comp.jpg');
+  background: url('../img/view-tall-comp.jpg');
+  background-position: center;
+  background-size: cover;
 }
 
 .jumbotron > .container {
-  padding-top: 40px;
-  padding-bottom: 200px;
+  padding-top: 5px;
+  padding-bottom: 170px;
   text-align: center;
-}
-
-/* Sidebar */
-#sidebar ul {
-  list-style: square;
 }
 
 /* Footer */
@@ -86,41 +67,24 @@ nav.navbar {
   margin-top: 50px;
   margin-bottom: 25px;
   border: solid 1px #eee;
-  background:
-    -webkit-linear-gradient(
-      #eee,
-      #fff,
-      #fff,
-      #fff,
-      #fff
-    ); /* For Safari 5.1 to 6.0 */
+  background: linear-gradient(
+    #eee,
+    #fff,
+    #fff,
+    #fff,
+    #fff
+  ); /* For:
+  - Safari 5.1 to 6.0
+  - Opera 11.1 to 12.0
+  - Firefox 3.6 to 15 */
 
-  background:
-    -o-linear-gradient(
-      #eee,
-      #fff,
-      #fff,
-      #fff,
-      #fff
-    ); /* For Opera 11.1 to 12.0 */
-
-  background:
-    -moz-linear-gradient(
-      #eee,
-      #fff,
-      #fff,
-      #fff,
-      #fff
-    ); /* For Firefox 3.6 to 15 */
-
-  background:
-    repeating-linear-gradient(
-      #eee,
-      #fff,
-      #fff,
-      #fff,
-      #fff
-    ); /* Standard syntax */
+  background: repeating-linear-gradient(
+    #eee,
+    #fff,
+    #fff,
+    #fff,
+    #fff
+  ); /* Standard syntax */
 }
 
 .copyright {
@@ -150,10 +114,87 @@ nav.navbar {
   }
 }
 
+// General overrides to improve the styling of emgithub.
+.emgithub-container {
+  /* Normalize the formatting of embedded github code */
+  line-height: 1.05rem;
+
+  code {
+    /* Smaller than the default from Bootstrap of 87.5% */
+    font-size: 80%;
+
+    // No padding needed here, handled on individual rows.
+    padding: 0 !important;
+  }
+
+  .hljs-ln td.hljs-ln-numbers {
+    // Matches the pre-existing padding-right;
+    padding-left: 1.25rem;
+  }
+}
+
+// stylelint-disable-next-line selector-class-pattern
+.MathJax {
+  overflow: scroll;
+}
+
+/* Set font sizes for headers in the about page to the desired value */
+.type-about {
+  h1 {
+    font-size: 2.25rem;
+  }
+
+  h2 {
+    font-size: 1.875rem;
+  }
+
+  h3 {
+    font-size: 1.5rem;
+  }
+
+  h4 {
+    font-size: 1.125rem;
+  }
+
+  p {
+    font-size: 0.9rem;
+  }
+}
+
 /* Blog Post */
-#blog-post {
-  line-height: 1.7em;
-  font-size: 1.1em;
+.type-blog {
+  #content {
+    .h1,
+    .h2,
+    .h3,
+    .h4,
+    .h5,
+    .h6,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      margin-top: 1.5rem;
+    }
+  }
+
+  p {
+    line-height: 1.7em;
+  }
+
+  li {
+    margin-bottom: 0.5rem;
+  }
+
+  .img {
+    padding: 0.5em;
+  }
+
+  pre code {
+    line-height: 1.05rem;
+  }
 }
 
 /* Social Links */

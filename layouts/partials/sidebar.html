@@ -1,21 +1,22 @@
 <div id="sidebar" class="card">
-    <div class="card-header">
-        <h4>Looking Outward</h4>
+  <div class="card-header">
+    <h4>Looking Outward</h4>
+  </div>
+  <div class="card-body">
+    <div>
+      <h4>Posts elsewhere</h4>
+      <ul class="list-unstyled">
+        {{ range $.Site.Data.external.pages }}
+        <li>
+          <div class="external-page">
+            <a href="{{ .Link }}" title="{{ .Name }}" target="newtab">
+              {{ .Name }}
+            </a>
+            <p><small>{{ .Date }} - {{ .Domain }}</small></p>
+          </div>
+        </li>
+        {{ end }}
+      </ul>
     </div>
-    <div class="card-body">
-        <div>
-            <ul>
-                <li><a href="https://diffeo.com" title="Diffeo" target=newtab>Diffeo</a></li>
-                <li><a href="https://www.meta.sc" title="Meta" target=newtab>Meta</a></li>
-            </ul>
-        </div>
-        <div>
-            <h4>Other Posts</h4>
-            <ul>
-            {{ range $.Site.Data.external.pages }}
-                <li><a href="{{ .Link }}" title="{{ .Name }}" target=newtab>{{ .Name }}</a></li>
-            {{ end }}
-            </ul>
-        </div>
-    </div>
+  </div>
 </div>

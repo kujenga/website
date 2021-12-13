@@ -2,23 +2,24 @@
 
 set -euo pipefail
 
+DIR=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+
 # This assumes the built-in CircleCI environment variables:
 # https://circleci.com/docs/2.0/env-vars/#built-in-environment-variables
 
 BASE_URL="https://api.github.com/repos/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME"
 
-VERSION="$(./scripts/version)"
+VERSION="$("$DIR/version")"
+ENVIRONMENT="$("$DIR/environment")"
 
 # Global variables for state management.
 DEPLOY_ID=''
 
 PARAM='--no-promote'
-ENVIRONMENT='staging'
 TRANSIENT='true'
 PRODUCTION='false'
-if [ "$CIRCLE_BRANCH" = "main" ]; then
+if [ "$ENVIRONMENT" = "production" ]; then
   PARAM='--promote'
-  ENVIRONMENT='production'
   TRANSIENT='false'
   PRODUCTION='true'
 fi

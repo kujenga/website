@@ -5,6 +5,21 @@ version: 2.1
 orbs:
   gcp-cli: circleci/gcp-cli@2.1.0
 
+commands:
+  # This command is used to validate that the files passed from the build to
+  # the deploy stage are identical.
+  hash_build:
+    description: Compute hashes of the build directory for comparison
+    steps:
+      - run:
+          name: Compute hashes of app/public directory
+          command: >
+            find app/public -type f -print0 |
+            sort -z |
+            xargs -0 sha256sum |
+            tee >(cat 1>&2) |
+            sha256sum
+
 jobs:
   build:
     docker:
@@ -12,6 +27,8 @@ jobs:
 
     steps:
       - checkout
+      - run: git submodule sync
+      - run: git submodule update --init
 
       # Environment
       - run:
@@ -26,8 +43,8 @@ jobs:
       # Install
       - restore_cache:
           keys:
-            - v4-go-deps-{{ checksum "app/go.mod" }}-{{ checksum "tools/go.mod" }}
-            - v4-go-deps-
+            - v1-go-{{ checksum "app/go.mod" }}-{{ checksum "tools/go.mod" }}
+            - v1-go-
       - run:
           name: Install Go-based tooling
           working_directory: 'tools'
@@ -37,7 +54,7 @@ jobs:
           working_directory: 'app'
           command: go install -v
       - save_cache:
-          key: v4-go-deps-{{ checksum "app/go.mod" }}-{{ checksum "tools/go.mod" }}
+          key: v1-go-{{ checksum "app/go.mod" }}-{{ checksum "tools/go.mod" }}
           paths:
             # Observed from `go env` output, above
             - ~/go
@@ -62,6 +79,7 @@ jobs:
       - run:
           name: Build site
           command: npm run build
+      - hash_build
       - store_artifacts:
           path: app/public
       - persist_to_workspace:
@@ -81,7 +99,7 @@ jobs:
           # Skip this step on the main branch, where we always deploy.
           condition:
             not:
-              equal: [ main, << pipeline.git.branch >> ]
+              equal: [main, << pipeline.git.branch >>]
           steps:
             - run:
                 name: Abort on non-main branch if a PR is not open
@@ -103,6 +121,7 @@ jobs:
       - checkout
       - attach_workspace:
           at: .
+      - hash_build
       - run:
           name: Install additional dependencies
           command: |

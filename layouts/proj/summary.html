@@ -2,13 +2,23 @@
   <div class="thumbnail">
     <div class="text-center">
       <a href="{{ .RelPermalink }}" title="{{ .Title }}">
-        <img src="{{ .Params.header_img }}" class="img-fluid" alt="Thumbnail Image">
+        <img
+          src="{{ .Params.header_img }}"
+          class="img-fluid"
+          alt="Thumbnail Image"
+        />
       </a>
     </div>
     <div class="caption">
-      <a href="{{ .RelPermalink }}" title="{{ .Title }}"><h3>{{ .Title }}</h3></a>
+      <a href="{{ .RelPermalink }}" title="{{ .Title }}"
+        ><h3>{{ .Title }}</h3></a
+      >
       <p>{{ .Description }}</p>
-      <p><a class="btn btn-default" href="{{ .Permalink }}" role="button">View details &raquo;</a></p>
+      <p>
+        <button type="button" class="btn btn-light" href="{{ .Permalink }}">
+          View details &raquo;
+        </button>
+      </p>
     </div>
   </div>
 </div>

@@ -2,8 +2,8 @@
 date = "2015-06-20T22:23:41-04:00"
 title = "Linking Dynamic C++ Libraries with Go"
 description = "Creating a Go wrapper around a cross-platform build process for a dynamically built and linked C++ library"
-categories = []
-tags = []
+categories = ['homepage']
+tags = ['Go', 'C++', 'Dynamic Linking']
 +++
 
 These days, I spend a lot of time working with, designing, and implementing APIs. Since [Meta](https://meta.sc) is a microservices based application, the contracts that those APIs provide are crucial to designing the interactions with them. Quickly, maintaining good documentation and client libraries becomes nearly as important of a part of the applications as the code itself. Each step forward in functionality must provide solid footing to keep on building.

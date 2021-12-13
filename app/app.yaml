@@ -17,13 +17,15 @@ automatic_scaling:
   max_instances: 3
 
 handlers:
-# Configure App Engine to serve any static assets.
-- url: /css
-  static_dir: public/css
-- url: /img
-  static_dir: public/img
+  # Configure App Engine to serve any static assets.
+  - url: /css
+    static_dir: public/css
+  - url: /styles
+    static_dir: public/styles
+  - url: /img
+    static_dir: public/img
 
-# Use HTTPS for all requests.
-- url: /.*
-  secure: always
-  script: auto
+  # Use HTTPS for all requests.
+  - url: /.*
+    secure: always
+    script: auto
