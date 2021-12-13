@@ -116,7 +116,7 @@ process:
 
 ### Activation Functions
 
-{{< img file=Logistic-curve.svg alt="Logistic Curve" loc=right width=50% caption="By Qef (talk) - Created from scratch with gnuplot, Public Domain, https://commons.wikimedia.org/w/index.php?curid=4310325" >}}
+{{< img file=Logistic-curve.svg alt="Logistic Curve" loc=right width=50% caption="By Qef, Public Domain, https://commons.wikimedia.org/w/index.php?curid=4310325" >}}
 
 A key element of the above diagram is the activation function that modifies the
 combination of the incoming values, weights, and biases. Activation functions are
@@ -136,10 +136,10 @@ To make this network more capable, we can extend the model of a single-layer
 perceptron by adding more layers, creating a [multi-layer perceptron][mlpWiki].
 The number and size of layers in this network are referred to as as the "network
 architecture", and such configurations values are often referred to as
-"hyperparameters". As in the single-layer example, the first layer in the
-network is termed out "input" layer, and the last layer in the network is termed
-our "output" layer. The new interior layers are commonly referred to as "hidden"
-layers, as they are internal to the network.
+"hyperparameters" defining the architecture. As in the single-layer example, the
+first layer in the network is termed out "input" layer, and the last layer in
+the network is termed our "output" layer. The new interior layers are commonly
+referred to as "hidden" layers, as they are internal to the network.
 
 More layers add capabilities to the network and facilitate much more complex use
 cases. The ability to add in hidden layers will be instrumental in tackling the
@@ -163,6 +163,11 @@ dataset.
 
 ### Boolean test cases
 
+Before we get into the MNIST problem, we want to start with super simple, to
+check that our network can do anything at all. The setup I am using for that
+level of verification in this post is the ability for an individual network to
+learn basic boolean functions like `AND` and `OR`.
+
 Here is an example of the basic test cases we will build on for the boolean
 inputs and the corresponding output labels that different instantiations of the
 network can learn.
@@ -180,11 +185,11 @@ to iteratively learn.
 ### MNIST test cases
 
 In contrast to these examples of replicating basic boolean logic, the [MNIST
-dataset][mnistWiki] is a real machine learning problem where you must learn to
-predict the digit between 0-9 for a given image of a hand-written number. This
-dataset is a great example of where a basic neural network performs well
-relative to other approaches, and is one of the classic datasets for training
-models on.
+dataset][mnistWiki] is a real machine learning problem where you must create a
+way to predict the digit between 0-9 corresponding to an image of a hand-written
+number, a very simple form of optical character recognition. This dataset is a
+great example of where a basic neural network performs well relative to other
+approaches, and is one of the classic datasets for training models on.
 
 One caveat here is that the MNIST dataset distributed in a unique binary format,
 which we will need to de-serialize in order to make use of it in a test case. We
@@ -200,10 +205,10 @@ better suited for transformation.
 
 As we think about how to structure the code for our network, there are a few key
 pieces of functionality we need to provide:
-- Initialize the network, allocating the needed data structures and initial
+1. Initialize the network, allocating the needed data structures and initial
   values.
-- Train the network, iteratively improving the network output based on inputs.
-- Make predictions using the trained network, taking a set of inputs and
+1. Train the network, iteratively improving the network output based on inputs.
+1. Make predictions using the trained network, taking a set of inputs and
   providing a computed output.
 
 In addition to these basic functionalities, we also want to build it in a
@@ -212,8 +217,9 @@ create networks of different architectures to facilitate different use cases.
 This may also facilitate iterations to support more complex types of neural
 networks, a possible topic for future posts.
 
-For this implementation we will favor clarity over optimizations, aligned with
-the goal of this project as a way to learn the details of how networks operate.
+For this implementation we will favor clarity and readability over efficiency
+optimizations, aligned with the goal of this project as a way to learn the
+details of how networks operate.
 
 Starting off, the primary struct controlling our network is the `MLP` struct,
 representing our Multi-Layer Perceptron, and is fairly simple. It holds an array
@@ -231,7 +237,7 @@ entirety of the training process.
 
 The key elements to capture within this data structure are:
 - Parameters that define the layer behavior, including the width of the network
-  and the "activation function".
+  and the activation function.
 - Internal references to the network itself, as well as the next and previous
   layers in the network. We need references in both directions to facilitate
   forward and backward propagation.
@@ -244,7 +250,7 @@ The key elements to capture within this data structure are:
 
 With these two structures defined, we can look at how the training process
 works. The entry point is the `Train` function, which iterates for a given number
-of "epochs". Each epoch is a pass over the entire dataset. Training happens
+of `epochs`. Each epoch is a pass over the entire dataset. Training happens
 iteratively, with each step containing two passes.
 
 For each input, we first propagate the weights and subsequent layer outputs
@@ -296,6 +302,8 @@ track of the `MLP` itself as well as the passed in next and previous layers, as
 well as configuring a default activation function and it's corresponding
 derivative if they were not already specified.
 
+{{< img file=Logistic-curve.svg alt="Logistic Curve" loc=right width=50% caption="By Qef, Public Domain, https://commons.wikimedia.org/w/index.php?curid=4310325" >}}
+
 With those basic values in place, we move on to initializing the data structures
 for the network's internal parameters. Here we initialize the weights and biases
 to random values. To understand why random initial values make sense, I find it
@@ -303,19 +311,20 @@ helpful to imagine setting all the weights to the same value, say `1.0`. In
 order to train any network, you need to figure out which weights are
 contributing the most to the resulting error, but if all the weights are the
 same, you end up in a situations where multiple weights might be able to be
-tweaked for similar effect, and it is thus either unclear which weights to move
-in which directions and slow down the overall training process. Another aspect
-of the initialization is the scaling the weights by the "connectedness" of the
-node. To understand why this is helpful, think back to the shape of the sigmoid
-[activation function]({{< ref "#activation-functions" >}}), and what happens as
-the input "x" values get larger. The "y" values get asymptotically closer and
-closer to 1.0, and the differences between them get smaller, meaning that
-changes to the weights have less of an ability to effect the network output,
-which can make it harder to train and converge. By keeping the weights
-proportionally smaller, we leverage more of the curved portion of the sigmoid
-function and give the calculations more discriminative power. It is worth noting
-that this limitation is somewhat specific to asymptotic activations functions
-like sigmoid, but it shouldn't hurt with others that are not.
+tweaked for similar effect. In such cases you can conceptual imagine it being
+unclear which weights to move in which directions, and this can slow down the
+overall training process. Another aspect of the initialization is the scaling
+the weights by the "connectedness" of the node. To understand why this is
+helpful, think back to the shape of the sigmoid [activation function]({{< ref
+"#activation-functions" >}}), and what happens as the input "x" values get
+larger. The "y" values get asymptotically closer and closer to 1.0, and the
+differences between them get smaller, meaning that changes to the weights have
+less of an ability to effect the network output, which can make it harder to
+train and converge. By keeping the weights proportionally smaller, we leverage
+more of the curved portion of the sigmoid function and give the calculations
+more discriminative power. It is worth noting that this limitation is somewhat
+specific to asymptotic activations functions like sigmoid, but it shouldn't hurt
+with others that are not.
 
 Lastly, we initialize data structures to keep track of the last seen error
 (`lastE`) and loss (`lastL`) values for the layer, which are a critical
@@ -330,12 +339,12 @@ where we transform a set of inputs passed into a layer of the network into a set
 of "activation" outputs.
 
 As an aside, one thing I have found confusing in some portrayals of neural
-networks is that so much of the focus on the "neurons" themselves, represented
-as nodes in the network graph. The real magic is all in the edges! The weights
-attached to the edges, the activation function that they pass through, and the
-bias values shifting the output, are what give these networks their power. The
-nodes themselves are really just representations of state, which is what this
-diagram attempts to show:
+networks is that so much of the focus is on the "neurons" themselves,
+represented as nodes in the network graph. The real magic is all in the edges!
+The weights attached to the edges, the activation function that they pass
+through, and the bias values shifting the output, are what give these networks
+their power. The nodes themselves are really just representations of state,
+which is what this diagram attempts to show:
 
 {{< img file=4-basic-neuron-operation.png alt="Basic Neuron Operation" loc=center width=60% >}}
 
@@ -358,8 +367,8 @@ Being able to compute a set of outputs given a set of inputs is a big step
 forward, but in order to give meaning to these outputs, we need to train the
 network to match the predictive behavior that we expect. Nearly all machine
 learning models are trained through a series of iterative steps, where each step
-tweaks the parameters of the model a way that decreases the "loss" of the
-network. We'll be doing that same process here our network.
+tweaks the parameters of the model in a way that decreases the "loss" of the
+network. We'll be doing that same process here in our network.
 
 In each iterative step, our goal is to update the weight and bias parameters in
 the network to minimize the error. Looking now at the diagram below and moving
@@ -385,7 +394,7 @@ intuition][deeplizardBackPropIntuition]
 ### Introducing Loss Functions
 
 In the above diagram, we talk about propagating the "error" back through the
-network. This presents a slight hiccup however, as the simplest way to calculate
+network. However this presents a slight hiccup, as the simplest way to calculate
 error values, computing the difference between the expected labeled output and
 the output we received from the network, can be either a positive or negative
 value. These values can cancel each other out in undesirable ways when combined.
@@ -756,11 +765,14 @@ datasets, which are given to us separately by the MNIST dataset itself. This is
 a critical step forward towards tackling more realistic machine learning
 problems[^properTesting].
 
-> For speed of execution in CI systems, the following test case limits the
-> dataset size to 1/6 of what it normally would be, with 60k total examples.
-> This is a trick that can be useful generally, to use a subset of your dataset
-> that can by more quickly trained on to get things functional, and then pulling
-> in the rest of the data later as you fine tune the architecture.
+For speed of execution in CI systems, the following test case limits the dataset
+size to 1/6 of what it normally would be, with 60k total examples. This is a
+trick that can be useful with very large datasets that can take a long time to
+train on. By using use a subset of your dataset that can be more quickly trained
+on you can iterate faster to get things functional, and then pull in the rest of
+the data later as you fine tune the architecture. Here our data isn't really big
+enough to worry about that too much, but it is nice to have CI systems run a bit
+quicker when executing tests.
 
 {{< emgithub "https://github.com/kujenga/goml/blob/fc6bc437686cf50dc0ba9f3bb7f7e7ee23bc611d/neural/mlp_test.go#L270-L303" >}}
 
@@ -796,9 +808,10 @@ PASS
 ok  	github.com/kujenga/goml/neural	86.409s
 ```
 
-The score of `0.9644` we get here is equivalent to an error rate of 3.56%, which
-is a bit better than the equivalent network architecture listed on the MNIST
-site! I would call that a definite success.
+The score of `0.9644` we get here indicates we're correct 96.44% of the time,
+equivalent to an error rate of 3.56%. This result is a bit better than the
+equivalent network architecture listed on the MNIST site! I would call that a
+definite success.
 
 ## Conclusions and future exploration
 
