@@ -1,10 +1,11 @@
 <div class="summary">
   <h4>
     <a href="{{ .RelPermalink }}">{{ .Title }}</a>
-    <small class="pull-right">Posted on {{ .Date.Format "Jan 2, 2006" }}</small
-    ><br />
-    <small>{{ .Description }}</small>
+    <small class="pull-right">{{ .Date.Format "Jan 2, 2006" }}</small><br />
   </h4>
+  <h5 class="muted">{{ .Description }}</h5>
   <hr />
-  <p>{{ .Summary }}</p>
+  <div>
+    <p>{{ .Summary }}</p>
+  </div>
 </div>
