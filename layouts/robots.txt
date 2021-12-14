@@ -7,4 +7,8 @@ Disallow:
 # Begone! This ain't ready yet.
 User-agent: *
 Disallow: /
+
+# Twitter bot rendering is acceptable
+User-agent: Twitterbot
+Disallow:
 {{- end -}}
