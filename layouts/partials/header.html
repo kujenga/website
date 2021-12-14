@@ -22,8 +22,12 @@
 
   <link rel="canonical" href="{{ .Permalink }}" />
 
-  <meta property="og:title" content="{{ .Title }}" />
-  <meta property="og:description" content="{{ .Description }}" />
+  <!-- https://gohugo.io/templates/internal -->
+  <!-- prettier-ignore -->
+  {{ template "_internal/opengraph.html" . }}
+  <!-- prettier-ignore -->
+  {{ template "_internal/twitter_cards.html" . }}
+
 
   {{- $csp := getenv "CONTENT_SECURITY_POLICY" }} {{- if and (eq
   hugo.Environment "development") (not (eq $csp "")) }}
@@ -46,13 +50,10 @@
   <!-- prettier-ignore -->
   {{ partial "newrelic.html" . }}
   <!-- prettier-ignore -->
-  {{ template "_internal/google_analytics.html" . }}
-  <!-- prettier-ignore -->
-  {{ partial "newrelic.html" . }}
-  <!-- prettier-ignore -->
   {{ partial "mathjax.html" . }}
   <!-- prettier-ignore -->
   {{ template "_internal/google_analytics.html" . }}
+
   <!-- prettier-ignore -->
   {{ partial "header.includes.html" . }}
 </head>
