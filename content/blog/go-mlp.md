@@ -6,6 +6,11 @@ Creating a basic neural network from scratch, with just the Go standard library.
 """
 categories = ['homepage']
 tags = ['Go', 'AI', 'Neural Networks']
+images = [
+  '/img/blog/go-mlp/6-multi-layer-preceptron.png',
+  '/img/blog/go-mlp/20-backprop-overall.png',
+  '/img/blog/go-mlp/36-mnist-architecture.png',
+]
 mathjax = true
 toc = true
 +++
