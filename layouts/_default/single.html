@@ -3,8 +3,11 @@
   <div class="col-md-9">
     <div id="main" class="kind-{{ .Page.Kind }} type-{{ .Page.Type }}">
       <h1>{{ .Title }}</h1>
-      <h2><small>{{ .Description }}</small></h2>
-      {{ partial "toc.html" . }}
+      <h3><small>{{ .Description }}</small></h3>
+      <div class="row">
+        <div class="col-md">{{ .Date.Format "January 2, 2006" }}</div>
+        {{ partial "share.html" . }}
+      </div>
       <hr />
       <div id="content">{{ .Content }}</div>
       <br />

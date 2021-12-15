@@ -2,7 +2,7 @@
 date = "2021-12-12T22:16:40-05:00"
 title = "Building a Neural Network in Go"
 description = """
-Creating a basic neural network from scratch, with just the Go standard library.
+Creating a neural network from scratch with just the Go standard library.
 """
 categories = ['homepage']
 tags = ['Go', 'AI', 'Neural Networks']
@@ -855,7 +855,7 @@ Source code for this project can be found here: https://github.com/kujenga/goml
 and the corresponding documentation is available here:
 https://pkg.go.dev/github.com/kujenga/goml
 
-This post is based on a talk given for [Boston Golang](http://bostongolang.org/)
+This post is based on a talk given for [Boston Golang](https://bostongolang.org/)
 in [Sept. 2021](https://www.meetup.com/bostongo/events/280522108/), the slides
 for which can be found here: [Building a Neural Network in Go][slideDeck]
 

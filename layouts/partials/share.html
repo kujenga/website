@@ -1,0 +1,35 @@
+<div class="col col-sm-1 ml-auto">
+  <!-- Jump to the comments section -->
+  <a href="#comments" aria-label="Go to comments">
+    <i class="fa fa-comment-o" aria-hidden="true"></i>
+  </a>
+</div>
+<div class="col col-sm-1">
+  <!-- ref: https://developer.twitter.com/en/docs/twitter-for-websites/tweet-button/guides/web-intent -->
+  <a
+    href="https://twitter.com/intent/tweet?text={{ (print .Title ` by ` .Site.Author.twitter)| urlquery }}&url={{ .Permalink | urlquery }}"
+    aria-label="Twitter share"
+    target="_blank"
+  >
+    <i class="fa fa-twitter" aria-hidden="true"></i>
+  </a>
+</div>
+<div class="col col-sm-1">
+  <!-- ref: https://stackoverflow.com/a/61583095/2528719 -->
+  <a
+    href="https://www.linkedin.com/sharing/share-offsite/?url={{ .Permalink | urlquery }}"
+    aria-label="LinkedIn share"
+    target="_blank"
+  >
+    <i class="fa fa-linkedin" aria-hidden="true"></i>
+  </a>
+</div>
+<div class="col col-sm-1">
+  <!-- ref: https://www.w3docs.com/snippets/html/how-to-create-mailto-links.html -->
+  <a
+    href="mailto:?subject={{ (print .Title `by Aaron Taylor`) | urlquery }}&body={{ .Permalink | urlquery }}"
+    aria-label="email share"
+  >
+    <i class="fa fa-envelope-o" aria-hidden="true"></i>
+  </a>
+</div>

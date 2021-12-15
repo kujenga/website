@@ -4,6 +4,31 @@
   </div>
   <div class="card-body">
     <div>
+      <h4>Speaking</h4>
+      <ul class="list-unstyled">
+        {{ range $.Site.Data.events.speaking }}
+        <li>
+          <div class="external-page">
+            <a href="{{ .EventURL }}" title="{{ .Event }}" target="newtab">
+              {{ .Event }}
+            </a>
+            <p>
+              <small
+                >{{ time.Format "Jan. 2, 2006" .Date }} -
+                <a
+                  href="{{ .OrganizationURL }}"
+                  title="{{ .Organization }}"
+                  target="newtab"
+                  >{{ .Organization }}</a
+                ></small
+              >
+            </p>
+          </div>
+        </li>
+        {{ end }}
+      </ul>
+    </div>
+    <div>
       <h4>Posts elsewhere</h4>
       <ul class="list-unstyled">
         {{ range $.Site.Data.external.pages }}
@@ -12,7 +37,11 @@
             <a href="{{ .Link }}" title="{{ .Name }}" target="newtab">
               {{ .Name }}
             </a>
-            <p><small>{{ .Date }} - {{ .Domain }}</small></p>
+            <p>
+              <small
+                >{{ time.Format "Jan. 2, 2006" .Date }} - {{ .Domain }}</small
+              >
+            </p>
           </div>
         </li>
         {{ end }}
