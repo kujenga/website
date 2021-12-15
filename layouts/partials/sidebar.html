@@ -12,7 +12,11 @@
             <a href="{{ .Link }}" title="{{ .Name }}" target="newtab">
               {{ .Name }}
             </a>
-            <p><small>{{ .Date }} - {{ .Domain }}</small></p>
+            <p>
+              <small
+                >{{ time.Format "Jan. 2, 2006" .Date }} - {{ .Domain }}</small
+              >
+            </p>
           </div>
         </li>
         {{ end }}

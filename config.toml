@@ -13,6 +13,10 @@ enableRobotsTXT = true
 [markup.goldmark.renderer]
   unsafe = true
 
+[author]
+  name = "Aaron Taylor"
+  twitter = "@ataylor0123"
+
 [params]
 	twitter = "https://twitter.com/ataylor0123"
 	github = "https://github.com/kujenga"
