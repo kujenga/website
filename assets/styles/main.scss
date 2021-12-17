@@ -118,7 +118,8 @@ nav.navbar {
   }
 
   /* stylelint-disable-next-line no-descending-specificity */
-  img {
+  .thumbnail,
+  .caption {
     margin-top: 1rem;
     margin-bottom: 1rem;
   }
