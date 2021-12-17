@@ -2,7 +2,7 @@
 date = "2021-12-12T22:16:40-05:00"
 title = "Building a Neural Network in Go"
 description = """
-Creating a neural network from scratch with just the Go standard library.
+Creating a multi-layer perceptron from scratch with just the Go standard library.
 """
 categories = ['homepage']
 tags = ['Go', 'AI', 'Neural Networks']
@@ -15,10 +15,10 @@ mathjax = true
 toc = true
 +++
 
-This post covers the creation of a basic neural network written in Go. We will
-walk through the basics of what neural networks are and how they work,
-specifically looking at feed-forward neural networks, the earliest type of
-network to be invented, and walk through the implementation of a Multi-Layer
+This post covers the creation of a multi-layer neural network written in Go. We
+will walk through the basics of what neural networks are and how they work,
+specifically looking at some of the earliest types of feed-forward neural
+networks. We will then walk through the implementation of a Multi-Layer
 Perceptron (MLP). Our goal in this process is to create a network that performs
 well at recognizing handwritten digits on the MNIST dataset.
 
