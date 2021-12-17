@@ -25,6 +25,10 @@ enableRobotsTXT = true
   angellist = "https://angel.co/ataylor0123"
   keybase = "https://keybase.io/ataylor"
 
+# https://gohugo.io/templates/sitemap-template/#configure-sitemapxml
+[sitemap]
+  filename = 'sitemap.xml'
+
 # docs: https://gohugo.io/templates/menu-templates/
 [menu]
   [[menu.nav]]

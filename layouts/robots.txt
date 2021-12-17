@@ -1,6 +1,7 @@
 # robots.txt file for ataylor.io
 {{ if hugo.IsProduction -}}
 # Welcome!
+Sitemap: {{ "index.xml" | absURL }}
 User-agent: *
 Disallow:
 {{- else -}}
