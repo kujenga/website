@@ -4,17 +4,15 @@
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/">Home</a></li>
-        <li class="breadcrumb-item">
-          <a href="{{ .Parent.RelPermalink }}">{{ .Parent.Title }}</a>
-        </li>
         <li class="breadcrumb-item active" aria-current="page">{{ .Title }}</li>
       </ol>
     </nav>
-    <ul class="list-unstyled">
-      {{ range .Data.Pages }}
-      <li>{{ .Render "summary" }}</li>
-      {{ end }}
-    </ul>
+    {{ range .Data.Terms.ByCount }}
+    <a class="btn btn-light" href="{{ .Page.Permalink }}">
+      {{ .Page.Title }} &nbsp;
+      <small>{{ .Count }}</small>
+    </a>
+    {{ end }}
   </div>
 
   <!-- Sidebar -->

@@ -37,9 +37,9 @@
       <!-- Add commas: https://gohugo.io/templates/taxonomy-templates/#example-comma-delimit-tags-in-a-single-page-template -->
       {{- if gt $index 0 }}, {{ end -}}
       <!-- TODO: The <a> elements can be enabled when the taxonomy pages are working. -->
-      <!-- <a class="label label-default" href="/tags/{{ . | urlize }}">  -->
-      {{- $tag -}}
-      <!-- </a> -->
+      <a class="label label-default" href="/tags/{{ . | urlize }}">
+        {{- $tag -}}
+      </a>
       {{- end }}
     </div>
   </div>
