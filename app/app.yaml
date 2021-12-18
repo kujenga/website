@@ -22,8 +22,12 @@ handlers:
     static_dir: public/css
   - url: /styles
     static_dir: public/styles
+  - url: /images
+    static_dir: public/images
   - url: /img
     static_dir: public/img
+  - url: /emgithub
+    static_dir: public/emgithub
 
   # Use HTTPS for all requests.
   - url: /.*
