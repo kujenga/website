@@ -21,14 +21,15 @@
 />
 
 <!-- Custom CSS -->
-{{ $background := resources.Get "images/view-tall-comp.jpg" }}
+{{ $background := resources.Get "images/view-tall-comp.jpg" -}}
+<!-- hash to allow for long duration caching -->
+{{ $background := $background | fingerprint "md5" }}
 <style>
   .jumbotron {
     background: url('{{ $background.RelPermalink }}');
   }
 </style>
-{{ $style := resources.Get "styles/main.scss" | resources.ToCSS |
-resources.Minify | resources.Fingerprint }}
+{{ $style := resources.Get "styles/main.scss" | toCSS | minify | fingerprint }}
 <link
   rel="stylesheet"
   href="{{ $style.RelPermalink }}"
