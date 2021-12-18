@@ -1,13 +1,14 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container">
     <a class="navbar-brand" href="{{ .Site.Home.RelPermalink }}">
-      {{- $navImage := resources.Get "images/brand/transparent-trim.png" |
-      fingerprint "md5" -}}
+      {{- $navImage := (resources.Get
+      "images/brand/transparent-trim.png").Resize "x90" -}}
       <img
         src="{{ $navImage.RelPermalink }}"
+        width="41.25"
         height="30"
         class="d-inline-block align-top"
-        alt=""
+        alt="Brand"
       />
       Aaron Taylor
     </a>
