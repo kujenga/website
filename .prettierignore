@@ -6,6 +6,9 @@ static/
 resources/
 app/public/
 
+# Old site
+old/
+
 # Not wanted on .md content currently
 *.md
 content/

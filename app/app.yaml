@@ -33,6 +33,8 @@ handlers:
     static_dir: public/img
   - url: /emgithub
     static_dir: public/emgithub
+  - url: /old
+    static_dir: public/old
 
   # Use HTTPS for all requests.
   - url: /.*

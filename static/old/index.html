@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Aaron Taylor - Resume</title>
     <!-- <link href='http://fonts.googleapis.com/css?family=Arimo' rel='stylesheet' type='text/css'> -->
-    <link type="text/css" rel="stylesheet" href="css/stylesheet.old.css"/>
+    <link type="text/css" rel="stylesheet" href="css/stylesheet.css"/>
 
     <!-- Google Analytics tracking -->
     <script>
@@ -19,12 +19,12 @@
 
     <!-- Javascript and jquery -->
     <!-- taken from: http://css-tricks.com/examples/SmoothPageScroll/ -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
 
     <!-- implements smooth scrolling for page anchor links -->
     <script>
     $(function() {
-      $('a[href*=#]:not([href=#])').click(function() {
+      $('a[href*="#"]:not([href="#"])').click(function() {
         if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
 
           var target = $(this.hash);

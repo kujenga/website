@@ -14,6 +14,7 @@
     "fix:fmt": "prettier -w .",
     "build": "./scripts/build",
     "build:prod": "ENVIRONMENT=production ./scripts/build",
+    "clean": "rm -rf app/public",
     "deploy:gh-pages": "npm run build && ./scripts/deploy-gh-pages.sh",
     "deploy:appengine": "npm run build && gcloud app deploy ./app/ --project"
   },
