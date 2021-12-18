@@ -1,6 +1,6 @@
 <div class="summary">
-  <div class="thumbnail">
-    <div class="text-center">
+  <div class="row">
+    <div class="col-md-5 thumbnail">
       <a href="{{ .RelPermalink }}" title="{{ .Title }}">
         <img
           src="{{ .Params.header_img }}"
@@ -9,7 +9,7 @@
         />
       </a>
     </div>
-    <div class="caption">
+    <div class="col-md-7 caption">
       <a href="{{ .RelPermalink }}" title="{{ .Title }}"
         ><h3>{{ .Title }}</h3></a
       >

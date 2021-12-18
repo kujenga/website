@@ -43,6 +43,11 @@ nav.navbar {
   img {
     padding-right: 0.5rem;
   }
+
+  .nav-link {
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+  }
 }
 
 .lead {
@@ -65,6 +70,10 @@ nav.navbar {
   padding-top: 5px;
   padding-bottom: 170px;
   text-align: center;
+}
+
+.breadcrumb {
+  background-color: transparent;
 }
 
 /* Footer */
@@ -113,7 +122,8 @@ nav.navbar {
   }
 
   /* stylelint-disable-next-line no-descending-specificity */
-  img {
+  .thumbnail,
+  .caption {
     margin-top: 1rem;
     margin-bottom: 1rem;
   }

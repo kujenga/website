@@ -135,6 +135,20 @@ jobs:
           # for the free tier:
           # https://cloud.google.com/appengine/docs/standard/go/an-overview-of-app-engine#limits
           command: ./scripts/cleanup-appengine default 10
+      - when:
+          # Only follow this step on the main branch
+          condition:
+            equal: [main, << pipeline.git.branch >>]
+          steps:
+            # https://developers.google.com/search/docs/advanced/sitemaps/build-sitemap
+            - run:
+                name: Submit sitemap to Google
+                command: |
+                  TARGET="$(cat app/public/robots.txt \
+                          | grep 'Sitemap:' \
+                          | awk '{print $2}')"
+                  set -x
+                  curl -v "https://www.google.com/ping?sitemap=$TARGET"
 
 workflows:
   build_and_deploy:
