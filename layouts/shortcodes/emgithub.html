@@ -1,8 +1,11 @@
 <!-- Embed snippets: https://emgithub.com/ -->
 <!-- Based on: https://github.com/gohugoio/hugo/blob/master/tpl/tplimpl/embedded/templates/shortcodes/gist.html -->
 <!-- We embed the upstream project within this repository in order to self-host the snippet: https://gohugo.io/hugo-pipes/js/#examples -->
-{{ $opts := dict "targetPath" "emgithub/embed.js" }} {{ $built := resources.Get
-"embed-like-gist/embed.js" | js.Build $opts }}
+{{ $opts := dict "targetPath" "emgithub/embed.js" }}
+<!-- Get JS -->
+{{ $js := resources.Get "embed-like-gist/embed.js" }}
+<!-- Build and compile -->
+{{ $built := $js | js.Build $opts | fingerprint `md5` }}
 <script src="{{ $built.RelPermalink }}?target=
         {{- .Get `target` | default (.Get 0) | urlquery -}}
         &style={{ .Get `style` | default `github-gist` -}}

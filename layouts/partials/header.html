@@ -16,9 +16,24 @@
   <meta name="git-commit-author-date" content="{{ .AuthorDate }}" />
   {{- end }}
 
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-  <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <link
+    rel="icon"
+    type="image/png"
+    sizes="16x16"
+    href="/icons/favicon-16x16.png"
+  />
+  <link
+    rel="icon"
+    type="image/png"
+    sizes="32x32"
+    href="/icons/favicon-32x32.png"
+  />
+  <link
+    rel="icon"
+    type="image/png"
+    sizes="96x96"
+    href="/icons/favicon-96x96.png"
+  />
 
   <link rel="canonical" href="{{ .Permalink }}" />
 
@@ -33,7 +48,10 @@
   hugo.Environment "development") (not (eq $csp "")) }}
   <!-- To emulate the production server, we mirror the CSP in dev -->
   <meta http-equiv="Content-Security-Policy" content="{{ $csp }}" />
-  {{- end }} {{ with .OutputFormats.Get "RSS" -}}
+  {{- end }}
+
+  <!-- RSS Feed link -->
+  {{ with .OutputFormats.Get "RSS" -}}
   <link
     href="{{ .RelPermalink }}"
     rel="alternate"
@@ -47,10 +65,6 @@
     }} - {{ .Title }}{{ end }} {{- end -}}
   </title>
 
-  <!-- prettier-ignore -->
-  {{ partial "newrelic.html" . }}
-  <!-- prettier-ignore -->
-  {{ partial "mathjax.html" . }}
   <!-- prettier-ignore -->
   {{ template "_internal/google_analytics.html" . }}
 

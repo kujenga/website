@@ -5,7 +5,7 @@
         <img
           src="
             {{- $resource := print `images` .Page.RelPermalink (.Params.header_img) -}}
-            {{- $image := resources.Get $resource -}}
+            {{- $image := resources.Get $resource | fingerprint `md5` -}}
             {{- $image.RelPermalink -}}
           "
           class="img-fluid"

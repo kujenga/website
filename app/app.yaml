@@ -16,14 +16,25 @@ automatic_scaling:
   # Cap total cost
   max_instances: 3
 
+# Default expiration for static assets. Set to a long duration, since all
+# static assets are hashed.
+# https://cloud.google.com/appengine/docs/standard/go/config/appref#default_expiration
+default_expiration: '30d'
+
 handlers:
   # Configure App Engine to serve any static assets.
   - url: /css
     static_dir: public/css
   - url: /styles
     static_dir: public/styles
-  - url: /img
-    static_dir: public/img
+  - url: /images
+    static_dir: public/images
+  - url: /icons
+    static_dir: public/icons
+  - url: /emgithub
+    static_dir: public/emgithub
+  - url: /old
+    static_dir: public/old
 
   # Use HTTPS for all requests.
   - url: /.*

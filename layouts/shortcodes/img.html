@@ -17,10 +17,11 @@
     src="
       {{- if (.Get `file`) -}}
         {{- $resource := print `images` $.Page.RelPermalink (.Get `file`) -}}
-        {{- $image := resources.Get $resource -}}
+        {{- $image := resources.Get $resource | fingerprint `md5` -}}
         {{- $image.RelPermalink -}}
       {{- else if (.Get `resource`) -}}
-        {{- (resources.Get (.Get `resource`)).RelPermalink -}}
+      {{- $image := resources.Get (.Get `resource`) | fingerprint `md5` }}
+        {{- $image.RelPermalink -}}
       {{- else -}}
         {{- .Get `src` -}}
       {{- end -}}

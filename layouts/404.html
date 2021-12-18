@@ -1,17 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <title>Page Not Found</title>
-    <style type="text/css" media="screen">
-      .div {
-        align: center;
-      }
-    </style>
-  </head>
-  <body>
-    <div>
-      <p>It looks like you've wandered outside the pages of this site.</p>
-      <a href="/" title="Homepage">Homepage</a>
-    </div>
-  </body>
-</html>
+{{ define "main" }}
+<div>
+  <h1>Uh oh!</h1>
+  <h2>404 - Not Found</h2>
+  <p>
+    It looks like you've wandered out of bounds. You can navigate via the menu
+    bar.
+  </p>
+</div>
+{{ end }}
