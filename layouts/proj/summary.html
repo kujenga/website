@@ -3,7 +3,11 @@
     <div class="col-md-5 thumbnail">
       <a href="{{ .RelPermalink }}" title="{{ .Title }}">
         <img
-          src="{{ .Params.header_img }}"
+          src="
+            {{- $resource := print `images` .Page.RelPermalink (.Params.header_img) -}}
+            {{- $image := resources.Get $resource -}}
+            {{- $image.RelPermalink -}}
+          "
           class="img-fluid"
           alt="Thumbnail Image"
         />

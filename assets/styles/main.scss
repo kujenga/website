@@ -56,12 +56,10 @@ nav.navbar {
 
 .jumbotron {
   margin-top: -25px;
-
-  /* height: 350px; */
   color: black;
 
-  /* text-shadow: #444 0 1px 1px; */
-  background: url('../img/view-tall-comp.jpg');
+  // NOTE: The background: url(...) is set in the header.includes.html file so
+  // that it cen leverage Hugo resource management.
   background-position: center;
   background-size: cover;
 }

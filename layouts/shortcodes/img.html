@@ -16,11 +16,13 @@
         "
     src="
       {{- if (.Get `file`) -}}
-        /img{{ $.Page.RelPermalink }}{{ .Get `file` }}
+        {{- $resource := print `images` $.Page.RelPermalink (.Get `file`) -}}
+        {{- $image := resources.Get $resource -}}
+        {{- $image.RelPermalink -}}
       {{- else if (.Get `resource`) -}}
-        {{ (resources.Get (.Get `resource`)).RelPermalink }}
+        {{- (resources.Get (.Get `resource`)).RelPermalink -}}
       {{- else -}}
-        {{ .Get `src` }}
+        {{- .Get `src` -}}
       {{- end -}}
     "
     alt="{{ .Get `alt` }}"
