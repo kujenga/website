@@ -21,6 +21,12 @@
 />
 
 <!-- Custom CSS -->
+{{ $background := resources.Get "images/view-tall-comp.jpg" }}
+<style>
+  .jumbotron {
+    background: url('{{ $background.RelPermalink }}');
+  }
+</style>
 {{ $style := resources.Get "styles/main.scss" | resources.ToCSS |
 resources.Minify | resources.Fingerprint }}
 <link
