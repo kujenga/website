@@ -29,8 +29,8 @@ handlers:
     static_dir: public/styles
   - url: /images
     static_dir: public/images
-  - url: /img
-    static_dir: public/img
+  - url: /icons
+    static_dir: public/icons
   - url: /emgithub
     static_dir: public/emgithub
   - url: /old
