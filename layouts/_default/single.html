@@ -34,10 +34,10 @@
       <hr />
       <strong>Tags</strong><br />
       {{ range $index, $tag := .Params.tags -}}
-      <!-- Add commas: https://gohugo.io/templates/taxonomy-templates/#example-comma-delimit-tags-in-a-single-page-template -->
-      {{- if gt $index 0 }}, {{ end -}}
+      <!-- Add intermediary chars: https://gohugo.io/templates/taxonomy-templates/#example-comma-delimit-tags-in-a-single-page-template -->
+      {{- if gt $index 0 }}&nbsp;{{ end -}}
       <!-- TODO: The <a> elements can be enabled when the taxonomy pages are working. -->
-      <a class="label label-default" href="/tags/{{ . | urlize }}">
+      <a class="btn btn-light btn-sm" href="/tags/{{ . | urlize }}">
         {{- $tag -}}
       </a>
       {{- end }}
