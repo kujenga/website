@@ -1,15 +1,15 @@
 # robots.txt file for ataylor.io
 {{ if hugo.IsProduction -}}
-# Welcome!
-Sitemap: {{ "index.xml" | absURL }}
+# Hello, Robots!
+Sitemap: {{ .Sitemap.Filename | absURL }}
 User-agent: *
 Disallow:
 {{- else -}}
-# Begone! This ain't ready yet.
+# Begone! This version ain't ready yet.
 User-agent: *
 Disallow: /
 
-# Twitter bot rendering is acceptable
+# Twitter bot rendering is acceptable for debugging.
 User-agent: Twitterbot
 Disallow:
 {{- end -}}
