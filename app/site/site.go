@@ -4,14 +4,8 @@ package site
 import (
 	_ "embed"
 	"fmt"
-	"io/fs"
 	"net/http"
-	"os"
-	"path/filepath"
-	"strings"
-	"time"
 
-	"github.com/pkg/errors"
 	"github.com/unrolled/secure"
 	"go.uber.org/zap"
 )
@@ -32,7 +26,6 @@ type Config struct {
 
 	Port      int
 	Interface string
-	Directory string
 }
 
 // NewServer initializes the server with the given configuration.
@@ -56,7 +49,10 @@ func (s *Server) addr() string {
 func (s *Server) router() http.Handler {
 	mux := http.NewServeMux()
 
-	fs := fileServer(http.Dir(s.c.Directory))
+	fs, err := fileServer()
+	if err != nil {
+		s.l().Fatal("error initializing file server", zap.Error(err))
+	}
 	mux.Handle("/", fs)
 
 	// Setup middleware for adding desired security headers.
@@ -82,52 +78,10 @@ func (s *Server) router() http.Handler {
 
 // Serve blocks forever, starting the server on the configured address.
 func (s *Server) Serve() {
-	if err := s.updateLastModifiedTimes(); err != nil {
-		s.l().Fatal("error updating file modification times", zap.Error(err))
-	}
-
 	s.l().Info("Serving HTTP requests",
 		zap.String("addr", s.addr()),
-		zap.String("dir", s.c.Directory),
 	)
 
 	err := http.ListenAndServe(s.addr(), s.router())
 	s.l().Fatal("error service http requests", zap.Error(err))
-}
-
-// Updates the last modified times of the files on disk to match the values
-// from the last-modified meta tag in the index file, treating all these files
-// as having been modified at the same time. The reason for this is that values
-// are set to 1980 by default as part of "zeroing" as described here:
-// https://issuetracker.google.com/issues/168399701
-// https://buildpacks.io/docs/features/reproducibility/#consequences-and-caveats
-//
-// To make matters worse, the "zeroing" uses a non-zero value such that the
-// following function which is supposed to omit zero-valued times doesn't work:
-// https://cs.opensource.google/go/go/+/refs/tags/go1.17.5:src/net/http/fs.go;l=524-527;drc=refs%2Ftags%2Fgo1.17.5
-//
-// By providing proper timestamps on files, the browser caching logic which
-// uses them inside the http.FileServer can continue to work as expected.
-func (s *Server) updateLastModifiedTimes() error {
-	// Read in the BUILD_DATE file and parse the timestamp.
-	raw, err := os.ReadFile(filepath.Join(s.c.Directory, "BUILD_DATE"))
-	if err != nil {
-		return errors.Wrap(err, "error opening BUILD_DATE file")
-	}
-	buildDate, err := time.Parse(time.RFC3339, strings.TrimSpace((string)(raw)))
-	if err != nil {
-		return errors.Wrap(err, "invalid format for BUILD_DATE file")
-	}
-
-	// Update all the timestamps on files on disk to be the BUILD_DATE.
-	return filepath.WalkDir(s.c.Directory, func(
-		path string,
-		d fs.DirEntry,
-		err error,
-	) error {
-		if d.IsDir() {
-			return nil
-		}
-		return os.Chtimes(path, time.Now(), buildDate)
-	})
 }

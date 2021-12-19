@@ -15,4 +15,4 @@ hugo \
 # Record the build date, because App Engine does not:
 # https://issuetracker.google.com/issues/168399701
 BUILD_DATE="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
-echo "$BUILD_DATE" > app/public/BUILD_DATE
+echo "$BUILD_DATE" > app/site/public/BUILD_DATE

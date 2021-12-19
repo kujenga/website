@@ -7,8 +7,8 @@ Built with [Hugo][hugo] and deployed on [Google App Engine][gae] via
 
 Directories are laid out as follows:
 - `app` is the App Engine application
-  - `app/public` is where static assets from the Hugo site are built for
-    deployment to App Engine.
+  - `app/site/public` is where static assets from the Hugo site are built for
+    embedding into the server binary and deployment within App Engine.
 - `assets` is the Hugo assets directory for management via [pipes][hugoPipes].
 - `content` is the Hugo directory for blog and other [page
   content][hugoContent], mirroring the organization of the site.
