@@ -29,7 +29,6 @@ var rootCmd = &cobra.Command{
 			Dev:       viper.GetBool("dev"),
 			Port:      viper.GetInt("port"),
 			Interface: viper.GetString("interface"),
-			Directory: viper.GetString("directory"),
 		})
 		s.Serve()
 	},
@@ -61,11 +60,6 @@ func init() {
 		"interface", "", "interface to listen on")
 	viper.BindPFlag("interface",
 		rootCmd.PersistentFlags().Lookup("interface"))
-
-	rootCmd.PersistentFlags().String(
-		"directory", "./public", "directory to serve content from")
-	viper.BindPFlag("directory",
-		rootCmd.PersistentFlags().Lookup("directory"))
 }
 
 func initConfig() {

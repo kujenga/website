@@ -26,7 +26,6 @@ type Config struct {
 
 	Port      int
 	Interface string
-	Directory string
 }
 
 // NewServer initializes the server with the given configuration.
@@ -50,7 +49,10 @@ func (s *Server) addr() string {
 func (s *Server) router() http.Handler {
 	mux := http.NewServeMux()
 
-	fs := http.FileServer(http.Dir(s.c.Directory))
+	fs, err := fileServer()
+	if err != nil {
+		s.l().Fatal("error initializing file server", zap.Error(err))
+	}
 	mux.Handle("/", fs)
 
 	// Setup middleware for adding desired security headers.
@@ -78,7 +80,6 @@ func (s *Server) router() http.Handler {
 func (s *Server) Serve() {
 	s.l().Info("Serving HTTP requests",
 		zap.String("addr", s.addr()),
-		zap.String("dir", s.c.Directory),
 	)
 
 	err := http.ListenAndServe(s.addr(), s.router())

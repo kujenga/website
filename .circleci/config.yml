@@ -12,9 +12,9 @@ commands:
     description: Compute hashes of the build directory for comparison
     steps:
       - run:
-          name: Compute hashes of app/public directory
+          name: Compute hashes of app/site/public directory
           command: >
-            find app/public -type f -print0 |
+            find app/site/public -type f -print0 |
             sort -z |
             xargs -0 sha256sum |
             tee >(cat 1>&2) |
@@ -40,6 +40,11 @@ jobs:
             node --version
             npm --version
 
+      # NPM install
+      - run:
+          name: Install Node-based tooling
+          command: npm install
+
       # Install
       - restore_cache:
           keys:
@@ -50,9 +55,11 @@ jobs:
           working_directory: 'tools'
           command: ./install-tools
       - run:
-          name: Install Go app dependencies
+          # NOTE: We do not install this tooling now, as compiling the web app
+          # requires the embedded static assets to be present.
+          name: Download Go app dependencies
           working_directory: 'app'
-          command: go install -v
+          command: go mod download
       - save_cache:
           key: v1-go-{{ checksum "app/go.mod" }}-{{ checksum "tools/go.mod" }}
           paths:
@@ -60,32 +67,28 @@ jobs:
             - ~/go
             - ~/.cache
 
-      # Go tests
+      # Site build
+      - run:
+          name: Build site
+          command: npm run build
+
+      # Tests
+      - run:
+          name: Run NPM lints
+          working_directory: 'app'
+          command: npm run lint
       - run:
           name: Run Go tests
           working_directory: 'app'
           command: go test -v ./...
 
-      # NPM tests
-      - run:
-          name: Install Node-based tooling
-          command: npm install
-      - run:
-          name: Run NPM lints
-          working_directory: 'app'
-          command: npm run lint
-
-      # Site build
-      - run:
-          name: Build site
-          command: npm run build
       - hash_build
       - store_artifacts:
-          path: app/public
+          path: app/site/public
       - persist_to_workspace:
           root: .
           paths:
-            - app/public
+            - app/site/public
 
   deploy:
     executor: gcp-cli/google
@@ -127,7 +130,7 @@ jobs:
             - run:
                 name: Submit sitemap to Google
                 command: |
-                  TARGET="$(cat app/public/robots.txt \
+                  TARGET="$(cat app/site/public/robots.txt \
                           | grep 'Sitemap:' \
                           | awk '{print $2}')"
                   set -x

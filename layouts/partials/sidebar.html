@@ -8,7 +8,7 @@
       <ul class="list-unstyled">
         {{ range $.Site.Data.events.speaking }}
         <li>
-          <div class="external-page">
+          <div class="external-speaking">
             <a href="{{ .EventURL }}" title="{{ .Event }}" target="newtab">
               {{ .Event }}
             </a>
@@ -31,9 +31,9 @@
     <div>
       <h4>Posts elsewhere</h4>
       <ul class="list-unstyled">
-        {{ range $.Site.Data.external.pages }}
+        {{ range $.Site.Data.external.posts }}
         <li>
-          <div class="external-page">
+          <div class="external-post">
             <a href="{{ .Link }}" title="{{ .Name }}" target="newtab">
               {{ .Name }}
             </a>

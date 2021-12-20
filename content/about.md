@@ -67,7 +67,7 @@ intent to how a search engine would analyze the web, providing SmartTags based
 on found concepts and ideas.
 
 ### [Peck](https://itunes.apple.com/tr/app/peck-social-calendaring-event/id912464190)
-#### Co-Founder, Head Developer <small>Fall 2013 - January 2015</small>
+#### Co-Founder, Engineering Lead <small>Fall 2013 - January 2015</small>
 Won the annual Williams College Business Plan Competition and hired a team of 5
 to work out of [Lever](http://www.leverinc.org). Lead development of a mobile
 app for iOS and Android with Ruby on Rails backend. Now live on the iOS App
@@ -98,22 +98,20 @@ Teaching Assistant for introductory computer science courses.
 
 ## Projects
 
-### Neural Network in Go
+### Multi-layer Neural Network in Go
 Wrote a neural network [implementation](https://github.com/kujenga/goml) from
 scratch in Go. Read more about it [on the blog]({{< ref "/blog/go-mlp.md" >}})!
 
 ### Compiling Interpreter for x86 machine code written in ARM assembly language
 Created the fastest interpreter in my Computer Architecture class by compiling
 translated instructions of the x86 instruction set into mapped sequences of ARM
-instructions allowing for much faster runtimes than a standard interpreter.
+instructions allowing for much faster execution than a standard interpreter.
 
 ### Replicated Hosting within a P2P Marketplace
-[Forked](https://github.com/kujenga/OpenBazaar) the
-[OpenBazaar](https://github.com/OpenBazaar/OpenBazaar) project in its earliest
-stages to emulate a hosted site environment within a P2P network. Used a
-[Kademlia](http://xlattice.sourceforge.net/components/protocol/kademlia/specs.html)
-distributed hash table to facilitate replicated storage of a user’s site across
-multiple peers.
+Forked the [OpenBazaar](https://github.com/OpenBazaar/OpenBazaar) project in its
+earliest stages to emulate a hosted site environment within a P2P network. Used
+a [Kademlia][kademlia] distributed hash table to facilitate replicated storage
+of a user’s site across multiple peers.
 
 ### Electric Powered Off-Road Vehicle
 Hand-fabricated a full-suspension metal frame from raw steel tubing. Designed
@@ -146,9 +144,7 @@ Databases
 **Other interests:** Road and Mountain Biking, Rock Climbing, Amateur Radio,
 Metalworking and Fabrication, Woodworking, Piano (15 years)
 
-<script src="//platform.linkedin.com/in.js"></script>
-<script type="IN/MemberProfile" data-id="https://www.linkedin.com/in/ataylor0123" data-format="inline"></script>
-
 
 <!-- Links -->
 [ERI]: https://www.salesforce.com/products/sales-cloud/tools/einstein-relationship-insights/
+[kademlia]: http://xlattice.sourceforge.net/components/protocol/kademlia/specs.html
