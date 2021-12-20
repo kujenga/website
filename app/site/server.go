@@ -4,6 +4,11 @@ import (
 	"embed"
 	"io/fs"
 	"net/http"
+	"os"
+	"strings"
+	"time"
+
+	"github.com/pkg/errors"
 )
 
 //go:embed public
@@ -40,5 +45,63 @@ func fileServer() (http.Handler, error) {
 		return nil, err
 	}
 
-	return http.FileServer(http.FS(servedDirectory)), nil
+	// Read in the BUILD_DATE file and parse the timestamp.
+	raw, err := fs.ReadFile(servedDirectory, "BUILD_DATE")
+	if err != nil {
+		return nil, errors.Wrap(err, "error opening BUILD_DATE file")
+	}
+	buildDate, err := time.Parse(time.RFC3339, strings.TrimSpace((string)(raw)))
+	if err != nil {
+		return nil, errors.Wrap(err, "invalid format for BUILD_DATE file")
+	}
+
+	// Static file handler
+
+	return http.FileServer(
+		&staticFSWrapper{
+			FileSystem:   http.FS(servedDirectory),
+			FixedModTime: buildDate,
+		},
+	), nil
+}
+
+// These wrappers are based off of the workaround presented here to avoid the
+// issue where the modifications times of the embedded file system are all set
+// to a zero value. By specifying a statically fixed value, we give all the
+// files the same more useful timestamp.
+// https://github.com/golang/go/issues/44854#issuecomment-808906568
+
+type staticFSWrapper struct {
+	http.FileSystem
+	FixedModTime time.Time
+}
+
+func (f *staticFSWrapper) Open(name string) (http.File, error) {
+	file, err := f.FileSystem.Open(name)
+
+	return &staticFileWrapper{File: file, fixedModTime: f.FixedModTime}, err
+}
+
+type staticFileWrapper struct {
+	http.File
+	fixedModTime time.Time
+}
+
+func (f *staticFileWrapper) Stat() (os.FileInfo, error) {
+
+	fileInfo, err := f.File.Stat()
+
+	return &staticFileInfoWrapper{
+		FileInfo:     fileInfo,
+		fixedModTime: f.fixedModTime,
+	}, err
+}
+
+type staticFileInfoWrapper struct {
+	os.FileInfo
+	fixedModTime time.Time
+}
+
+func (f *staticFileInfoWrapper) ModTime() time.Time {
+	return f.fixedModTime
 }
