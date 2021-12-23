@@ -1,3 +1,6 @@
+// This file is a templated CSS file, rendered with Hugh templating logic as
+// documented here: https://gohugo.io/hugo-pipes/resource-from-template/
+
 /* ref: https://coolors.co/555b6e-89b0ae-bee3db-faf9f9-ffd6ba */
 $independence: #555b6eff;
 $morning-blue: #89b0aeff;
@@ -58,8 +61,8 @@ nav.navbar {
   margin-top: -25px;
   color: black;
 
-  // NOTE: The background: url(...) is set in the header.includes.html file so
-  // that it cen leverage Hugo resource management.
+  // This line leverages templating to reference index page background.
+  background: url('{{ (resources.Get "images/view-tall-comp.jpg" | fingerprint "md5").RelPermalink }}');
   background-position: center;
   background-size: cover;
 }
