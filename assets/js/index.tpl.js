@@ -10,7 +10,7 @@
 
 {{- $store := dict }}
 {{- range where .Site.Pages "Section" "blog" }}
-{{- $page := dict "title" .Title "description" .Description "tags" .Params.tags "content" (.Content | plainify) "url" .Permalink }}
+{{- $page := dict "title" .Title "description" .Description "date" (.Date.Format "Jan 2, 2006") "tags" .Params.tags "content" (.Content | plainify) "url" .Permalink }}
 {{- $store = merge $store (dict .Permalink $page) }}
 {{- end }}
 window.store = {{ $store | jsonify }};

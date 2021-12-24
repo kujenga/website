@@ -23,6 +23,7 @@ const idx = lunr(function () {
       id: key,
       title: window.store[key].title,
       description: window.store[key].description,
+      date: window.store[key].date,
       tags: window.store[key].category,
       content: window.store[key].content,
     });
@@ -32,12 +33,16 @@ const idx = lunr(function () {
 // Result provides rendering for a single result in the list.
 const Result = (props) => {
   const { item } = props;
-  const summary = item.content.substring(0, 150) + '...';
+  const summary = item.content.substring(0, 300) + '...';
+  // NOTE: This endeavors to match the format laid out at:
+  // layouts/blog/summary.html
   return (
     <li>
       <div class="summary">
         <h4>
           <a href={item.url}>{item.title}</a>
+          <small class="pull-right">{item.date}</small>
+          <br />
         </h4>
         <h5 class="muted">{item.description}</h5>
         <hr />

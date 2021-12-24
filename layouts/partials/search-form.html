@@ -1,3 +1,4 @@
+{{- if .Page.Params.search -}}
 <form
   id="search"
   action="{{ with .GetPage `/search` }}{{.RelPermalink}}{{end}}"
@@ -19,3 +20,4 @@
     Search
   </button>
 </form>
+{{- end -}}

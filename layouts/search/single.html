@@ -1,8 +1,16 @@
 {{ define "main" }}
-<!-- Search form -->
-{{ partial "search-form.html" . }}
+<div class="row">
+  <div class="col-md-9">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ .Title }}</li>
+      </ol>
+    </nav>
+    <div id="results"></div>
+  </div>
 
-<div id="results"></div>
-
-<!-- end -->
+  <!-- Sidebar -->
+  <div class="col-md-3">{{ partial "sidebar.html" . }}</div>
+</div>
 {{ end }}
