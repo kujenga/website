@@ -1,20 +1,3 @@
-<script>
-  window.store = {
-      // You can specify your blog section only:
-      {{ range where .Site.Pages "Section" "blog" }}
-      // For all pages in your site, use "range .Site.Pages"
-      // You can use any unique identifier here
-      "{{ .Permalink }}": {
-          // You can customize your searchable fields using any .Page parameters
-          "title": "{{ .Title  }}",
-          "tags": [{{ range .Params.Tags }}"{{ . }}",{{ end }}],
-          "content": {{ .Content | plainify }}, // Strip out HTML tags
-          "url": "{{ .Permalink }}"
-      },
-      {{ end }}
-  };
-</script>
-
 <!-- Lunr loading script -->
 <script
   src="https://cdn.jsdelivr.net/npm/lunr@2.3.9/lunr.min.js"
@@ -23,6 +6,19 @@
 ></script>
 
 <!-- JS build process: https://gohugo.io/hugo-pipes/js/ -->
+
+<!-- Index rendering -->
+{{ $indexTemplate := resources.Get "js/index.tpl.js" }}
+<!-- Index build -->
+{{ $index := $indexTemplate | resources.ExecuteAsTemplate "js/index.js" . }}
+<!-- SRI hashing: https://gohugo.io/hugo-pipes/fingerprint/ -->
+{{ $secureIndex := $index | resources.Fingerprint "sha256" }}
+<script
+  src="{{ $secureIndex.RelPermalink }}"
+  integrity="{{ $secureIndex.Data.Integrity }}"
+></script>
+
+<!-- Search logic -->
 {{ $js := resources.Get "js/search.js" | js.Build }}
 <!-- SRI hashing: https://gohugo.io/hugo-pipes/fingerprint/ -->
 {{ $secureJS := $js | resources.Fingerprint "sha256" }}
