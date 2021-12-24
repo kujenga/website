@@ -27,6 +27,8 @@ handlers:
     static_dir: public/css
   - url: /styles
     static_dir: public/styles
+  - url: /js
+    static_dir: public/js
   - url: /images
     static_dir: public/images
   - url: /icons
