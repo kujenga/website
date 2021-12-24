@@ -19,8 +19,15 @@
   integrity="{{ $secureIndex.Data.Integrity }}"
 ></script>
 
+<!-- JS Build defines -->
+{{ $defines := dict "process.env.NODE_ENV" "\"development\"" }}
+<!-- JS Build options. the JSX* options are key to using the lighter weight
+"Preact" https://preactjs.com/ rather than the defaults that work for React
+specifically. -->
+{{ $options := dict "defines" $defines "JSXFactory" "h" "JSXFragment" "Fragment"
+"sourceMap" "inline" }}
 <!-- Search logic -->
-{{ $js := resources.Get "js/search.js" | js.Build }}
+{{ $js := resources.Get "js/search.jsx" | js.Build $options }}
 <!-- SRI hashing: https://gohugo.io/hugo-pipes/fingerprint/ -->
 {{ $secureJS := $js | resources.Fingerprint "sha256" }}
 <script
