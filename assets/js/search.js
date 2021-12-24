@@ -21,7 +21,7 @@ const idx = lunr(function () {
   }
 });
 
-function display(results) {
+function display(results, store) {
   const searchResults = document.getElementById('results');
   if (results.length) {
     let resultList = '';
@@ -38,17 +38,38 @@ function display(results) {
   }
 }
 
+function update(query) {
+  const params = new URLSearchParams(window.location.search);
+  params.set('query', query);
+  // window.location.search = params;
+
+  // Perform the search if there is a query.
+  let results = [];
+  if (query) {
+    results = idx.search(query);
+  }
+
+  // Update the list with results
+  display(results, window.store);
+}
+
 // Get the query parameter(s)
 const params = new URLSearchParams(window.location.search);
 const query = params.get('query');
-
 // Perform a search if there is a query
 if (query) {
   // Retain the search input in the form when displaying results
   document.getElementById('search-input').setAttribute('value', query);
 
-  // Perform the search
-  const results = idx.search(query);
-  // Update the list with results
-  display(results, window.store);
+  update(query);
 }
+
+// Live update the query results as people type on the page.
+$('form#search').on(
+  'keyup change paste',
+  'input, select, textarea',
+  function () {
+    const query = $(this).val();
+    update(query);
+  }
+);
