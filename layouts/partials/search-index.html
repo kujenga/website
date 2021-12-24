@@ -1,0 +1,37 @@
+{{- if .Page.Params.search -}}
+<!-- Lunr loading script -->
+<script
+  src="https://cdn.jsdelivr.net/npm/lunr@2.3.9/lunr.min.js"
+  integrity="sha256-DFDZACuFeAqEKv/7Vnu1Tt5ALa58bcWZegGGFNgET8g="
+  crossorigin="anonymous"
+></script>
+
+<!-- JS build process: https://gohugo.io/hugo-pipes/js/ -->
+
+<!-- Index rendering -->
+{{ $indexTemplate := resources.Get "js/index.tpl.js" }}
+<!-- Index build -->
+{{ $index := $indexTemplate | resources.ExecuteAsTemplate "js/index.js" . }}
+<!-- SRI hashing: https://gohugo.io/hugo-pipes/fingerprint/ -->
+{{ $secureIndex := $index | resources.Fingerprint "sha256" }}
+<script
+  src="{{ $secureIndex.RelPermalink }}"
+  integrity="{{ $secureIndex.Data.Integrity }}"
+></script>
+
+<!-- JS Build defines -->
+{{ $defines := dict "process.env.NODE_ENV" "\"development\"" }}
+<!-- JS Build options. the JSX* options are key to using the lighter weight
+"Preact" https://preactjs.com/ rather than the defaults that work for React
+specifically. -->
+{{ $options := dict "defines" $defines "JSXFactory" "h" "JSXFragment" "Fragment"
+"sourceMap" "inline" }}
+<!-- Search logic -->
+{{ $js := resources.Get "js/search.jsx" | js.Build $options }}
+<!-- SRI hashing: https://gohugo.io/hugo-pipes/fingerprint/ -->
+{{ $secureJS := $js | resources.Fingerprint "sha256" }}
+<script
+  src="{{ $secureJS.RelPermalink }}"
+  integrity="{{ $secureJS.Data.Integrity }}"
+></script>
+{{- end -}}

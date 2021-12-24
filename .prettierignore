@@ -1,6 +1,9 @@
 # Submodule that we do not control directly.
 assets/embed-like-gist/
 
+# Specific templated files that do not match their extension
+assets/js/index.tpl.js
+
 # Built or static assets
 static/
 resources/

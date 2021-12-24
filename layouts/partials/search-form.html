@@ -1,0 +1,23 @@
+{{- if .Page.Params.search -}}
+<form
+  id="search"
+  action="{{ with .GetPage `/search` }}{{.RelPermalink}}{{end}}"
+  method="get"
+  class="form-inline my-2 my-lg-0"
+>
+  <div class="form-group">
+    <label hidden class="control-label" for="search-input">Search site</label>
+    <input
+      type="text"
+      id="search-input"
+      class="form-control mr-sm-2"
+      name="query"
+      placeholder="Type here to search"
+      autocomplete="off"
+    />
+  </div>
+  <button type="submit" class="btn btn-outline-primary my-2 my-sm-0">
+    Search
+  </button>
+</form>
+{{- end -}}
