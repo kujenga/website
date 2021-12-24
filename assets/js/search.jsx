@@ -74,8 +74,16 @@ const ResultList = (props) => {
   return <ul class="list-unstyled">{resultList}</ul>;
 };
 
+// https://lunrjs.com/guides/searching.html
+const lunrQueryChars = new RegExp('[*:^~+-]');
+
 // update executes the query and updates the UI with teh results.
 function update(query) {
+  // If the query has no special characters, give it a wildcard suffix for
+  // better serach-as-you-type UX.
+  if (~lunrQueryChars.test(query)) {
+    query += '*';
+  }
   // Perform the search if there is a query.
   let results = [];
   if (query) {
