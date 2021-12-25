@@ -26,17 +26,21 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
-        {{ $current := . }} {{ range .Site.Menus.nav }} {{ $active := or
-        ($current.IsMenuCurrent "nav" .) ($current.HasMenuCurrent "nav" .) }} {{
-        $active = or $active (hasPrefix $current.RelPermalink .URL) }}
+        {{ $current := . }}
+        <!-- Iterate over nav menu items -->
+        {{ range .Site.Menus.nav }}
+        <!-- Determine if this nav item should be set to "active" -->
+        {{ $active := or (or ($current.IsMenuCurrent "nav" .)
+        ($current.HasMenuCurrent "nav" .)) (hasPrefix $current.RelPermalink
+        .URL) }}
         <li class="nav-item{{ if $active }} active{{ end }}">
           <a class="nav-link" href="{{ .URL }}">{{ .Title }}</a>
         </li>
         {{ end }}
       </ul>
-    </div>
 
-    <!-- Search form -->
-    {{ partial "search-form.html" . }}
+      <!-- Search form -->
+      {{ partial "search-form.html" . }}
+    </div>
   </div>
 </nav>

@@ -24,19 +24,19 @@ default_expiration: '30d'
 handlers:
   # Configure App Engine to serve any static assets.
   - url: /css
-    static_dir: public/css
+    static_dir: site/public/css
   - url: /styles
-    static_dir: public/styles
+    static_dir: site/public/styles
   - url: /js
-    static_dir: public/js
+    static_dir: site/public/js
   - url: /images
-    static_dir: public/images
+    static_dir: site/public/images
   - url: /icons
-    static_dir: public/icons
+    static_dir: site/public/icons
   - url: /emgithub
-    static_dir: public/emgithub
+    static_dir: site/public/emgithub
   - url: /old
-    static_dir: public/old
+    static_dir: site/public/old
 
   # Use HTTPS for all requests.
   - url: /.*
