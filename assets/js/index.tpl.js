@@ -9,8 +9,18 @@
  */
 
 {{- $store := dict }}
-{{- range where .Site.Pages "Section" "blog" }}
-{{- $page := dict "title" .Title "description" .Description "date" (.Date.Format "Jan 2, 2006") "tags" .Params.tags "content" (.Content | plainify) "url" .Permalink }}
+{{- /* Filter on just blog pages */}}
+{{- $blogs := where .Site.Pages "Section" "blog" }}
+{{- range where $blogs "IsPage" true }}
+{{- /* Construct an object for the search index from the page */}}
+{{- $page := dict
+  "title" .Title
+  "description" .Description
+  "date" (.Date.Format "Jan 2, 2006")
+  "tags" .Params.tags
+  "content" (.Content | plainify)
+  "url" .Permalink
+}}
 {{- $store = merge $store (dict .Permalink $page) }}
 {{- end }}
 window.store = {{ $store | jsonify }};
