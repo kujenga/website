@@ -35,8 +35,6 @@ handlers:
     static_dir: site/public/icons
   - url: /emgithub
     static_dir: site/public/emgithub
-  - url: /old
-    static_dir: site/public/old
 
   # Use HTTPS for all requests.
   - url: /.*
