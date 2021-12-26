@@ -6,7 +6,7 @@ const idx = lunr(function () {
   // Search these fields
   this.ref('id');
   this.field('title', {
-    boost: 15,
+    boost: 18,
   });
   this.field('description', {
     boost: 12,
@@ -103,8 +103,7 @@ function getResults(query) {
   const words = query.match(splitText);
 
   return idx.query((q) => {
-    // Add the all words but the last one to the query as-is.
-    const last = words.pop();
+    // Add the all words to the query as-is.
     words.forEach((word) =>
       q.term(word, {
         boost: 5,
@@ -112,8 +111,8 @@ function getResults(query) {
     );
     // Add the last word in the query with a trailing wildcard to account for
     // incomplete typing state.
-    q.term(last, {
-      boost: 5,
+    q.term(words.at(-1), {
+      boost: 1,
       wildcard: lunr.Query.wildcard.TRAILING,
     });
 
