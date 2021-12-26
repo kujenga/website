@@ -1,7 +1,13 @@
+import { readFileSync } from 'fs';
+
 // Provide jquery in a global context. This approach is used rather than a
 // direct import because jquery is used across pages and imported from a global
 // script tag so that the load is cached efficiently.
 global.$ = require('jquery');
+
+// HTML from the search page for use with tests.
+// NOTE: "build" must have been run for this to work.
+const searchHTML = readFileSync('./app/site/public/search/index.html');
 
 // Mock test data for basic search tests.
 window.store = {
@@ -61,12 +67,7 @@ describe('getResults', () => {
 });
 
 describe('update', () => {
-  // Set up document body, mirroring the HTML site.
-  document.body.innerHTML = `
-    <div>' +
-      <form id="search"><input type="text" id="search-input" /></form>
-      <div id="results"></div>
-    </div>`;
+  document.body.innerHTML = searchHTML;
 
   test('update with basic query', () => {
     update('stargate');
@@ -99,11 +100,7 @@ describe('initialize', () => {
     // Setup the window.location with a parsable URL.
     window.location.search = '?query=sg-1';
     // Set up document body, mirroring the HTML site.
-    document.body.innerHTML = `
-    <div>' +
-      <form id="search"><input type="text" id="search-input" /></form>
-      <div id="results"></div>
-    </div>`;
+    document.body.innerHTML = searchHTML;
   });
 
   afterAll(() => {
