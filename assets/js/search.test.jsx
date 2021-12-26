@@ -31,7 +31,7 @@ window.store = {
 
 // "require" is used here over "import" so that the above values on window are
 // available for the setup logic.
-const { getResults } = require('./search');
+const { getResults, update } = require('./search');
 
 describe('getResults', () => {
   test('basic query returns results', () => {
@@ -46,6 +46,38 @@ describe('getResults', () => {
 
   test('unrelated query returns no results', () => {
     const results = getResults('mars');
+    expect(results).toHaveLength(0);
+  });
+
+  test('absent query returns no results', () => {
+    const results = getResults();
+    expect(results).toHaveLength(0);
+  });
+});
+
+describe('update', () => {
+  // Set up document body, mirroring the HTML site.
+  document.body.innerHTML = `
+    <div>' +
+      <form id="search"><input type="text" id="search-input" /></form>
+      <div id="results"></div>
+    </div>`;
+
+  test('update with basic query', () => {
+    update('stargate');
+    const results = document.querySelectorAll('#results > ul > li');
+    expect(results).toHaveLength(3);
+  });
+
+  test('update with no result query', () => {
+    update('mars');
+    const results = document.querySelectorAll('#results > ul > li');
+    expect(results).toHaveLength(0);
+  });
+
+  test('update with no query', () => {
+    update();
+    const results = document.querySelectorAll('#results > ul > li');
     expect(results).toHaveLength(0);
   });
 });

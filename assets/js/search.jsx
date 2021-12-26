@@ -159,4 +159,5 @@ if (window.jQuery) {
 
 module.exports = {
   getResults,
+  update,
 };
