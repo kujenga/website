@@ -2,6 +2,8 @@
 /** @type {import('@jest/types').Config.InitialOptions} */
 const config = {
   verbose: true,
+  // Collect code coverage statistics by default.
+  collectCoverage: true,
   // Configure for web app testing:
   // https://jestjs.io/docs/configuration#testenvironment-string
   testEnvironment: 'jsdom',

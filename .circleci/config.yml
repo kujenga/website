@@ -79,6 +79,8 @@ jobs:
       - run:
           name: Run NPM tests
           command: npm test
+      - store_artifacts:
+          path: coverage
       - run:
           name: Run Go tests
           working_directory: 'app'

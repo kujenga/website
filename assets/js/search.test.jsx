@@ -33,7 +33,19 @@ window.store = {
 // available for the setup logic.
 const { getResults } = require('./search');
 
-test('basic query returns results', () => {
-  const results = getResults('atlantis');
-  expect(results).toHaveLength(1);
+describe('getResults', () => {
+  test('basic query returns results', () => {
+    const results = getResults('atlantis');
+    expect(results).toHaveLength(1);
+  });
+
+  test('advanced query returns results', () => {
+    const results = getResults('ancien*');
+    expect(results).toHaveLength(1);
+  });
+
+  test('unrelated query returns no results', () => {
+    const results = getResults('mars');
+    expect(results).toHaveLength(0);
+  });
 });
