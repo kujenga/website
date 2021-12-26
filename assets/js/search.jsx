@@ -133,20 +133,21 @@ function update(query) {
   );
 }
 
-// Get the query parameter(s)
-const params = new URLSearchParams(window.location.search);
-const query = params.get('query');
-// Perform a search if there is a query
-if (query) {
-  // Retain the search input in the form when displaying results
-  document.getElementById('search-input').setAttribute('value', query);
+// initialize sets up the webpage based on load-time parameters.
+function initialize() {
+  // Get the query parameter(s)
+  const params = new URLSearchParams(window.location.search);
+  const query = params.get('query');
 
-  update(query);
-}
+  if (query) {
+    // Display the search input in the form for clarity and editability.
+    document.getElementById('search-input').setAttribute('value', query);
+    // Update the page with corresponding results.
+    update(query);
+  }
 
-// Live update the query results as people type on the page.
-// (conditional since tests do not have jQuery at present)
-if (window.jQuery) {
+  // Live update the query results as people type on the page.
+  // (conditional since tests do not have jQuery at present)
   $('form#search').on(
     'keyup change paste',
     'input, select, textarea',
@@ -157,7 +158,11 @@ if (window.jQuery) {
   );
 }
 
+// At load time, setup the web page.
+initialize();
+
 module.exports = {
   getResults,
   update,
+  initialize,
 };

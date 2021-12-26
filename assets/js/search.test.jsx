@@ -1,3 +1,8 @@
+// Provide jquery in a global context. This approach is used rather than a
+// direct import because jquery is used across pages and imported from a global
+// script tag so that the load is cached efficiently.
+global.$ = require('jquery');
+
 // Mock test data for basic search tests.
 window.store = {
   a: {
@@ -31,7 +36,7 @@ window.store = {
 
 // "require" is used here over "import" so that the above values on window are
 // available for the setup logic.
-const { getResults, update } = require('./search');
+const { getResults, update, initialize } = require('./search');
 
 describe('getResults', () => {
   test('basic query returns results', () => {
@@ -79,5 +84,53 @@ describe('update', () => {
     update();
     const results = document.querySelectorAll('#results > ul > li');
     expect(results).toHaveLength(0);
+  });
+});
+
+describe('initialize', () => {
+  // Mock window location based on:
+  // https://remarkablemark.org/blog/2018/11/17/mock-window-location/
+  const { location } = window;
+
+  beforeAll(() => {
+    delete window.location;
+    window.location = { reload: jest.fn() };
+
+    // Setup the window.location with a parsable URL.
+    window.location.search = '?query=sg-1';
+    // Set up document body, mirroring the HTML site.
+    document.body.innerHTML = `
+    <div>' +
+      <form id="search"><input type="text" id="search-input" /></form>
+      <div id="results"></div>
+    </div>`;
+  });
+
+  afterAll(() => {
+    window.location = location;
+  });
+
+  test('initialize with basic query', () => {
+    initialize();
+
+    const input = document.getElementById('search-input');
+    expect(input.value).toContain('sg-1');
+
+    const results = document.querySelectorAll('#results > ul > li');
+    expect(results).toHaveLength(1);
+  });
+
+  test('initialize with changed', () => {
+    initialize();
+
+    // New query gets more results.
+    const input = document.getElementById('search-input');
+    input.value = 'stargate';
+    // Manual trigger seems to be needed with jsdom:
+    // https://www.htmlgoodies.com/javascript/testing-dom-events-using-jquery-and-jasmine-2-0/
+    $(input).trigger('keyup');
+
+    const results = document.querySelectorAll('#results > ul > li');
+    expect(results).toHaveLength(3);
   });
 });

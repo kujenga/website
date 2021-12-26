@@ -34,6 +34,7 @@
     "stylelint-prettier": "^2.0.0"
   },
   "dependencies": {
+    "jquery": "^3.6.0",
     "lunr": "^2.3.9",
     "preact": "^10.6.4"
   }
