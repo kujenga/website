@@ -1,5 +1,6 @@
 import { h, Fragment, render } from 'preact';
 import { useState } from 'preact/hooks';
+import lunr from 'lunr';
 
 // Builds the index based in the window.store created in index.tpl.js.
 const idx = lunr(function () {
@@ -144,11 +145,18 @@ if (query) {
 }
 
 // Live update the query results as people type on the page.
-$('form#search').on(
-  'keyup change paste',
-  'input, select, textarea',
-  function () {
-    const query = $(this).val();
-    update(query);
-  }
-);
+// (conditional since tests do not have jQuery at present)
+if (window.jQuery) {
+  $('form#search').on(
+    'keyup change paste',
+    'input, select, textarea',
+    function () {
+      const query = $(this).val();
+      update(query);
+    }
+  );
+}
+
+module.exports = {
+  getResults,
+};
