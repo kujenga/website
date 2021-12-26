@@ -74,21 +74,57 @@ const ResultList = (props) => {
   return <ul class="list-unstyled">{resultList}</ul>;
 };
 
+// Detect when special query chars are being used:
 // https://lunrjs.com/guides/searching.html
 const lunrQueryChars = new RegExp('[*:^~+-]');
+// Split text on whitespace to augment the query:
+// https://stackoverflow.com/a/69457941/2528719
+const splitText = new RegExp(/[^\s,]+/g);
 
-// update executes the query and updates the UI with teh results.
+// getResults returns the results for the given query, handling different
+// behaviors based on the input query:
+// - If the query is empty, [] is returned.
+// - If the query has special chars, the default parser is used:
+//   https://lunrjs.com/guides/searching.html
+// - If the query is just words, it is parsed and augmented to give more
+//   matching flexibility by default, providing a better UX.
+function getResults(query) {
+  if (!query) {
+    return [];
+  }
+  if (lunrQueryChars.test(query)) {
+    // If the query has special characters, use the default parser:
+    // https://lunrjs.com/guides/searching.html
+    return idx.search(query);
+  }
+
+  // If the query has no special characters, we parse it for a better
+  // default experience.
+  const words = query.match(splitText);
+
+  return idx.query((q) => {
+    // Add the all words but the last one to the query as-is.
+    const last = words.pop();
+    words.forEach((word) =>
+      q.term(word, {
+        boost: 5,
+      })
+    );
+    // Add the last word in the query with a trailing wildcard to account for
+    // incomplete typing state.
+    q.term(last, {
+      boost: 5,
+      wildcard: lunr.Query.wildcard.TRAILING,
+    });
+
+    return q;
+  });
+}
+
+// update executes the query and updates the UI with the results.
 function update(query) {
-  // If the query has no special characters, give it a wildcard suffix for
-  // better serach-as-you-type UX.
-  if (~lunrQueryChars.test(query)) {
-    query += '*';
-  }
-  // Perform the search if there is a query.
-  let results = [];
-  if (query) {
-    results = idx.search(query);
-  }
+  // Perform the search to get results from the lunr index.
+  let results = getResults(query);
 
   // Update the list with rendered results.
   render(
