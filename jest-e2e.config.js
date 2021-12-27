@@ -1,7 +1,9 @@
-// Sync object
+// Configuration for the e2e jest test execution.
+
 /** @type {import('@jest/types').Config.InitialOptions} */
 const config = {
   verbose: true,
+  // Puppeteer configuration.
   preset: 'jest-puppeteer',
   // Run just the e2e tests.
   testMatch: ['<rootDir>/e2e/**/*.test.js'],
