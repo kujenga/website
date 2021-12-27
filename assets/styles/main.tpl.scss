@@ -257,11 +257,9 @@ nav.navbar {
   pre {
     border-radius: 0.3rem 0.3rem 0 0;
     border: 1px solid #ddd;
-    padding: 0.5rem 1.25rem;
-
-    code {
-      line-height: 1.05rem;
-    }
+    padding: 0.5rem 1rem;
+    font-size: 80%;
+    line-height: 1.05rem;
   }
 }
 

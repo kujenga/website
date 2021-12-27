@@ -8,6 +8,9 @@
 
 /* stylelint-disable color-hex-length, block-no-empty */
 
+$keyword: #cf222e;
+$string: #0a3069;
+
 /* Background */
 .chroma {
   background-color: #ffffff;
@@ -65,44 +68,41 @@
 
 /* Keyword */
 .chroma .k {
-  color: #000000;
-  font-weight: bold;
+  color: $keyword;
 }
 
 /* KeywordConstant */
 .chroma .kc {
-  color: #000000;
-  font-weight: bold;
+  color: $keyword;
 }
 
 /* KeywordDeclaration */
 .chroma .kd {
-  color: #000000;
-  font-weight: bold;
+  color: $keyword;
 }
 
 /* KeywordNamespace */
 .chroma .kn {
-  color: #000000;
-  font-weight: bold;
+  color: $keyword;
 }
 
 /* KeywordPseudo */
 .chroma .kp {
-  color: #000000;
-  font-weight: bold;
+  color: $keyword;
 }
 
 /* KeywordReserved */
 .chroma .kr {
-  color: #000000;
-  font-weight: bold;
+  color: $keyword;
 }
 
-/* KeywordType */
+/** KeywordType
+ * NOTE: This class is used on Go type parameters as well as C method
+ * definitions, which GitHub highlights differently and we cannot. We defer to
+ * the Go syntax in this case.
+ */
 .chroma .kt {
-  color: #445588;
-  font-weight: bold;
+  color: #24292f;
 }
 
 /* Name */
@@ -154,8 +154,7 @@
 
 /* NameFunction */
 .chroma .nf {
-  color: #990000;
-  font-weight: bold;
+  color: #8250df;
 }
 
 /* NameFunctionMagic */
@@ -220,57 +219,57 @@
 
 /* LiteralString */
 .chroma .s {
-  color: #dd1144;
+  color: $string;
 }
 
 /* LiteralStringAffix */
 .chroma .sa {
-  color: #dd1144;
+  color: $string;
 }
 
 /* LiteralStringBacktick */
 .chroma .sb {
-  color: #dd1144;
+  color: $string;
 }
 
 /* LiteralStringChar */
 .chroma .sc {
-  color: #dd1144;
+  color: $string;
 }
 
 /* LiteralStringDelimiter */
 .chroma .dl {
-  color: #dd1144;
+  color: $string;
 }
 
 /* LiteralStringDoc */
 .chroma .sd {
-  color: #dd1144;
+  color: $string;
 }
 
 /* LiteralStringDouble */
 .chroma .s2 {
-  color: #dd1144;
+  color: $string;
 }
 
 /* LiteralStringEscape */
 .chroma .se {
-  color: #dd1144;
+  color: $string;
 }
 
 /* LiteralStringHeredoc */
 .chroma .sh {
-  color: #dd1144;
+  color: $string;
 }
 
 /* LiteralStringInterpol */
 .chroma .si {
-  color: #dd1144;
+  color: $string;
 }
 
 /* LiteralStringOther */
 .chroma .sx {
-  color: #dd1144;
+  color: $string;
 }
 
 /* LiteralStringRegex */
@@ -280,7 +279,7 @@
 
 /* LiteralStringSingle */
 .chroma .s1 {
-  color: #dd1144;
+  color: $string;
 }
 
 /* LiteralStringSymbol */
@@ -353,8 +352,7 @@
 
 /* CommentMultiline */
 .chroma .cm {
-  color: #999988;
-  font-style: italic;
+  color: #6e7781;
 }
 
 /* CommentSingle */
@@ -372,16 +370,12 @@
 
 /* CommentPreproc */
 .chroma .cp {
-  color: #999999;
-  font-weight: bold;
-  font-style: italic;
+  color: $keyword;
 }
 
 /* CommentPreprocFile */
 .chroma .cpf {
-  color: #999999;
-  font-weight: bold;
-  font-style: italic;
+  color: $string;
 }
 
 /* Generic */
