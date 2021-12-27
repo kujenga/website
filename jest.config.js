@@ -1,7 +1,10 @@
-// Sync object
+// Configuration for the jest unit test execution.
+
 /** @type {import('@jest/types').Config.InitialOptions} */
 const config = {
   verbose: true,
+  // Test against everything but e2e tests.
+  testPathIgnorePatterns: ['<rootDir>/e2e/', '<rootDir>/node_modules/'],
   // Collect code coverage statistics by default.
   collectCoverage: true,
   coverageDirectory: 'coverage/js',

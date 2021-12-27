@@ -4,7 +4,7 @@ node_modules/
 build/
 public/
 resources/
-VERSION
+VERSION*
 
 # Testing
 reports/

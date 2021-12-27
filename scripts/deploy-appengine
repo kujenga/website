@@ -2,15 +2,19 @@
 
 set -euo pipefail
 
-DIR=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+# Directory containing this script.
+D=$( cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P )
+# Root of this repository.
+R=$(cd "$D/.." && pwd -P)
+
 
 # This assumes the built-in CircleCI environment variables:
 # https://circleci.com/docs/2.0/env-vars/#built-in-environment-variables
 
 BASE_URL="https://api.github.com/repos/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME"
 
-VERSION="$("$DIR/version")"
-ENVIRONMENT="$("$DIR/environment")"
+VERSION="$("$D/version")"
+ENVIRONMENT="$("$D/environment")"
 
 # Global variables for state management.
 DEPLOY_ID=''
@@ -103,6 +107,11 @@ set +x
 VERSION_URL="$(gcloud app versions describe "$VERSION" \
     --service default \
     --format 'value(versionUrl)')"
+
+# Write the URL for this version to a file.
+echo "$VERSION_URL" > "$R/VERSION_URL"
+# Echo the URL to shell output.
+echo "$VERSION_URL"
 
 # Update GitHub status to mark a successful deployment.
 update_status \
