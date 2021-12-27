@@ -94,6 +94,11 @@ jobs:
           path: reports
       - store_artifacts:
           path: coverage
+      - run:
+          # ref: https://github.com/codecov/example-go/blob/master/.circleci/config.yml
+          name: Upload coverage to Codecov
+          command: |
+            bash <(curl -s https://codecov.io/bash) -s coverage
 
       - hash_build
       - store_artifacts:
