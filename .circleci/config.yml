@@ -79,14 +79,21 @@ jobs:
       - run:
           name: Run NPM tests
           command: npm test
+      - run:
+          name: Run Go tests
+          working_directory: 'app'
+          command: |
+            mkdir -p ../{reports,coverage}/go
+            set -x
+            gotestsum --junitfile ../reports/go/junit.xml -- \
+              -coverprofile=../coverage/go/coverage.txt ./...
+            go tool cover \
+              -html=../coverage/go/coverage.txt \
+              -o=../coverage/go/coverage.html
       - store_test_results:
           path: reports
       - store_artifacts:
           path: coverage
-      - run:
-          name: Run Go tests
-          working_directory: 'app'
-          command: go test -v ./...
 
       - hash_build
       - store_artifacts:
