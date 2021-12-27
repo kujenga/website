@@ -43,3 +43,12 @@ enableRobotsTXT = true
     title = "About"
     url = "/about/"
     weight = -100
+
+# https://gohugo.io/getting-started/configuration-markup#highlight
+[markup]
+  [markup.highlight]
+    # Use generated syntax highlighting:
+    # https://gohugo.io/content-management/syntax-highlighting/#highlighting-in-code-fences
+    noClasses = false
+    # Best for Go!
+    tabWidth = 8
