@@ -12,7 +12,7 @@ A spectacular tool that we have been using is [Apiary](https://apiary.io), a ser
 
 ### A Confluence of Interests
 
-The core parsing library for the API BLueprint format is called [Snow Crash](https://github.com/apiaryio/snowcrash) and is written in C++. Built on top of this library is a tool called [Drafter](https://github.com/apiaryio/drafter), also a C++ library, which provides a cleaner interface to interact with the primary purpose of Snow Crash, parsing human readable markdown into json.
+The core parsing library for the API Blueprint format is called [Snow Crash](https://github.com/apiaryio/snowcrash) and is written in C++. Built on top of this library is a tool called [Drafter](https://github.com/apiaryio/drafter), also a C++ library, which provides a cleaner interface to interact with the primary purpose of Snow Crash, parsing human readable markdown into json.
 
 There are two client libraries currently available for drafter. [Protagonist](https://github.com/apiaryio/protagonist) is written in Node.js, and [RedSnow](https://github.com/apiaryio/redsnow) is written in Ruby. I mostly am writing Go these days, so this seemed like a great opportunity to add a Go client library for the core Snow Crash parsing library.
 
@@ -29,22 +29,22 @@ package main
 */
 import "C"
 import (
-    "fmt"
-    "time"
+	"fmt"
+	"time"
 )
 
 func Random() int {
-    return int(C.random())
+	return int(C.random())
 }
 
 func Seed(i int) {
-    C.srandom(C.uint(i))
+	C.srandom(C.uint(i))
 }
 
 func main() {
-    fmt.Printf("Deterministic random: %v\n", Random())
-    Seed(int(time.Now().Unix()))
-    fmt.Printf("Seeded random: %v\n", Random())
+	fmt.Printf("Deterministic random: %v\n", Random())
+	Seed(int(time.Now().Unix()))
+	fmt.Printf("Seeded random: %v\n", Random())
 }
 ```
 
@@ -55,6 +55,7 @@ The existing wrapper libraries use the Drafter source as a git submodule which i
 I would be wrapping the [C-Interface](https://github.com/apiaryio/drafter/blob/master/README.md#c-interface) described in the project's README file, so getting the example code up and running seemed to be a good start.
 
 #### Drafter C-based test code
+
 ```c
 #include <stdio.h>
 #include <stdlib.h>

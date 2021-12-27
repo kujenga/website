@@ -254,8 +254,14 @@ nav.navbar {
     padding: 0.5em;
   }
 
-  pre code {
-    line-height: 1.05rem;
+  pre {
+    border-radius: 0.3rem 0.3rem 0 0;
+    border: 1px solid #ddd;
+    padding: 0.5rem 1.25rem;
+
+    code {
+      line-height: 1.05rem;
+    }
   }
 }
 
