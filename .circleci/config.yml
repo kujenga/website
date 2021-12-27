@@ -133,6 +133,10 @@ jobs:
       - run:
           name: Deploy to App Engine
           command: ./scripts/deploy-appengine
+      - persist_to_workspace:
+          root: .
+          paths:
+            - VERSION*
       - run:
           name: Cleanup older versions in App Engine
           # We keep 10 versions as this is reasonably under 15, the max allowed
@@ -154,6 +158,24 @@ jobs:
                   set -x
                   curl -v "https://www.google.com/ping?sitemap=$TARGET"
 
+  verify:
+    docker:
+      - image: cimg/go:1.16-browsers
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: Install Node-based tooling
+          command: npm install
+      - run:
+          name: Run E2E tests
+          command: npm run test:e2e
+      - store_test_results:
+          path: reports
+      # NOTE: Coverage is not included here because we are not
+      # testing any appliation code.
+
 workflows:
   build_and_deploy:
     jobs:
@@ -161,3 +183,6 @@ workflows:
       - deploy:
           requires:
             - build
+      - verify:
+          requires:
+            - deploy
