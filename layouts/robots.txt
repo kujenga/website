@@ -1,10 +1,11 @@
 # robots.txt file for ataylor.io
-{{ if hugo.IsProduction -}}
+{{- if hugo.IsProduction }}
 # Hello, Robots!
-Sitemap: {{ .Sitemap.Filename | absURL }}
+{{- /* # NOTE: The .Sitemap.Filename variables is not available here. */}}
+Sitemap: {{ "sitemap.xml" | absURL }}
 User-agent: *
 Disallow:
-{{- else -}}
+{{- else }}
 # Begone! This version ain't ready yet.
 User-agent: *
 Disallow: /
@@ -12,4 +13,4 @@ Disallow: /
 # Twitter bot rendering is acceptable for debugging.
 User-agent: Twitterbot
 Disallow:
-{{- end -}}
+{{- end }}

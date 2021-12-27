@@ -15,10 +15,9 @@ func TestDevServer(t *testing.T) {
 	log, err := zap.NewDevelopment()
 	require.NoError(t, err)
 	s := NewServer(Config{
-		Log:       log,
-		Dev:       true,
-		Port:      12345,
-		Interface: "127.0.0.1",
+		Log:  log,
+		Dev:  true,
+		Port: 12345,
 	})
 
 	// Basic assertions
