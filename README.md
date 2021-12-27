@@ -59,6 +59,12 @@ cd app
 go test -v ./...
 ```
 
+To run the browser automation E2E tests, perform the following command:
+
+```
+npm run test:e2e
+```
+
 <!-- Citations -->
 [hugo]: https://gohugo.io
 [gae]: https://cloud.google.com/appengine
