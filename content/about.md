@@ -4,7 +4,7 @@ title = "About"
 type = "about"
 +++
 
-<div class="row">
+<div class="row intro">
 
 <div class="col-md-7">
 
@@ -32,6 +32,8 @@ level of monumental changes needed to address the threat of climate change.
 
 When I'm not at my computer, you are likely to find me out on a bike or working
 my way up a rock wall.
+
+You can reach me via email at the address `hi@` the domain for this site.
 
 <!-- TODO: reference revamped project page as well -->
 

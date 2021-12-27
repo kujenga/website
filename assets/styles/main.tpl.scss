@@ -202,12 +202,20 @@ nav.navbar {
     font-size: 1.5rem;
   }
 
+  .intro h3 {
+    margin-bottom: 1.5rem;
+  }
+
   h4 {
     font-size: 1.125rem;
   }
 
   p {
     font-size: 0.9rem;
+  }
+
+  code {
+    color: inherit;
   }
 }
 
