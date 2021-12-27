@@ -1,7 +1,8 @@
 # robots.txt file for ataylor.io
 {{- if hugo.IsProduction }}
 # Hello, Robots!
-Sitemap: {{ .Sitemap.Filename | absURL }}
+{{- /* # NOTE: The .Sitemap.Filename variables is not available here. */}}
+Sitemap: {{ "sitemap.xml" | absURL }}
 User-agent: *
 Disallow:
 {{- else }}
