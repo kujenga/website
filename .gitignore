@@ -7,6 +7,7 @@ resources/
 VERSION
 
 # Testing
+reports/
 coverage/
 
 # Hugo

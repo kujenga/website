@@ -79,6 +79,8 @@ jobs:
       - run:
           name: Run NPM tests
           command: npm test
+      - store_test_results:
+          path: reports
       - store_artifacts:
           path: coverage
       - run:
