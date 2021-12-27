@@ -19,7 +19,7 @@ function getTargetURL() {
   return 'https://ataylor.io';
 }
 
-describe('Homepage', () => {
+describe('Site', () => {
   beforeAll(async () => {
     const targetURL = getTargetURL();
     console.log('testing at:', targetURL);
