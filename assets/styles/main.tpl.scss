@@ -1,6 +1,10 @@
 // This file is a templated CSS file, rendered with Hugh templating logic as
 // documented here: https://gohugo.io/hugo-pipes/resource-from-template/
 
+// Custom CSS for syntax highlighting.
+// https://gohugo.io/content-management/syntax-highlighting/#highlighting-in-code-fences
+@import 'syntax-github';
+
 /* ref: https://coolors.co/555b6e-89b0ae-bee3db-faf9f9-ffd6ba */
 $independence: #555b6eff;
 $morning-blue: #89b0aeff;
@@ -250,7 +254,11 @@ nav.navbar {
     padding: 0.5em;
   }
 
-  pre code {
+  pre {
+    border-radius: 0.3rem 0.3rem 0 0;
+    border: 1px solid #ddd;
+    padding: 0.5rem 1rem;
+    font-size: 80%;
     line-height: 1.05rem;
   }
 }
