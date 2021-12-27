@@ -4,15 +4,19 @@ set -euo pipefail
 
 D=$( cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P )
 
-set -x
 
 ENVIRONMENT="$("$D/environment")"
 
+set -x
+
 # Build the site
 hugo \
-    --environment="$ENVIRONMENT"
+    --environment="$ENVIRONMENT" \
+    "$@"
+
+set +x
 
 # Record the build date, because App Engine does not:
 # https://issuetracker.google.com/issues/168399701
 BUILD_DATE="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
-echo "$BUILD_DATE" > app/site/public/BUILD_DATE
+echo "$BUILD_DATE" | tee > app/site/public/BUILD_DATE
