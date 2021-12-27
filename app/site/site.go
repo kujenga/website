@@ -79,11 +79,8 @@ func (s *Server) router() http.Handler {
 }
 
 // Serve blocks forever, starting the server on the configured address.
-func (s *Server) Serve() {
-	s.l().Info("Serving HTTP requests",
-		zap.String("addr", s.addr()),
-	)
+func (s *Server) Serve() error {
+	s.l().Info("Serving HTTP requests", zap.String("addr", s.addr()))
 
-	err := http.ListenAndServe(s.addr(), s.router())
-	s.l().Fatal("error service http requests", zap.Error(err))
+	return http.ListenAndServe(s.addr(), s.router())
 }

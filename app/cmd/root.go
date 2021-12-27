@@ -15,18 +15,21 @@ import (
 var rootCmd = &cobra.Command{
 	Use:   "app",
 	Short: "Serving static files for a website.",
-	Run: func(cmd *cobra.Command, args []string) {
-		s := getSiteServer()
-		s.Serve()
+	RunE: func(cmd *cobra.Command, args []string) error {
+		s, err := getSiteServer()
+		if err != nil {
+			return err
+		}
+		return s.Serve()
 	},
 }
 
-func getSiteServer() *site.Server {
+func getSiteServer() (*site.Server, error) {
 	logCfg := zap.NewProductionConfig()
 	logCfg.EncoderConfig.MessageKey = "message"
 	logger, err := logCfg.Build()
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 	defer logger.Sync()
 
@@ -35,7 +38,7 @@ func getSiteServer() *site.Server {
 		Dev:       viper.GetBool("dev"),
 		Port:      viper.GetInt("port"),
 		Interface: viper.GetString("interface"),
-	})
+	}), nil
 }
 
 // Execute sets off the root command for this package, parsing parameters and
@@ -48,7 +51,7 @@ func Execute() {
 }
 
 func init() {
-	cobra.OnInitialize(initalizeConfig)
+	cobra.OnInitialize(initializeConfig)
 
 	rootCmd.PersistentFlags().
 		Bool("dev", false, "is development environment")
@@ -66,6 +69,6 @@ func init() {
 		rootCmd.PersistentFlags().Lookup("interface"))
 }
 
-func initalizeConfig() {
+func initializeConfig() {
 	viper.AutomaticEnv()
 }
