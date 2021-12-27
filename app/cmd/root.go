@@ -16,22 +16,26 @@ var rootCmd = &cobra.Command{
 	Use:   "app",
 	Short: "Serving static files for a website.",
 	Run: func(cmd *cobra.Command, args []string) {
-		logCfg := zap.NewProductionConfig()
-		logCfg.EncoderConfig.MessageKey = "message"
-		logger, err := logCfg.Build()
-		if err != nil {
-			panic(err)
-		}
-		defer logger.Sync()
-
-		s := site.NewServer(site.Config{
-			Log:       logger,
-			Dev:       viper.GetBool("dev"),
-			Port:      viper.GetInt("port"),
-			Interface: viper.GetString("interface"),
-		})
+		s := getSiteServer()
 		s.Serve()
 	},
+}
+
+func getSiteServer() *site.Server {
+	logCfg := zap.NewProductionConfig()
+	logCfg.EncoderConfig.MessageKey = "message"
+	logger, err := logCfg.Build()
+	if err != nil {
+		panic(err)
+	}
+	defer logger.Sync()
+
+	return site.NewServer(site.Config{
+		Log:       logger,
+		Dev:       viper.GetBool("dev"),
+		Port:      viper.GetInt("port"),
+		Interface: viper.GetString("interface"),
+	})
 }
 
 // Execute sets off the root command for this package, parsing parameters and
@@ -44,7 +48,7 @@ func Execute() {
 }
 
 func init() {
-	cobra.OnInitialize(initConfig)
+	cobra.OnInitialize(initalizeConfig)
 
 	rootCmd.PersistentFlags().
 		Bool("dev", false, "is development environment")
@@ -62,6 +66,6 @@ func init() {
 		rootCmd.PersistentFlags().Lookup("interface"))
 }
 
-func initConfig() {
+func initalizeConfig() {
 	viper.AutomaticEnv()
 }

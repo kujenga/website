@@ -4,6 +4,13 @@ const config = {
   verbose: true,
   // Collect code coverage statistics by default.
   collectCoverage: true,
+  coverageDirectory: 'coverage/js',
+  // Collect junit report information for test runs:
+  // https://www.npmjs.com/package/jest-junit
+  reporters: [
+    'default',
+    ['jest-junit', { outputDirectory: 'reports/js', addFileAttribute: 'true' }],
+  ],
   // Configure for web app testing:
   // https://jestjs.io/docs/configuration#testenvironment-string
   testEnvironment: 'jsdom',
