@@ -8,6 +8,7 @@ assets/js/index.tpl.js
 static/
 resources/
 app/site/public/
+coverage/
 
 # Old site
 old/

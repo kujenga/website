@@ -6,5 +6,8 @@ public/
 resources/
 VERSION
 
+# Testing
+coverage/
+
 # Hugo
 *.lock

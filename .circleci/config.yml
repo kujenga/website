@@ -75,8 +75,12 @@ jobs:
       # Tests
       - run:
           name: Run NPM lints
-          working_directory: 'app'
           command: npm run lint
+      - run:
+          name: Run NPM tests
+          command: npm test
+      - store_artifacts:
+          path: coverage
       - run:
           name: Run Go tests
           working_directory: 'app'

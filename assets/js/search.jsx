@@ -1,12 +1,13 @@
 import { h, Fragment, render } from 'preact';
 import { useState } from 'preact/hooks';
+import lunr from 'lunr';
 
 // Builds the index based in the window.store created in index.tpl.js.
 const idx = lunr(function () {
   // Search these fields
   this.ref('id');
   this.field('title', {
-    boost: 15,
+    boost: 18,
   });
   this.field('description', {
     boost: 12,
@@ -74,21 +75,56 @@ const ResultList = (props) => {
   return <ul class="list-unstyled">{resultList}</ul>;
 };
 
+// Detect when special query chars are being used:
 // https://lunrjs.com/guides/searching.html
 const lunrQueryChars = new RegExp('[*:^~+-]');
+// Split text on whitespace to augment the query:
+// https://stackoverflow.com/a/69457941/2528719
+const splitText = new RegExp(/[^\s,]+/g);
 
-// update executes the query and updates the UI with teh results.
+// getResults returns the results for the given query, handling different
+// behaviors based on the input query:
+// - If the query is empty, [] is returned.
+// - If the query has special chars, the default parser is used:
+//   https://lunrjs.com/guides/searching.html
+// - If the query is just words, it is parsed and augmented to give more
+//   matching flexibility by default, providing a better UX.
+function getResults(query) {
+  if (!query) {
+    return [];
+  }
+  if (lunrQueryChars.test(query)) {
+    // If the query has special characters, use the default parser:
+    // https://lunrjs.com/guides/searching.html
+    return idx.search(query);
+  }
+
+  // If the query has no special characters, we parse it for a better
+  // default experience.
+  const words = query.match(splitText);
+
+  return idx.query((q) => {
+    // Add the all words to the query as-is.
+    words.forEach((word) =>
+      q.term(word, {
+        boost: 5,
+      })
+    );
+    // Add the last word in the query with a trailing wildcard to account for
+    // incomplete typing state.
+    q.term(words.at(-1), {
+      boost: 1,
+      wildcard: lunr.Query.wildcard.TRAILING,
+    });
+
+    return q;
+  });
+}
+
+// update executes the query and updates the UI with the results.
 function update(query) {
-  // If the query has no special characters, give it a wildcard suffix for
-  // better serach-as-you-type UX.
-  if (~lunrQueryChars.test(query)) {
-    query += '*';
-  }
-  // Perform the search if there is a query.
-  let results = [];
-  if (query) {
-    results = idx.search(query);
-  }
+  // Perform the search to get results from the lunr index.
+  let results = getResults(query);
 
   // Update the list with rendered results.
   render(
@@ -97,23 +133,36 @@ function update(query) {
   );
 }
 
-// Get the query parameter(s)
-const params = new URLSearchParams(window.location.search);
-const query = params.get('query');
-// Perform a search if there is a query
-if (query) {
-  // Retain the search input in the form when displaying results
-  document.getElementById('search-input').setAttribute('value', query);
+// initialize sets up the webpage based on load-time parameters.
+function initialize() {
+  // Get the query parameter(s)
+  const params = new URLSearchParams(window.location.search);
+  const query = params.get('query');
 
-  update(query);
-}
-
-// Live update the query results as people type on the page.
-$('form#search').on(
-  'keyup change paste',
-  'input, select, textarea',
-  function () {
-    const query = $(this).val();
+  if (query) {
+    // Display the search input in the form for clarity and editability.
+    document.getElementById('search-input').setAttribute('value', query);
+    // Update the page with corresponding results.
     update(query);
   }
-);
+
+  // Live update the query results as people type on the page.
+  // (conditional since tests do not have jQuery at present)
+  $('form#search').on(
+    'keyup change paste',
+    'input, select, textarea',
+    function () {
+      const query = $(this).val();
+      update(query);
+    }
+  );
+}
+
+// At load time, setup the web page.
+initialize();
+
+module.exports = {
+  getResults,
+  update,
+  initialize,
+};

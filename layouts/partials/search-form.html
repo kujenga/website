@@ -1,26 +1,21 @@
 <form
   id="search"
-  action="{{ with .GetPage `/search` }}{{.RelPermalink}}{{end}}"
+  action="{{ with .GetPage `/search` }}{{ .RelPermalink }}{{ end }}"
   method="get"
-  class="form-inline my-2 my-lg-0"
+  class="form-inline"
 >
-  <div>
-    <label hidden class="control-label" for="search-input">Search</label>
-    <input
-      type="text"
-      id="search-input"
-      class="form-control mr-sm-2"
-      name="query"
-      placeholder="Search"
-      autocomplete="off"
-    />
-  </div>
+  <input
+    type="search"
+    id="search-input"
+    class="form-control"
+    name="query"
+    placeholder="Search"
+    autocomplete="off"
+  />
   <button
     type="submit"
     id="completed-task"
-    class="btn btn-light"
+    class="btn"
     aria-label="Search"
-  >
-    <i class="fa fa-search fa-lg"></i>
-  </button>
+  ></button>
 </form>

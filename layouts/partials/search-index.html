@@ -2,12 +2,6 @@
   functionaloity. On other pages, the form submission brings us to the search
   page where the result creation happens. -->
 {{- if .Page.Params.search -}}
-<!-- Lunr loading script -->
-<script
-  src="https://cdn.jsdelivr.net/npm/lunr@2.3.9/lunr.min.js"
-  integrity="sha256-DFDZACuFeAqEKv/7Vnu1Tt5ALa58bcWZegGGFNgET8g="
-  crossorigin="anonymous"
-></script>
 
 <!-- JS build process: https://gohugo.io/hugo-pipes/js/ -->
 
@@ -28,7 +22,12 @@
 "Preact" https://preactjs.com/ rather than the defaults that work for React
 specifically. -->
 {{ $options := dict "defines" $defines "JSXFactory" "h" "JSXFragment" "Fragment"
-"sourceMap" "inline" }}
+"minify" true }}
+<!-- per-environment customizations -->
+{{ if eq hugo.Environment "development" }}
+<!-- In non-production, enable source maps -->
+<!-- TODO: Enable always when options other than "inline" are available -->
+{{ $options = merge $options (dict "sourcemap" "inline") }} {{ end }}
 <!-- Search logic -->
 {{ $js := resources.Get "js/search.jsx" | js.Build $options }}
 <!-- SRI hashing: https://gohugo.io/hugo-pipes/fingerprint/ -->
