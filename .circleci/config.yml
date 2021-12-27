@@ -78,18 +78,10 @@ jobs:
           command: npm run lint
       - run:
           name: Run NPM tests
-          command: npm test
+          command: npm run test
       - run:
           name: Run Go tests
-          working_directory: 'app'
-          command: |
-            mkdir -p ../{reports,coverage}/go
-            set -x
-            gotestsum --junitfile ../reports/go/junit.xml -- \
-              -coverprofile=../coverage/go/coverage.txt ./...
-            go tool cover \
-              -html=../coverage/go/coverage.txt \
-              -o=../coverage/go/coverage.html
+          command: npm run test:go
       - store_test_results:
           path: reports
       - store_artifacts:

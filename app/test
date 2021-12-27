@@ -1,0 +1,28 @@
+#!/bin/bash
+
+set -euo pipefail
+
+# Directory containing this script.
+D=$( cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P )
+# Root of this repository.
+R=$(cd "$D/.." && pwd -P)
+
+# Create directories for the test and coverage reports to go into.
+REPORTS="$R/reports/go"
+mkdir -p "$REPORTS"
+COVERAGE="$R/coverage/go"
+mkdir -p "$COVERAGE"
+
+# Move into the Go module directory.
+cd "$D"
+
+set -x
+
+# Execute tests and generate the junit output.
+gotestsum --junitfile "$REPORTS/junit.xml" -- \
+    -coverprofile="$COVERAGE/coverage.txt" ./...
+
+# Generate HTML of coverage report.
+go tool cover \
+    -html="$COVERAGE/coverage.txt" \
+    -o="$COVERAGE/coverage.html"
