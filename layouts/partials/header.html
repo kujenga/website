@@ -44,7 +44,7 @@
   {{ template "_internal/twitter_cards.html" . }}
 
 
-  {{- $csp := getenv "CONTENT_SECURITY_POLICY" }} {{- if and (eq
+  {{- $csp := getenv "HUGO_CONTENT_SECURITY_POLICY" }} {{- if and (eq
   hugo.Environment "development") (not (eq $csp "")) }}
   <!-- To emulate the production server, we mirror the CSP in dev -->
   <meta http-equiv="Content-Security-Policy" content="{{ $csp }}" />
