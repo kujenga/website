@@ -1,5 +1,5 @@
-import { h, Fragment, render } from 'preact';
-import { useState } from 'preact/hooks';
+/* global $ */
+import { h, render } from 'preact';
 import lunr from 'lunr';
 
 // Builds the index based in the window.store created in index.tpl.js.
@@ -34,7 +34,7 @@ const idx = lunr(function () {
 // Result provides rendering for a single result in the list.
 const Result = (props) => {
   const { item } = props;
-  const summary = item.content.substring(0, 300) + '...';
+  const summary = `${item.content.substring(0, 300)}...`;
   // NOTE: This endeavors to match the format laid out at:
   // layouts/blog/summary.html
   return (
@@ -49,10 +49,12 @@ const Result = (props) => {
         <hr />
         <div>
           <p
-            // The Hugo renderer outputs safe HTML with characters encoded as
-            // HTML, so it is safe and necessary here to set that content directly.
+            // The Hugo renderer outputs safe HTML with characters
+            // encoded as HTML, so it is safe and necessary here to
+            // set that content directly.
+            // eslint-disable-next-line react/no-danger
             dangerouslySetInnerHTML={{ __html: summary }}
-          ></p>
+          />
         </div>
       </div>
     </li>
@@ -82,13 +84,18 @@ const lunrQueryChars = new RegExp('[*:^~+-]');
 // https://stackoverflow.com/a/69457941/2528719
 const splitText = new RegExp(/[^\s,]+/g);
 
-// getResults returns the results for the given query, handling different
-// behaviors based on the input query:
-// - If the query is empty, [] is returned.
-// - If the query has special chars, the default parser is used:
-//   https://lunrjs.com/guides/searching.html
-// - If the query is just words, it is parsed and augmented to give more
-//   matching flexibility by default, providing a better UX.
+/**
+ * getResults returns the results for the given query, handling different
+ * behaviors based on the input query:
+ * - If the query is empty, [] is returned.
+ * - If the query has special chars, the default parser is used
+ *   https://lunrjs.com/guides/searching.html
+ * - If the query is just words, it is parsed and augmented to give more
+ *   matching flexibility by default, providing a better UX.
+ *
+ * @param {string} query - The search query to get results for.
+ * @returns {Array} - Array of results corresponding to the query.
+ */
 function getResults(query) {
   if (!query) {
     return [];
@@ -121,7 +128,11 @@ function getResults(query) {
   });
 }
 
-// update executes the query and updates the UI with the results.
+/**
+ * update executes the query and updates the UI with the results.
+ *
+ * @param {string} query - Query to update the UI for.
+ */
 function update(query) {
   // Perform the search to get results from the lunr index.
   let results = getResults(query);
@@ -133,7 +144,9 @@ function update(query) {
   );
 }
 
-// initialize sets up the webpage based on load-time parameters.
+/**
+ * initialize sets up the webpage based on load-time parameters.
+ */
 function initialize() {
   // Get the query parameter(s)
   const params = new URLSearchParams(window.location.search);

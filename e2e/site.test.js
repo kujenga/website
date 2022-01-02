@@ -1,6 +1,12 @@
+/* global page */
 import 'expect-puppeteer';
 import { existsSync, readFileSync } from 'fs';
 
+/**
+ * Get the URL for the target website from the environment.
+ *
+ * @returns {string} - URL for the website to test against.
+ */
 function getTargetURL() {
   if (process.env.TARGET_URL) {
     // IF a TARGET_URL env var is specified, utilize that first.
@@ -42,6 +48,7 @@ describe('Site', () => {
     // Wait for results and check that there is at least one of them.
     await page.waitForSelector('div#results');
     await page.waitForSelector('li > div.summary');
+    await expect(page).toMatch('the basics of what neural networks are');
   });
 
   it('should properly load blog assets', async () => {
@@ -49,6 +56,7 @@ describe('Site', () => {
     await page.evaluate(() => (window.location.pathname = '/blog/go-mlp/'));
     // Wait for main blog div to appear.
     await page.waitForSelector('div.type-blog');
+    await expect(page).toMatch('multi-layer perceptron from scratch');
     // Wait for mathjax rendering to appear.
     await page.waitForSelector('mjx-math');
     // Wait for emgithub to appear.

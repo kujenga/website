@@ -1,6 +1,5 @@
 // Configuration for the e2e jest test execution.
 
-/** @type {import('@jest/types').Config.InitialOptions} */
 const config = {
   verbose: true,
   // Puppeteer configuration.
