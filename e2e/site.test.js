@@ -2,6 +2,11 @@
 import 'expect-puppeteer';
 import { existsSync, readFileSync } from 'fs';
 
+/**
+ * Get the URL for the target website from the environment.
+ *
+ * @returns {string} - URL for the website to test against.
+ */
 function getTargetURL() {
   if (process.env.TARGET_URL) {
     // IF a TARGET_URL env var is specified, utilize that first.

@@ -4,7 +4,7 @@ module.exports = {
     es2021: true,
     'jest/globals': true,
   },
-  extends: ['eslint:recommended', 'preact'],
+  extends: ['eslint:recommended', 'preact', 'plugin:jsdoc/recommended'],
   parserOptions: {
     ecmaFeatures: {
       jsx: true,

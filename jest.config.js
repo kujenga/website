@@ -1,6 +1,5 @@
 // Configuration for the jest unit test execution.
 
-/** @type {import('@jest/types').Config.InitialOptions} */
 const config = {
   verbose: true,
   // Test against everything but e2e tests.
