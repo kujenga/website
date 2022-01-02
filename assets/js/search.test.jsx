@@ -1,3 +1,4 @@
+/* global $ */
 import { readFileSync } from 'fs';
 
 // Provide jquery in a global context. This approach is used rather than a

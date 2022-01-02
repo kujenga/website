@@ -1,5 +1,5 @@
-import { h, Fragment, render } from 'preact';
-import { useState } from 'preact/hooks';
+/* global $ */
+import { h, render } from 'preact';
 import lunr from 'lunr';
 
 // Builds the index based in the window.store created in index.tpl.js.
@@ -34,7 +34,7 @@ const idx = lunr(function () {
 // Result provides rendering for a single result in the list.
 const Result = (props) => {
   const { item } = props;
-  const summary = item.content.substring(0, 300) + '...';
+  const summary = `${item.content.substring(0, 300)}...`;
   // NOTE: This endeavors to match the format laid out at:
   // layouts/blog/summary.html
   return (
@@ -49,10 +49,12 @@ const Result = (props) => {
         <hr />
         <div>
           <p
-            // The Hugo renderer outputs safe HTML with characters encoded as
-            // HTML, so it is safe and necessary here to set that content directly.
+            // The Hugo renderer outputs safe HTML with characters
+            // encoded as HTML, so it is safe and necessary here to
+            // set that content directly.
+            // eslint-disable-next-line react/no-danger
             dangerouslySetInnerHTML={{ __html: summary }}
-          ></p>
+          />
         </div>
       </div>
     </li>
