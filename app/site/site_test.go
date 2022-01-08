@@ -63,15 +63,29 @@ func TestProdServer(t *testing.T) {
 	h := s.router()
 	assert.NotNil(t, h)
 
-	t.Run("invalid host request", func(t *testing.T) {
+	t.Run("unknown invalid host request", func(t *testing.T) {
 		rw := httptest.NewRecorder()
-		req := httptest.NewRequest(http.MethodGet, "http://hacker.com/", nil)
+		req := httptest.NewRequest(
+			http.MethodGet, "http://hacker.com/", nil)
 		h.ServeHTTP(rw, req)
 
 		resp := rw.Result()
-		assert.Equal(t, http.StatusInternalServerError, resp.StatusCode)
+		assert.Equal(t, http.StatusBadRequest, resp.StatusCode)
 		b, err := io.ReadAll(resp.Body)
 		assert.NoError(t, err)
 		assert.Contains(t, string(b), "Bad Host")
+	})
+
+	t.Run("known invalid host request", func(t *testing.T) {
+		rw := httptest.NewRecorder()
+		req := httptest.NewRequest(
+			http.MethodGet, "http://aarontaylor.xyz", nil)
+		h.ServeHTTP(rw, req)
+
+		resp := rw.Result()
+		assert.Equal(t, http.StatusFound, resp.StatusCode)
+		b, err := io.ReadAll(resp.Body)
+		assert.NoError(t, err)
+		assert.Contains(t, string(b), "Found")
 	})
 }
