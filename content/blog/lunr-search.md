@@ -88,6 +88,69 @@ will be injected into the page. We'll cover that in detail in just a moment.
 For the basic page setup in Hugo, that's it! We can now start work on creating
 the actual search index.
 
+## Building the search index
+
+The next step in our process is to generate the index that we will be searching.
+For this use case, I want to be able to search across the pages within the
+website, which are written in Markdown before being rendered to HTML by Hugo.
+Using Hugo templating, we can iterate over the pages directly and pull together
+the data needed to construct the index.
+
+### Gathering content from Hugo
+
+First, we need to use Hugo to gather together all information we need about the
+pages from within the website that we want to make searchable.
+
+To execute this templating logic, I split out the index into a javascript file
+with the name `index.tpl.js`. At build time, this file gets rendered into one
+with the name format of `index.js` with the data in it all filled out from Hugo.
+By splitting the templating logic out into a separate file from the search logic
+we will be looking at shortly, we get some quality of life improvements by being
+able to do things like disabling error linting for that file.
+
+The templating logic within this file is fairly straightforward if you go line
+by line. First, we create a `$store` template variable which will capture the
+page content that we want, keyed on their URL to enable quick lookups of the
+original entries later on. We then iterate over the pages of interest within the
+site, which in my case uses the [`where` function][hugoWhereFunc] to walk
+through the pages within the blog section. For each of those pages, we create an
+object using the built in [`dict` function][hugoDictFunc], and then use the
+[`merge` function][hugoMergeFunc] to add it to `$store`. So far, all this
+has been happening inside of the internal template variable state, with nothing
+being rendered out to the final JS file. As the last step, we take the store
+that we have constructed and run it through the [`jsonify`
+function][hugoJSONifyFunc] and store it globally as `window.store`, which we
+will reference to build the actual search index with Lunr in a moment.
+
+{{< emgithub "https://github.com/kujenga/website/blob/53f159154f115a360277dab9104991feab4a3fd1/assets/js/index.tpl.js#L1-L26" >}}
+
+To get Hugo to actually execute this template, we need to leverage the
+`resources.ExecuteAsTemplate` feature within Hugo Pipes. The following code
+snippet shows how we do that for the `index.tpl.js` file and add it as a script
+tag. The end result here is that we have the JSON object for `window.store` made
+available throughout the page for use in building the actual search index
+in-memory!
+
+{{< emgithub "https://github.com/kujenga/website/blob/53f159154f115a360277dab9104991feab4a3fd1/layouts/partials/search-index.html#L8-L17" >}}
+
+### Building the Lunr index
+
+Now that we have the content available to us on `window.store`, we can reference
+that in other Javascript files that are loaded into the page. The following code
+snippet constructs a [`lunr.Index`][lunrIndex] customized to the content that we
+are making searchable for this website. Fields are boosted according to relative
+importance to the post. These numbers are mostly based on an intuitive sense of
+what seems most important to a post, and have been tweaked a bit with
+experimentation. We'll talk more about ranking later in the post as well, but
+for now, we have a working index up and running!
+
+{{< emgithub "https://github.com/kujenga/website/blob/f00a887a7ea86c3866c982efde55b9f91fa6e103/assets/js/search.jsx#L5-L32" >}}
+
+If you want to learn more about Lunr and the options it offers straight from the
+source, I recommend checking out their [getting started
+guide][lunrGettingStarted] which walks through the fundamentals of a very simple
+search implementation, as well as links to much more detailed resources on Lunr.
+
 ## References
 
 
@@ -110,7 +173,13 @@ the actual search index.
 [hugoPartial]: https://gohugo.io/templates/partials/
 [hugoPageVar]: https://gohugo.io/variables/page/
 [hugoTmplLookup]: https://gohugo.io/templates/lookup-order/
+[hugoWhereFunc]: https://gohugo.io/functions/where/
+[hugoDictFunc]: https://gohugo.io/functions/dict/
+[hugoMergeFunc]: https://gohugo.io/functions/merge/
+[hugoJSONifyFunc]: https://gohugo.io/functions/jsonify/
 [lunrHomepage]: https://lunrjs.com/
+[lunrGettingStarted]: https://lunrjs.com/guides/getting_started.html
+[lunrIndex]: https://lunrjs.com/docs/index.html
 [preactSite]: https://preactjs.com/
 [victoriaPost]: https://victoria.dev/blog/add-search-to-hugo-static-sites-with-lunr/
 [ghHugoLunr]: https://github.com/dgrigg/hugo-lunr
