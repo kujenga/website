@@ -63,13 +63,16 @@ func TestProdServer(t *testing.T) {
 	h := s.router()
 	assert.NotNil(t, h)
 
-	t.Run("unknown invalid host request", func(t *testing.T) {
-		rw := httptest.NewRecorder()
-		req := httptest.NewRequest(
-			http.MethodGet, "http://hacker.com/", nil)
-		h.ServeHTTP(rw, req)
+	ts := httptest.NewServer(h)
 
-		resp := rw.Result()
+	t.Run("unknown invalid host request", func(t *testing.T) {
+		req, err := http.NewRequest(
+			http.MethodGet, ts.URL, nil)
+		require.NoError(t, err)
+		req.Host = "hacker.com"
+		resp, err := ts.Client().Do(req)
+		require.NoError(t, err)
+
 		assert.Equal(t, http.StatusBadRequest, resp.StatusCode)
 		b, err := io.ReadAll(resp.Body)
 		assert.NoError(t, err)
@@ -77,20 +80,27 @@ func TestProdServer(t *testing.T) {
 	})
 
 	t.Run("known invalid host redirect", func(t *testing.T) {
-		rw := httptest.NewRecorder()
-		req := httptest.NewRequest(
+		req, err := http.NewRequest(
 			http.MethodGet,
-			"http://www.ataylor.io/example?k=v",
+			ts.URL+"/example?k=v",
 			nil)
-		h.ServeHTTP(rw, req)
+		require.NoError(t, err)
+		req.Host = "www.ataylor.io"
+		c := ts.Client()
+		// Disable redirects for this test so that we can validate the
+		// 302 response and location header.
+		c.CheckRedirect = func(req *http.Request, via []*http.Request) error {
+			return http.ErrUseLastResponse
+		}
+		resp, err := c.Do(req)
+		require.NoError(t, err)
 
-		resp := rw.Result()
 		assert.Equal(t, http.StatusFound, resp.StatusCode)
 		b, err := io.ReadAll(resp.Body)
 		assert.NoError(t, err)
 		assert.Contains(t, string(b), "Found")
 		assert.Equal(t,
-			"http://ataylor.io/example?k=v",
+			"//ataylor.io/example?k=v",
 			resp.Header.Get("Location"),
 		)
 	})
