@@ -40,7 +40,8 @@ func (s *Server) l() *zap.Logger {
 func (s *Server) addr() string {
 	iface := s.c.Interface
 	if iface == "" && s.c.Dev {
-		// Default to localhost in dev to avoid warnings on macos
+		// Default to localhost in dev for a safer default
+		// behavior and to avoid warnings on macos.
 		iface = "127.0.0.1"
 	}
 	return fmt.Sprintf("%s:%d", iface, s.c.Port)
@@ -74,6 +75,8 @@ func (s *Server) router() http.Handler {
 		ContentSecurityPolicy: csp,
 		IsDevelopment:         s.c.Dev,
 	})
+	secureMiddleware.SetBadHostHandler(
+		(http.HandlerFunc)(handleBadHosts))
 
 	return secureMiddleware.Handler(mux)
 }
@@ -83,4 +86,23 @@ func (s *Server) Serve() error {
 	s.l().Info("Serving HTTP requests", zap.String("addr", s.addr()))
 
 	return http.ListenAndServe(s.addr(), s.router())
+}
+
+// Default host to redirect to for known error cases.
+const defaultHost = "ataylor.io"
+
+// handleBadHosts provides an HTTP handler for better behavior for bad
+// hostnames that are not the primary hostname the server is configured for.
+func handleBadHosts(w http.ResponseWriter, r *http.Request) {
+	switch r.URL.Host {
+	// For known hosts that are not explicitly "allowed", redirect
+	// to the main site.
+	case "www.ataylor.io", "aarontaylor.xyz", "www.aarontaylor.xyz":
+		r.URL.Host = defaultHost
+		http.Redirect(w, r, r.URL.String(), http.StatusFound)
+	default:
+		// Returning a 4XX error as this is not something the server
+		// itself did wrong.
+		http.Error(w, "Bad Host", http.StatusBadRequest)
+	}
 }
