@@ -76,10 +76,12 @@ func TestProdServer(t *testing.T) {
 		assert.Contains(t, string(b), "Bad Host")
 	})
 
-	t.Run("known invalid host request", func(t *testing.T) {
+	t.Run("known invalid host redirect", func(t *testing.T) {
 		rw := httptest.NewRecorder()
 		req := httptest.NewRequest(
-			http.MethodGet, "http://aarontaylor.xyz", nil)
+			http.MethodGet,
+			"http://www.ataylor.io/example?k=v",
+			nil)
 		h.ServeHTTP(rw, req)
 
 		resp := rw.Result()
@@ -87,5 +89,9 @@ func TestProdServer(t *testing.T) {
 		b, err := io.ReadAll(resp.Body)
 		assert.NoError(t, err)
 		assert.Contains(t, string(b), "Found")
+		assert.Equal(t,
+			"http://ataylor.io/example?k=v",
+			resp.Header.Get("Location"),
+		)
 	})
 }

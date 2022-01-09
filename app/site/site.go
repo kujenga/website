@@ -97,7 +97,7 @@ func handleBadHosts(w http.ResponseWriter, r *http.Request) {
 	switch r.URL.Host {
 	// For known hosts that are not explicitly "allowed", redirect
 	// to the main site.
-	case "aarontaylor.xyz":
+	case "www.ataylor.io", "aarontaylor.xyz", "www.aarontaylor.xyz":
 		r.URL.Host = defaultHost
 		http.Redirect(w, r, r.URL.String(), http.StatusFound)
 	default:
