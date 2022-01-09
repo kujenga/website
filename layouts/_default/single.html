@@ -8,6 +8,7 @@
         <div class="col-md">{{ .Date.Format "January 2, 2006" }}</div>
         {{ partial "share.html" . }}
       </div>
+      {{ partial "toc.html" . }}
       <hr />
       <div id="content">{{ .Content }}</div>
       <br />

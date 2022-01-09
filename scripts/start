@@ -10,4 +10,5 @@ export CONTENT_SECURITY_POLICY="$(cat app/site/content-security-policy.txt)"
 
 set -x
 
-hugo server --watch
+hugo server --watch \
+    --buildDrafts
