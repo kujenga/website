@@ -41,6 +41,53 @@ inspiration. I wanted to build on those to more closely integrate with the
 [JavaScript pipes][hugoJSPipes] functionality that Hugo provides, add a more
 complex rendering layer.
 
+## Adding search to the UI
+
+The basic structure I used for the search implementation is as follows:
+1. Add a search query form to every page on the site. I chose to include it as
+   part the navigation bar. You can see it on the top right of this page!
+1. Add a search results page that users are redirected to when the results
+   render. This is hosted at [`/search/`]({{< ref "/search" >}}?query=lunr).
+1. Support for search-as-you-type when on the search results page.
+
+The search query form is quite simple. It's written as a [Hugo
+Partial][hugoPartial] that can be injected into anywhere we want on the site,
+consisting of two basic elements, an input field and a submit button. For my
+site, I'll by placing this partial [into the navigation
+bar](https://github.com/kujenga/website/blob/53f159154f115a360277dab9104991feab4a3fd1/layouts/partials/nav.html#L42-L43).
+
+{{< emgithub "https://github.com/kujenga/website/blob/53f159154f115a360277dab9104991feab4a3fd1/layouts/partials/search-form.html#L1-L21" >}}
+
+Next, we need a page that this form will redirect the user two after a query is
+submitted. The code snippet above references this new page in the `action` tag
+of the form, where we use the `.RelPermalink` [page variable][hugoPageVar] to
+specify the location of the redirect.
+
+Creating a single root level page in Hugo can be done in a few different ways,
+but the basic idea is that you need two files, a markdown file which is what
+represents the existence of the page, and a layout template which corresponds
+with that markdown file via the [template lookup order][hugoTmplLookup]. The
+following to code snippets show those two files as they have been created for
+this site.
+
+The markdown file causes the page to be rendered. It is empty because there is
+no particular content that we are rendering there by default, all the content is
+in the layout file. In order to make this approach work, you need the `type =
+"search"` line in the file so that the lookup order finds the corresponding
+"single" template.
+
+{{< emgithub "https://github.com/kujenga/website/blob/53f159154f115a360277dab9104991feab4a3fd1/content/search.md?plain=1#L1-L6" >}}
+
+This template provides the basic scaffold for the results page. It is empty
+because we will be rendering the main content with Javascript. The `<div
+id="results"></div>` element provides the attachment point where the results
+will be injected into the page. We'll cover that in detail in just a moment.
+
+{{< emgithub "https://github.com/kujenga/website/blob/53f159154f115a360277dab9104991feab4a3fd1/layouts/search/single.html#L1-L16" >}}
+
+For the basic page setup in Hugo, that's it! We can now start work on creating
+the actual search index.
+
 ## References
 
 
@@ -60,6 +107,9 @@ complex rendering layer.
 <!-- Links -->
 [hugoSite]: https://gohugo.io/
 [hugoJSPipes]: https://gohugo.io/hugo-pipes/js/
+[hugoPartial]: https://gohugo.io/templates/partials/
+[hugoPageVar]: https://gohugo.io/variables/page/
+[hugoTmplLookup]: https://gohugo.io/templates/lookup-order/
 [lunrHomepage]: https://lunrjs.com/
 [preactSite]: https://preactjs.com/
 [victoriaPost]: https://victoria.dev/blog/add-search-to-hugo-static-sites-with-lunr/
