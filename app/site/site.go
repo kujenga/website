@@ -76,7 +76,7 @@ func (s *Server) router() http.Handler {
 		IsDevelopment:         s.c.Dev,
 	})
 	secureMiddleware.SetBadHostHandler(
-		(http.HandlerFunc)(handleBadHosts))
+		(http.HandlerFunc)(s.handleBadHosts))
 
 	return secureMiddleware.Handler(mux)
 }
@@ -93,14 +93,15 @@ const defaultHost = "ataylor.io"
 
 // handleBadHosts provides an HTTP handler for better behavior for bad
 // hostnames that are not the primary hostname the server is configured for.
-func handleBadHosts(w http.ResponseWriter, r *http.Request) {
-	switch r.URL.Host {
+func (s *Server) handleBadHosts(w http.ResponseWriter, r *http.Request) {
+	switch r.Host {
 	// For known hosts that are not explicitly "allowed", redirect
 	// to the main site.
 	case "www.ataylor.io", "aarontaylor.xyz", "www.aarontaylor.xyz":
 		r.URL.Host = defaultHost
 		http.Redirect(w, r, r.URL.String(), http.StatusFound)
 	default:
+		s.l().Info("Bad Host", zap.String("host", r.Host))
 		// Returning a 4XX error as this is not something the server
 		// itself did wrong.
 		http.Error(w, "Bad Host", http.StatusBadRequest)
