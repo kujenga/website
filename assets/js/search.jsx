@@ -3,6 +3,7 @@ import { h, render } from 'preact';
 import lunr from 'lunr';
 
 // Builds the index based in the window.store created in index.tpl.js.
+console.time('lunr index build');
 const idx = lunr(function () {
   // Search these fields
   this.ref('id');
@@ -30,6 +31,8 @@ const idx = lunr(function () {
     });
   }
 });
+// Log time it took to create the index.
+console.timeEnd('lunr index build');
 
 // Result provides rendering for a single result in the list.
 const Result = (props) => {
