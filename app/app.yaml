@@ -17,7 +17,7 @@ automatic_scaling:
   # Raised from the default of "10" to facilitate higher throughout on a single
   # instance. Max value is 80.
   # https://cloud.google.com/appengine/docs/standard/go/config/appref#max_concurrent_requests
-  max_concurrent_requests: 20
+  max_concurrent_requests: 30
   # Cap total cost
   max_instances: 3
 
