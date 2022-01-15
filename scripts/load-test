@@ -21,7 +21,7 @@ set -x
 echo "GET $TARGET_URL
 User-Agent: $USER_AGENT" | \
     vegeta attack \
-        -duration=5m \
+        -duration=15m \
         | \
     tee results.bin | \
     vegeta report
