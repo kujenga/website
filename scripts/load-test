@@ -1,0 +1,27 @@
+#!/bin/bash
+#
+# This script provides a load testing operation against the website using:
+# https://github.com/tsenart/vegeta
+
+set -euo pipefail
+
+# Directory containing this script.
+D=$( cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P )
+# Root of this repository.
+R=$(cd "$D/.." && pwd -P)
+
+# Load test target variables.
+TARGET_URL="$(node "$R/e2e/env.js")"
+# Set a useful user agent that identifies me as the load tester.
+VEGETA_VERSION="$(vegeta -version | grep 'Version:' | awk '{print $2}')"
+USER_AGENT="vegeta/${VEGETA_VERSION} (https://github.com/kujenga/website)"
+
+set -x
+
+echo "GET $TARGET_URL
+User-Agent: $USER_AGENT" | \
+    vegeta attack \
+        -duration=5m \
+        | \
+    tee results.bin | \
+    vegeta report

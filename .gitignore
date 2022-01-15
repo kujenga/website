@@ -9,6 +9,7 @@ VERSION*
 # Testing
 reports/
 coverage/
+*.bin
 
 # Hugo
 *.lock

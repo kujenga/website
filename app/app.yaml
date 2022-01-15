@@ -10,9 +10,12 @@ instance_class: F1
 # https://cloud.google.com/appengine/docs/standard/go/config/appref#automatic_scaling
 automatic_scaling:
   min_idle_instances: automatic
-  max_idle_instances: automatic
+  # Set to a low value to minimize overall costs.
+  max_idle_instances: 1
   min_pending_latency: automatic
   max_pending_latency: automatic
+  # Set to the maximum allowed value, since our Go app should be able to handle that.
+  max_concurrent_requests: 80
   # Cap total cost
   max_instances: 3
 
