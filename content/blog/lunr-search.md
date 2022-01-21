@@ -151,6 +151,100 @@ source, I recommend checking out their [getting started
 guide][lunrGettingStarted] which walks through the fundamentals of a very simple
 search implementation, as well as links to much more detailed resources on Lunr.
 
+## Executing searches
+
+We now have an index, but we're not actually doing anything with it yet. In
+order to interact with the index, we create a `getResults` function. To implement basic
+search with Lunr, you can just call the `search` function on your index and pass
+in your query string. Lunr also supports a variety of query syntax that uses
+special characters. We check for the use of any of those with the
+`lunrQueryChars` regex, and if so pass the query directly to Lunr.
+
+For all other cases however, we will customize the default behavior a bit,
+because I wanted to provide a "search as you type" functionality on the search
+result page itself. For this to work well, we need to support prefix matching on
+at least the last word in the query, which is what the parsing logic in the
+latter portion of this code snippet does.
+
+{{< emgithub "https://github.com/kujenga/website/blob/f00a887a7ea86c3866c982efde55b9f91fa6e103/assets/js/search.jsx#L87-L129" >}}
+
+## Rendering results with Preact
+
+We now have a search index built and a function to retrieve results from it, so
+our next step is to actually render the results into the page. We could do this
+directly by creating HTML elements via basic Javascript, but I wanted to
+experiment with integrating [Preact][preactSite] as a lightweight way to more
+easily represent what the wanted behavior is. I'll continue to refer to Preact
+throughout but these concepts would work with using React as well, and probably
+would simplify the implementation a bit as various tooling works with React out
+of the box, at the expense of a slightly larger resulting bundle.
+
+The below snippet shows the `Result` [functional component][preactFuncComponent]
+that renders a single search result, as well as the `ResultList` component that
+renders a list of results. These elements will be the foundational pieces of our
+search result interface.
+
+It's worth noting that this isn't the most [DRY][wikiDRY] approach imaginable,
+as it does replicate the [Hugo content view][hugoContentView] template we
+already have for rendering a `summary` view of blog posts
+[here][siteBlogSummaryView]. However as these results need to be built
+dynamically there does not seem to be a clear way out of this, and we will still
+CSS to give consistency to the general styling here and throughout the site.
+
+{{< emgithub "https://github.com/kujenga/website/blob/f00a887a7ea86c3866c982efde55b9f91fa6e103/assets/js/search.jsx#L34-L78" >}}
+
+One neat capability of Preact (and React itself) is that it can be integrated
+within the context of an existing site that is not fully based on the framework,
+which is exactly what we are doing here.
+
+The below function shows the initialization procedure for the page which runs at
+load time. First we parse any query out of the URL, and then we register the
+logic to re-render the page to facilitate a "search as you type" experience.
+Because this site is built around Bootstrap 4, we already have jQuery available to
+us, so we use that to update the query rendering when the user types an update
+to the query itself.
+
+The reason we have to cobble the Preact logic into the site using jQuery (or
+something similar) is that while Preact-type libraries have a fantastic ability
+to manage the DOM directly under their control, they do not really have the
+ability to monitor existing elements that they did not
+create[^preactLimitations] (though if you know of a good way to do this I would
+love to hear about it!). Filling that gap is where jQuery comes in. While native
+Javascript could have done something similar, jQuery just makes our lives a bit
+easier here.
+
+{{< emgithub "https://github.com/kujenga/website/blob/f00a887a7ea86c3866c982efde55b9f91fa6e103/assets/js/search.jsx#L147-L175" >}}
+
+The `update` function referenced therein is fairly straightforward, taking in
+the query from the result box if it changed, retrieving the corresponding
+results and rendering them anew.
+
+{{< emgithub "https://github.com/kujenga/website/blob/f00a887a7ea86c3866c982efde55b9f91fa6e103/assets/js/search.jsx#L131-L145" >}}
+
+### Compiling JSX with Preact and esbuild in Hugo
+
+So we now have some javascript files that do all this neat stuff, but how do we
+go about incorporating them into the website? We now look at the specifics of
+how we leverage [Hugo Javascript pipes][hugoJSPipes] which utilizes the super
+speedy [esbuild][esbuildSite] tool for compilation. I based my implementation
+off a fantastic [example repo][preactHugoExample] that I found which connected a
+lot of the docs here for me. This invocation does a few things:
+
+1. Define the `NODE_ENV` environment for the javascript compilation.
+1. Override the `JSXFactory` and `JSXFragment` options that are passed to
+   esbuild to customize the compilation of JSX to work with Preact rather than
+   vanilla React.
+1. In development environments only, we enable inline source maps. These are
+   disabled in production because they greatly increase bundle size when they
+   are inserted inline. In the future if separate source maps files are
+   supported, we can switch to that more and remove the conditional.
+1. We then apply an SRI hash to the file and put it in a script tag!
+
+With that, we have a fully operational [search page]({{< ref "/search"
+>}}?query=lunr). Feel free to give it a try!
+
+{{< emgithub "https://github.com/kujenga/website/blob/53f159154f115a360277dab9104991feab4a3fd1/layouts/partials/search-index.html#L19-L38" >}}
+
 ## References
 
 
@@ -166,6 +260,15 @@ search implementation, as well as links to much more detailed resources on Lunr.
   to approach this project as it adds complexity to the build process, and the
   opportunity for the search index generation to diverge from the way Hugo
   manages content, since it does not leverage Hugo in the build process at all.
+[^preactLimitations]: Two features that seem like they might provide this sort
+  of capability are [hooks][preactHooks] and [context][preactContext] which I
+  did experiment with. However these both have the perspective that the Preact
+  application is the centerpiece of your UI, and when you try calling those
+  methods to access or modify state from outside of a particular component,
+  errors are thrown. Even the section on [side-effects][preactHooksSideEffect]
+  is talking about the other way around, triggering external side effects,
+  rather than external operations having side effects on Preact components
+  themselves.
 
 <!-- Links -->
 [hugoSite]: https://gohugo.io/
@@ -177,10 +280,19 @@ search implementation, as well as links to much more detailed resources on Lunr.
 [hugoDictFunc]: https://gohugo.io/functions/dict/
 [hugoMergeFunc]: https://gohugo.io/functions/merge/
 [hugoJSONifyFunc]: https://gohugo.io/functions/jsonify/
+[hugoContentView]: https://gohugo.io/templates/views/
 [lunrHomepage]: https://lunrjs.com/
 [lunrGettingStarted]: https://lunrjs.com/guides/getting_started.html
 [lunrIndex]: https://lunrjs.com/docs/index.html
 [preactSite]: https://preactjs.com/
+[preactFuncComponent]: https://preactjs.com/guide/v10/components/#functional-components
+[preactHooks]: https://preactjs.com/guide/v10/hooks
+[preactContext]: https://preactjs.com/guide/v10/context/
+[preactHooksSideEffect]: https://preactjs.com/guide/v10/hooks#side-effects
 [victoriaPost]: https://victoria.dev/blog/add-search-to-hugo-static-sites-with-lunr/
 [ghHugoLunr]: https://github.com/dgrigg/hugo-lunr
 [nodeBuildExample]: https://codewithhugo.com/hugo-lunrjs-search-index/
+[wikiDRY]: https://en.wikipedia.org/wiki/Don%27t_repeat_yourself
+[siteBlogSummaryView]: https://github.com/kujenga/website/blob/9598cf4764057a6a21230243107549d4f6a6f26c/layouts/blog/summary.html
+[esbuildSite]: https://esbuild.github.io/
+[preactHugoExample]: https://github.com/shafiemukhre/preact-hugo-esbuild
