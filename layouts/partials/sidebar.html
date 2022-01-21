@@ -1,8 +1,17 @@
 <div id="sidebar" class="card">
-  <div class="card-header">
-    <h4>Looking Outward</h4>
-  </div>
   <div class="card-body">
+    {{- if .IsPage }}
+    <div>
+      <h4>Other posts</h4>
+      <ul class="list-unstyled">
+        {{- range $.Site.Taxonomies.categories.homepage }}
+        <!-- Render LI for page -->
+        {{ .Page.Render "li" }}
+        <!-- end loop -->
+        {{- end }}
+      </ul>
+    </div>
+    {{- end }}
     <div>
       <h4>Speaking</h4>
       <ul class="list-unstyled">
@@ -13,15 +22,16 @@
               {{ .Event }}
             </a>
             <p>
-              <small
-                >{{ time.Format "Jan. 2, 2006" .Date }} -
+              <small>
+                {{ time.Format "Jan. 2, 2006" .Date }} -
                 <a
                   href="{{ .OrganizationURL }}"
                   title="{{ .Organization }}"
                   target="newtab"
-                  >{{ .Organization }}</a
-                ></small
-              >
+                >
+                  {{ .Organization }}
+                </a>
+              </small>
             </p>
           </div>
         </li>
@@ -38,9 +48,9 @@
               {{ .Name }}
             </a>
             <p>
-              <small
-                >{{ time.Format "Jan. 2, 2006" .Date }} - {{ .Domain }}</small
-              >
+              <small>
+                {{ time.Format "Jan. 2, 2006" .Date }} - {{ .Domain }}
+              </small>
             </p>
           </div>
         </li>
