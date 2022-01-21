@@ -306,7 +306,74 @@ from scratch]({{< ref "/blog/go-mlp" >}}).
 
 {{< emgithub "https://github.com/kujenga/website/blob/f00a887a7ea86c3866c982efde55b9f91fa6e103/e2e/site.test.js#L39-L52" >}}
 
-## References
+## Alternatives and future work
+
+While the basic search functionality provided here is perfectly fine for the
+amount of content in this site presently, there are plenty of ways that the
+basic approach taken here could be implemented differently, or expanded and
+further refined which I'll briefly mention here.
+
+A precursor to any meaningful iterations on a search system is a way to evaluate
+the quality of results. The "seriousness" of that evaluation can scale with the
+importance of the application. For example, to refine the query building logic
+above I used the test cases shown above as well as manual testing with various
+queries against specific pages in my site I would expect to be returned. To
+provide a more formal evaluation, we could augment the above test suites to
+connect to the actual built index from the site and add various [offline
+measures][wikiIREvalOffline] that assert quality characteristics above a certain
+threshold and in a variety of different cases. This would require building out a
+dataset of test cases for search queries and expected results that the site's
+performance could be measured against. As this site has more content added, or
+if your site already does, setting something like that up would be a great next
+step!
+
+Additionally, while Lunr has seemed to be a great off-the-shelf fit for the
+capabilities we built out here, there are alternative search implementation that
+could be used for similar effect which as also aimed at static sites.
+[Fuse.js](fuseJSSite) is a similarly pure javascript fuzzy-search tool that
+would provide a slightly different user experience more akin to an editor.
+[Stork][storkSite] is another alternative which could provide richer
+functionality with match highlights, written in Rust and compiling to
+[WebAssembly][wasmSite]. The [tinysearch][tinysearchGH] project uses a similar
+Rust/WebAssembly architecture, but has an interesting approach of bloom filters
+for the index implementation. Experimenting with different search
+implementations aimed at static sites like these would be an interesting next
+step here, and if you're looking at adding search to your own site you may well
+be interested in picking one of these others!
+
+I mentioned highlighting as a feature of Stork above, and at the moment the
+highlighting implementation we have here fairly basic. The highlighting
+algorithm could be improved by more intelligently choosing snippets from within
+the content of various results rather than just using the beginning of the text,
+more reliably giving the user give the user information as to reason for
+relevance of particular documents. This is a rich area with a fair amount of
+research available on query-based text summarization which could be interesting
+to experiment with for this application[^summarization].
+
+On the performance front, one note about our implementation here is that the
+index itself is being built at load time from the raw documents built into the
+browser. We could alternatively be compiling the index at the time the site is
+built, and then serving the pre-built index. Lunr provides documentation on
+[pre-building indexes][lunrPrebuild] that we could follow to do this. A fancy
+approach to integrate this with the site build could be to leverage
+[experimental esbuild plugins][esbuildPlugins] but Hugo does not support them
+yet and apparently [adding support is hard][hugoESBuildPlugins]. This would cut
+out on compute time in the browser, however it comes at the expense of a larger
+index file that needs to be served over the network (about 4x before compression
+for my site at the time of this writing, though compression and bigger sites
+likely yield a better ratio), which is what dissuaded me from doing this for my
+implementation, as index build times take less than 50ms. While I do pay for
+bandwidth, I do not pay for those few extra CPU cycles in your browser, thus
+I've decided to stick with the current approach for now.
+
+If others seem to agree with me that this is a good way to go about implementing
+Lunr search into your Hugo site, this approach may be also worth listing in the
+directory of search approaches listed here:
+[gohugo.io/tools/search/](https://gohugo.io/tools/search/), perhaps in a
+simplified form.
+
+Either way, I would love to hear thoughts on this approach! Feel free to leave a
+comment, question, or perhaps a complaint below.
 
 
 <!-- Footnotes -->
@@ -330,6 +397,12 @@ from scratch]({{< ref "/blog/go-mlp" >}}).
   is talking about the other way around, triggering external side effects,
   rather than external operations having side effects on Preact components
   themselves.
+[^summarization]: For further exploration of text summarization, this repository
+  seems to provide a fantastic set of resources, if a bit overwhelming as a
+  starting point: https://github.com/icoxfog417/awesome-text-summarization. I
+  also came across this blog post that gives a helpful explanation of applying
+  the TextRank algorithm to summarization:
+  https://towardsdatascience.com/understanding-automatic-text-summarization-1-extractive-methods-8eb512b21ecc.
 
 <!-- Links -->
 [hugoSite]: https://gohugo.io/
@@ -345,6 +418,9 @@ from scratch]({{< ref "/blog/go-mlp" >}}).
 [lunrHomepage]: https://lunrjs.com/
 [lunrGettingStarted]: https://lunrjs.com/guides/getting_started.html
 [lunrIndex]: https://lunrjs.com/docs/index.html
+[lunrGHHighlighting]: https://github.com/olivernn/lunr.js/issues/25#issuecomment-623267494
+[lunrHighlightExample]: https://github.com/olivernn/moonwalkers/blob/6d5a6e976921490033681617e92ea42e3a80eed0/build-index#L23-L29
+[lunrPrebuild]: https://lunrjs.com/guides/index_prebuilding.html
 [preactSite]: https://preactjs.com/
 [preactFuncComponent]: https://preactjs.com/guide/v10/components/#functional-components
 [preactHooks]: https://preactjs.com/guide/v10/hooks
@@ -360,3 +436,10 @@ from scratch]({{< ref "/blog/go-mlp" >}}).
 [jestSite]: https://jestjs.io/
 [jsdomSite]: https://github.com/jsdom/jsdom
 [locationMockPost]: https://remarkablemark.org/blog/2018/11/17/mock-window-location/#update-for-jsdom-14
+[wikiIREvalOffline]: https://en.wikipedia.org/wiki/Evaluation_measures_(information_retrieval)#Offline_metrics
+[fuseJSSite]: https://fusejs.io/
+[storkSite]: https://stork-search.net/
+[tinysearchGH]: https://github.com/tinysearch/tinysearch
+[wasmSite]: https://webassembly.org/
+[esbuildPlugins]: https://esbuild.github.io/plugins/
+[hugoESBuildPlugins]: https://github.com/gohugoio/hugo/issues/8928
