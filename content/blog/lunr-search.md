@@ -245,6 +245,67 @@ With that, we have a fully operational [search page]({{< ref "/search"
 
 {{< emgithub "https://github.com/kujenga/website/blob/53f159154f115a360277dab9104991feab4a3fd1/layouts/partials/search-index.html#L19-L38" >}}
 
+## Tests
+
+While we have made a lot of progress here, more code also means more things that
+can wrong! In an effort to keep this site low-maintenance and stable, I wanted
+to add tests to ensure that future iterations do not break things with the
+search capability. I took a dual approach to this, first validating the search
+functionality with unit testing, and then building on that with browser-based
+testing.
+
+To set up the unit tests, we mock out two key pieces of the website itself, the
+DOM and the search index. I already had [jest][jestSite] set up, which we will
+be using as our test runner. This will be integrated with testing based on
+[jsdom][jsdomSite] which jest provides for us via the configuration seen in this
+configuration file. This file also contains a few customizations for Preact
+which mirror the configuration that we did for esbuild that facilitate JSX
+parsing in the tests.
+
+{{< emgithub "https://github.com/kujenga/website/blob/f00a887a7ea86c3866c982efde55b9f91fa6e103/jest.config.js#L16-L18" >}}
+
+To set up the DOM environment, we first import the rendered HTML file from the
+output of `hugo` (this means that the build step must be run for the tests to
+work). We also want a bit of example search data that we can assert
+deterministic results from. For this, I pulled in descriptions from a TV series
+that I spent more time watching in my earlier days than I might care to admit.
+This will mock out the index on the site itself, providing us with the ability
+to assert various specific behaviors.
+
+{{< emgithub "https://github.com/kujenga/website/blob/f00a887a7ea86c3866c982efde55b9f91fa6e103/assets/js/search.test.jsx#L9-L42" >}}
+
+With that in place, we can start writing tests. Here we import the search
+functionality and provide basic assertions on the `getResults` function and then
+the `update` function, the latter of which is where we start referencing the
+DOM that is available to us through the injected jsdom.
+
+{{< emgithub "https://github.com/kujenga/website/blob/f00a887a7ea86c3866c982efde55b9f91fa6e103/assets/js/search.test.jsx#L44-L90" >}}
+
+To round things off, we also add a test for the initialization and "search as
+you type" functionality. One of the limitations of jsdom is that navigation is
+not supported within it. To work around this, I found approach in [a blog
+post][locationMockPost] covering how to mock the `window.location` object in
+jest, which is utilized here. With that in place, we can set the URL query
+parameter to emulate the search form submission on other site pages without
+complaints from jsdom. The latter tests are then also able to verify that the
+jQuery-based update mechanism properly re-renders results when the query is
+updated, with a bit of a nudge to have the events within jsdom be properly
+triggered.
+
+{{< emgithub "https://github.com/kujenga/website/blob/f00a887a7ea86c3866c982efde55b9f91fa6e103/assets/js/search.test.jsx#L92-L134" >}}
+
+### Browser-based testing
+
+While the above testing provides us with a pretty high level of confidence that
+search is working as expected, as I already had browser-based testing through
+puppeteer up and running for this site, it was straightforward enough to add an
+additional test case there which asserts that when we submit the search form on
+a page, we end up on a page that displays results, and that within those
+results, there is a snippet from my prior post on [building a neural network
+from scratch]({{< ref "/blog/go-mlp" >}}).
+
+{{< emgithub "https://github.com/kujenga/website/blob/f00a887a7ea86c3866c982efde55b9f91fa6e103/e2e/site.test.js#L39-L52" >}}
+
 ## References
 
 
@@ -296,3 +357,6 @@ With that, we have a fully operational [search page]({{< ref "/search"
 [siteBlogSummaryView]: https://github.com/kujenga/website/blob/9598cf4764057a6a21230243107549d4f6a6f26c/layouts/blog/summary.html
 [esbuildSite]: https://esbuild.github.io/
 [preactHugoExample]: https://github.com/shafiemukhre/preact-hugo-esbuild
+[jestSite]: https://jestjs.io/
+[jsdomSite]: https://github.com/jsdom/jsdom
+[locationMockPost]: https://remarkablemark.org/blog/2018/11/17/mock-window-location/#update-for-jsdom-14
