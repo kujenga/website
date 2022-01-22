@@ -56,7 +56,7 @@ consisting of two basic elements, an input field and a submit button. For my
 site, I'll by placing this partial [into the navigation
 bar](https://github.com/kujenga/website/blob/53f159154f115a360277dab9104991feab4a3fd1/layouts/partials/nav.html#L42-L43).
 
-{{< emgithub "https://github.com/kujenga/website/blob/53f159154f115a360277dab9104991feab4a3fd1/layouts/partials/search-form.html#L1-L21" >}}
+{{< emgithub "https://github.com/kujenga/website/blob/1768cf384d54b7e7ec8c88a02dc0ec3819061fc5/layouts/partials/search-form.html#L1-L21" >}}
 
 Next, we need a page that this form will redirect the user two after a query is
 submitted. The code snippet above references this new page in the `action` tag
@@ -76,14 +76,14 @@ in the layout file. In order to make this approach work, you need the `type =
 "search"` line in the file so that the lookup order finds the corresponding
 "single" template.
 
-{{< emgithub "https://github.com/kujenga/website/blob/53f159154f115a360277dab9104991feab4a3fd1/content/search.md?plain=1#L1-L6" >}}
+{{< emgithub "https://github.com/kujenga/website/blob/1768cf384d54b7e7ec8c88a02dc0ec3819061fc5/content/search.md?plain=1#L1-L6" >}}
 
 This template provides the basic scaffold for the results page. It is empty
 because we will be rendering the main content with Javascript. The `<div
 id="results"></div>` element provides the attachment point where the results
 will be injected into the page. We'll cover that in detail in just a moment.
 
-{{< emgithub "https://github.com/kujenga/website/blob/53f159154f115a360277dab9104991feab4a3fd1/layouts/search/single.html#L1-L16" >}}
+{{< emgithub "https://github.com/kujenga/website/blob/1768cf384d54b7e7ec8c88a02dc0ec3819061fc5/layouts/search/single.html#L1-L16" >}}
 
 For the basic page setup in Hugo, that's it! We can now start work on creating
 the actual search index.
@@ -122,7 +122,7 @@ that we have constructed and run it through the [`jsonify`
 function][hugoJSONifyFunc] and store it globally as `window.store`, which we
 will reference to build the actual search index with Lunr in a moment.
 
-{{< emgithub "https://github.com/kujenga/website/blob/53f159154f115a360277dab9104991feab4a3fd1/assets/js/index.tpl.js#L1-L26" >}}
+{{< emgithub "https://github.com/kujenga/website/blob/1768cf384d54b7e7ec8c88a02dc0ec3819061fc5/assets/js/index.tpl.js#L1-L26" >}}
 
 To get Hugo to actually execute this template, we need to leverage the
 `resources.ExecuteAsTemplate` feature within Hugo Pipes. The following code
@@ -131,7 +131,7 @@ tag. The end result here is that we have the JSON object for `window.store` made
 available throughout the page for use in building the actual search index
 in-memory!
 
-{{< emgithub "https://github.com/kujenga/website/blob/53f159154f115a360277dab9104991feab4a3fd1/layouts/partials/search-index.html#L8-L17" >}}
+{{< emgithub "https://github.com/kujenga/website/blob/1768cf384d54b7e7ec8c88a02dc0ec3819061fc5/layouts/partials/search-index.html#L8-L17" >}}
 
 ### Building the Lunr index
 
@@ -146,7 +146,7 @@ feature][lunrGHHighlighting] in Lunr to enable position information for use in
 highlighting as a bit of extra credit, which we will look at in more detail
 shortly. For now, we have a working index up and running!
 
-{{< emgithub "https://github.com/kujenga/website/blob/fe68f47025193f15ce545f0f358b7539bae51760/assets/js/search.jsx#L7-L37" >}}
+{{< emgithub "https://github.com/kujenga/website/blob/1768cf384d54b7e7ec8c88a02dc0ec3819061fc5/assets/js/search.jsx#L7-L37" >}}
 
 If you want to learn more about Lunr and the options it offers straight from the
 source, I recommend checking out their [getting started
@@ -168,7 +168,7 @@ result page itself. For this to work well, we need to support prefix matching on
 at least the last word in the query, which is what the parsing logic in the
 latter portion of this code snippet does.
 
-{{< emgithub "https://github.com/kujenga/website/blob/f00a887a7ea86c3866c982efde55b9f91fa6e103/assets/js/search.jsx#L87-L129" >}}
+{{< emgithub "https://github.com/kujenga/website/blob/1768cf384d54b7e7ec8c88a02dc0ec3819061fc5/assets/js/search.jsx#L159-L202" >}}
 
 ## Rendering results with Preact
 
@@ -195,7 +195,7 @@ built dynamically, and we are performing custom highlighting with the
 will still leverage the same CSS to give consistency to the general styling here
 and throughout the site.
 
-{{< emgithub "https://github.com/kujenga/website/blob/fe68f47025193f15ce545f0f358b7539bae51760/assets/js/search.jsx#L104-L150" >}}
+{{< emgithub "https://github.com/kujenga/website/blob/1768cf384d54b7e7ec8c88a02dc0ec3819061fc5/assets/js/search.jsx#L104-L150" >}}
 
 Diving a bit deeper into the implementation, this snippet shows how we highlight
 the terms in the result content that match the query. We create a new
@@ -210,7 +210,7 @@ to the user what terms matched their query. After iterating through the whole
 string in this manner, the resulting values are returned to be rendered into the
 `Result` component to be rendered into the DOM as a contiguous block of text.
 
-{{< emgithub "https://github.com/kujenga/website/blob/fe68f47025193f15ce545f0f358b7539bae51760/assets/js/search.jsx#L41-L79" >}}
+{{< emgithub "https://github.com/kujenga/website/blob/1768cf384d54b7e7ec8c88a02dc0ec3819061fc5/assets/js/search.jsx#L41-L79" >}}
 
 One neat capability of Preact (and React itself) is that it can be integrated
 within the context of an existing site that is not fully based on the framework,
@@ -232,13 +232,13 @@ love to hear about it!). Filling that gap is where jQuery comes in. While native
 Javascript could have done something similar, jQuery just makes our lives a bit
 easier here.
 
-{{< emgithub "https://github.com/kujenga/website/blob/f00a887a7ea86c3866c982efde55b9f91fa6e103/assets/js/search.jsx#L147-L175" >}}
+{{< emgithub "https://github.com/kujenga/website/blob/1768cf384d54b7e7ec8c88a02dc0ec3819061fc5/assets/js/search.jsx#L220-L248" >}}
 
 The `update` function referenced therein is fairly straightforward, taking in
 the query from the result box if it changed, retrieving the corresponding
 results and rendering them anew.
 
-{{< emgithub "https://github.com/kujenga/website/blob/f00a887a7ea86c3866c982efde55b9f91fa6e103/assets/js/search.jsx#L131-L145" >}}
+{{< emgithub "https://github.com/kujenga/website/blob/1768cf384d54b7e7ec8c88a02dc0ec3819061fc5/assets/js/search.jsx#L204-L218" >}}
 
 ### Compiling JSX with Preact and esbuild in Hugo
 
@@ -262,7 +262,7 @@ lot of the docs here for me. This invocation does a few things:
 With that, we have a fully operational [search page]({{< ref "/search"
 >}}?query=lunr). Feel free to give it a try!
 
-{{< emgithub "https://github.com/kujenga/website/blob/53f159154f115a360277dab9104991feab4a3fd1/layouts/partials/search-index.html#L19-L38" >}}
+{{< emgithub "https://github.com/kujenga/website/blob/1768cf384d54b7e7ec8c88a02dc0ec3819061fc5/layouts/partials/search-index.html#L19-L38" >}}
 
 ## Tests
 
@@ -281,7 +281,7 @@ configuration file. This file also contains a few customizations for Preact
 which mirror the configuration that we did for esbuild that facilitate JSX
 parsing in the tests.
 
-{{< emgithub "https://github.com/kujenga/website/blob/f00a887a7ea86c3866c982efde55b9f91fa6e103/jest.config.js#L16-L18" >}}
+{{< emgithub "https://github.com/kujenga/website/blob/1768cf384d54b7e7ec8c88a02dc0ec3819061fc5/jest.config.js#L16-L18" >}}
 
 To set up the DOM environment, we first import the rendered HTML file from the
 output of `hugo` (this means that the build step must be run for the tests to
@@ -291,14 +291,14 @@ that I spent more time watching in my earlier days than I might care to admit.
 This will mock out the index on the site itself, providing us with the ability
 to assert various specific behaviors.
 
-{{< emgithub "https://github.com/kujenga/website/blob/f00a887a7ea86c3866c982efde55b9f91fa6e103/assets/js/search.test.jsx#L9-L42" >}}
+{{< emgithub "https://github.com/kujenga/website/blob/1768cf384d54b7e7ec8c88a02dc0ec3819061fc5/assets/js/search.test.jsx#L9-L42" >}}
 
 With that in place, we can start writing tests. Here we import the search
 functionality and provide basic assertions on the `getResults` function and then
 the `update` function, the latter of which is where we start referencing the
 DOM that is available to us through the injected jsdom.
 
-{{< emgithub "https://github.com/kujenga/website/blob/f00a887a7ea86c3866c982efde55b9f91fa6e103/assets/js/search.test.jsx#L44-L90" >}}
+{{< emgithub "https://github.com/kujenga/website/blob/1768cf384d54b7e7ec8c88a02dc0ec3819061fc5/assets/js/search.test.jsx#L44-L95" >}}
 
 To round things off, we also add a test for the initialization and "search as
 you type" functionality. One of the limitations of jsdom is that navigation is
@@ -311,7 +311,7 @@ jQuery-based update mechanism properly re-renders results when the query is
 updated, with a bit of a nudge to have the events within jsdom be properly
 triggered.
 
-{{< emgithub "https://github.com/kujenga/website/blob/f00a887a7ea86c3866c982efde55b9f91fa6e103/assets/js/search.test.jsx#L92-L134" >}}
+{{< emgithub "https://github.com/kujenga/website/blob/1768cf384d54b7e7ec8c88a02dc0ec3819061fc5/assets/js/search.test.jsx#L97-L141" >}}
 
 ### Browser-based testing
 
@@ -323,7 +323,7 @@ a page, we end up on a page that displays results, and that within those
 results, there is a snippet from my prior post on [building a neural network
 from scratch]({{< ref "/blog/go-mlp" >}}).
 
-{{< emgithub "https://github.com/kujenga/website/blob/f00a887a7ea86c3866c982efde55b9f91fa6e103/e2e/site.test.js#L39-L52" >}}
+{{< emgithub "https://github.com/kujenga/website/blob/1768cf384d54b7e7ec8c88a02dc0ec3819061fc5/e2e/site.test.js#L17-L30" >}}
 
 ## Alternatives and future work
 
