@@ -16,7 +16,7 @@ window.store = {
     title: 'Stargate SG-1',
     description:
       'A secret military team, SG-1, is formed to explore other planets through the recently discovered Stargates.',
-    date: '',
+    date: '1997',
     tags: [],
     content: '',
     url: 'a',
@@ -25,7 +25,7 @@ window.store = {
     title: 'Stargate: Atlantis',
     description:
       'An international team of scientists and military personnel discover a Stargate network in the Pegasus Galaxy and come face-to-face with a new, powerful enemy, The Wraith.',
-    date: '',
+    date: '2004',
     tags: [],
     content: '',
     url: 'b',
@@ -34,7 +34,7 @@ window.store = {
     title: 'Stargate Universe',
     description:
       'Trapped on an Ancient spaceship billions of light-years from home, a group of soldiers and civilians struggle to survive and find their way back to Earth.',
-    date: '',
+    date: '2009',
     tags: [],
     content: '',
     url: 'c',
@@ -48,6 +48,11 @@ const { getResults, update, initialize } = require('./search');
 describe('getResults', () => {
   test('basic query returns results', () => {
     const results = getResults('atlantis');
+    expect(results).toHaveLength(1);
+  });
+
+  test('Uppercase query returns results', () => {
+    const results = getResults('ATLANTIS');
     expect(results).toHaveLength(1);
   });
 
@@ -114,6 +119,7 @@ describe('initialize', () => {
     const input = document.getElementById('search-input');
     expect(input.value).toContain('sg-1');
 
+    // Expect a single result for "sg-1" query.
     const results = document.querySelectorAll('#results > ul > li');
     expect(results).toHaveLength(1);
   });
@@ -128,6 +134,7 @@ describe('initialize', () => {
     // https://www.htmlgoodies.com/javascript/testing-dom-events-using-jquery-and-jasmine-2-0/
     $(input).trigger('keyup');
 
+    // Expect three results rather than just 1 for the "stargate" query.
     const results = document.querySelectorAll('#results > ul > li');
     expect(results).toHaveLength(3);
   });
