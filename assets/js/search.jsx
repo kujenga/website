@@ -178,9 +178,10 @@ function getResults(query) {
     return idx.search(query);
   }
 
-  // If the query has no special characters, we parse it for a better
-  // default experience.
-  const words = query.match(splitText);
+  // If the query has no special characters, we parse it for a better default
+  // experience, while lowercasing the characters to match the default parser:
+  // https://github.com/olivernn/lunr.js/blob/aa5a878f62a6bba1e8e5b95714899e17e8150b38/lib/query_parser.js#L138
+  const words = query.match(splitText).map((w) => w.toLowerCase());
 
   return idx.query((q) => {
     // Add the all words to the query as-is.

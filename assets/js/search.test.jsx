@@ -51,6 +51,11 @@ describe('getResults', () => {
     expect(results).toHaveLength(1);
   });
 
+  test('Uppercase query returns results', () => {
+    const results = getResults('ATLANTIS');
+    expect(results).toHaveLength(1);
+  });
+
   test('advanced query returns results', () => {
     const results = getResults('ancien*');
     expect(results).toHaveLength(1);
