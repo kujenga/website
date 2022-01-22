@@ -18,6 +18,10 @@ const idx = lunr(function () {
     boost: 10,
   });
 
+  // Enable undocumented feature for position information for highlighting.
+  // https://github.com/olivernn/lunr.js/issues/25#issuecomment-623267494
+  this.metadataWhitelist = ['position'];
+
   // Add the documents from your search index to
   // provide the data to idx
   for (const key in window.store) {
@@ -34,24 +38,94 @@ const idx = lunr(function () {
 // Log time it took to create the index.
 console.timeEnd('lunr index build');
 
+// Highlight performs highlighting on the passed in text based on the metadata
+// with positional informational information. This metadata is expected to be
+// in the merged format outputted b mergeMetadata.
+const Highlight = (props) => {
+  let { text, metadata, maxLen = 340 } = props;
+  if (text.length > maxLen) {
+    // Trim text that is too long (usually applies to content body)
+    text = `${text.slice(0, maxLen)}…`;
+  }
+  if (!metadata) {
+    // Text is returned as-is if there is no metadata for highlighting.
+    return text;
+  }
+
+  // Re-build the text content as an array, inserting `mark` elements around
+  // the positions that match the query.
+  const output = [];
+  // Keep track of where we are in the re-construction of highlighted text.
+  let cur = 0;
+  metadata.position.forEach((p) => {
+    const [start, len] = p;
+    const end = start + len;
+    if (start > text.length) {
+      return;
+    }
+    // Add all uncaptured text preceeding the match.
+    output.push(text.slice(cur, start));
+    // Add text of the match itself, surrounded by `mark` element.
+    output.push(
+      <mark data-range-start={start} data-range-end={end}>
+        {text.slice(start, end)}
+      </mark>
+    );
+    cur = end;
+  });
+  // Push any remaining text to the array and return.
+  output.push(text.slice(cur, text.length));
+  return output;
+};
+
+/**
+ * mergeMetadata re-formats the match metadata of a result from lunr to be
+ * better suited for highlighting text sequentially.
+ *
+ * @param {object} result - The search results to merge metadata for.
+ * @returns {object} - Map of field -> match positions, independent of terms.
+ */
+function mergeMetadata(result) {
+  const out = {};
+  for (const metadata of Object.values(result.matchData.metadata)) {
+    for (const [field, md] of Object.entries(metadata)) {
+      if (field in out) {
+        out[field].position = out[field].position.concat(md.position);
+        // Fields are sorted for convenient use in highlighting.
+        out[field].position.sort((a, b) => a[0] - b[0]);
+      } else {
+        out[field] = md;
+      }
+    }
+  }
+  return out;
+}
+
 // Result provides rendering for a single result in the list.
 const Result = (props) => {
-  const { item, summaryLength = 300 } = props;
-  const summary = `${item.content.substring(0, summaryLength)}...`;
+  const { result, item } = props;
+  // Merge metadata from different search terms for use in highlighting.
+  const metadata = mergeMetadata(result);
   // NOTE: This endeavors to match the format laid out at:
   // layouts/blog/summary.html
   return (
     <li>
       <div class="summary">
         <h4>
-          <a href={item.url}>{item.title}</a>
+          <a href={item.url}>
+            <Highlight text={item.title} metadata={metadata.title} />
+          </a>
           <small class="pull-right">{item.date}</small>
           <br />
         </h4>
-        <h5 class="muted">{item.description}</h5>
+        <h5 class="muted">
+          <Highlight text={item.description} metadata={metadata.description} />
+        </h5>
         <hr />
         <div>
-          <p>{summary}</p>;
+          <p>
+            <Highlight text={item.content} metadata={metadata.content} />
+          </p>
         </div>
       </div>
     </li>
@@ -68,8 +142,9 @@ const ResultList = (props) => {
   let resultList = [];
   // Iterate and build result list elements
   for (const n in results) {
-    const item = store[results[n].ref];
-    resultList.push(<Result item={item} />);
+    const result = results[n];
+    const item = store[result.ref];
+    resultList.push(<Result result={result} item={item} />);
   }
   return <ul class="list-unstyled">{resultList}</ul>;
 };
