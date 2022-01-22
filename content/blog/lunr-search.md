@@ -40,7 +40,7 @@ inspiration. I wanted to build on those to more closely integrate with the
 [JavaScript pipes][hugoJSPipes] functionality that Hugo provides, add a more
 complex rendering layer.
 
-## Adding search to the UI
+## Adding the search UI
 
 The basic structure I used for the search implementation is as follows:
 1. Add a search query form to every page on the site. I chose to include it as
@@ -152,7 +152,7 @@ source, I recommend checking out their [getting started
 guide][lunrGettingStarted] which walks through the fundamentals of a very simple
 search implementation, as well as links to much more detailed resources on Lunr.
 
-## Executing searches
+## Executing search queries
 
 We now have an index, but we're not actually doing anything with it yet. In
 order to interact with the index, we create a `getResults` function. To implement basic
@@ -263,7 +263,7 @@ With that, we have a fully operational [search page]({{< ref "/search"
 
 {{< emgithub "https://github.com/kujenga/website/blob/1768cf384d54b7e7ec8c88a02dc0ec3819061fc5/layouts/partials/search-index.html#L19-L38" >}}
 
-## Tests
+## Writing tests
 
 While we have made a lot of progress here, more code also means more things that
 can wrong! In an effort to keep this site low-maintenance and stable, I wanted

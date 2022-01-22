@@ -265,6 +265,12 @@ nav.navbar {
     font-size: 80%;
     line-height: 1.05rem;
   }
+
+  .toc {
+    li {
+      margin-bottom: 0;
+    }
+  }
 }
 
 /* Social Links */
