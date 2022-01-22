@@ -18,7 +18,7 @@
   "description" .Description
   "date" (.Date.Format "Jan 2, 2006")
   "tags" .Params.tags
-  "content" (.Content | plainify)
+  "content" (.Plain | htmlUnescape)
   "url" .Permalink
 }}
 {{- $store = merge $store (dict .Permalink $page) }}

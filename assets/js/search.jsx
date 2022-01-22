@@ -36,8 +36,8 @@ console.timeEnd('lunr index build');
 
 // Result provides rendering for a single result in the list.
 const Result = (props) => {
-  const { item } = props;
-  const summary = `${item.content.substring(0, 300)}...`;
+  const { item, summaryLength = 300 } = props;
+  const summary = `${item.content.substring(0, summaryLength)}...`;
   // NOTE: This endeavors to match the format laid out at:
   // layouts/blog/summary.html
   return (
@@ -51,13 +51,7 @@ const Result = (props) => {
         <h5 class="muted">{item.description}</h5>
         <hr />
         <div>
-          <p
-            // The Hugo renderer outputs safe HTML with characters
-            // encoded as HTML, so it is safe and necessary here to
-            // set that content directly.
-            // eslint-disable-next-line react/no-danger
-            dangerouslySetInnerHTML={{ __html: summary }}
-          />
+          <p>{summary}</p>;
         </div>
       </div>
     </li>
