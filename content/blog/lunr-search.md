@@ -139,12 +139,14 @@ Now that we have the content available to us on `window.store`, we can reference
 that in other Javascript files that are loaded into the page. The following code
 snippet constructs a [`lunr.Index`][lunrIndex] customized to the content that we
 are making searchable for this website. Fields are boosted according to relative
-importance to the post. These numbers are mostly based on an intuitive sense of
-what seems most important to a post, and have been tweaked a bit with
-experimentation. We'll talk more about ranking later in the post as well, but
-for now, we have a working index up and running!
+importance. These numbers are mostly based on an intuitive sense of what seems
+most important to a post, and have been tweaked a bit with experimentation,
+which we will talk about a bit later on. We additionally enable an [undocumented
+feature][lunrGHHighlighting] in Lunr to enable position information for use in
+highlighting as a bit of extra credit, which we will look at in more detail
+shortly. For now, we have a working index up and running!
 
-{{< emgithub "https://github.com/kujenga/website/blob/f00a887a7ea86c3866c982efde55b9f91fa6e103/assets/js/search.jsx#L5-L32" >}}
+{{< emgithub "https://github.com/kujenga/website/blob/fe68f47025193f15ce545f0f358b7539bae51760/assets/js/search.jsx#L7-L37" >}}
 
 If you want to learn more about Lunr and the options it offers straight from the
 source, I recommend checking out their [getting started
@@ -184,14 +186,31 @@ that renders a single search result, as well as the `ResultList` component that
 renders a list of results. These elements will be the foundational pieces of our
 search result interface.
 
-It's worth noting that this isn't the most [DRY][wikiDRY] approach imaginable,
-as it does replicate the [Hugo content view][hugoContentView] template we
-already have for rendering a `summary` view of blog posts
-[here][siteBlogSummaryView]. However as these results need to be built
-dynamically there does not seem to be a clear way out of this, and we will still
-CSS to give consistency to the general styling here and throughout the site.
+It's worth noting that at first glance this isn't the most [DRY][wikiDRY]
+approach imaginable, as it does replicate the [Hugo content
+view][hugoContentView] template we already have for rendering a `summary` view
+of blog posts [here][siteBlogSummaryView]. However as these results need to be
+built dynamically, and we are performing custom highlighting with the
+`Highlight` component, there does not seem to be a clear way out of this, and we
+will still leverage the same CSS to give consistency to the general styling here
+and throughout the site.
 
-{{< emgithub "https://github.com/kujenga/website/blob/f00a887a7ea86c3866c982efde55b9f91fa6e103/assets/js/search.jsx#L34-L78" >}}
+{{< emgithub "https://github.com/kujenga/website/blob/fe68f47025193f15ce545f0f358b7539bae51760/assets/js/search.jsx#L104-L150" >}}
+
+Diving a bit deeper into the implementation, this snippet shows how we highlight
+the terms in the result content that match the query. We create a new
+`Highlight` functional component that transforms text input into highlighted
+snippets. Lunr has an [undocumented feature][lunrGHHighlighting] to provide
+positional information as part of the returned matches, which we enabled at
+indexing time above. What this provides to us is a pair of numbers, an offset
+and length, for every term in the items that matches the input query. In this
+component we re-construct the snippet text while inserting
+[`mark`][mdnMarkElement] elements which provide us with highlighting, indicating
+to the user what terms matched their query. After iterating through the whole
+string in this manner, the resulting values are returned to be rendered into the
+`Result` component to be rendered into the DOM as a contiguous block of text.
+
+{{< emgithub "https://github.com/kujenga/website/blob/fe68f47025193f15ce545f0f358b7539bae51760/assets/js/search.jsx#L41-L79" >}}
 
 One neat capability of Preact (and React itself) is that it can be integrated
 within the context of an existing site that is not fully based on the framework,
@@ -443,3 +462,4 @@ comment, question, or perhaps a complaint below.
 [wasmSite]: https://webassembly.org/
 [esbuildPlugins]: https://esbuild.github.io/plugins/
 [hugoESBuildPlugins]: https://github.com/gohugoio/hugo/issues/8928
+[mdnMarkElement]: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/mark
