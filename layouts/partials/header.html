@@ -65,7 +65,9 @@
     }} - {{ .Title }}{{ end }} {{- end -}}
   </title>
 
-  <!-- prettier-ignore -->
+  <!-- Fathom Analytics -->
+  {{ partial "fathom.html" . }}
+  <!-- Google Analytics -->
   {{ template "_internal/google_analytics.html" . }}
 
   <!-- prettier-ignore -->
