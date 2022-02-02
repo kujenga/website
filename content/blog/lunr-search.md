@@ -1,6 +1,6 @@
 +++
 date = 2022-01-08T23:19:59-05:00
-title = "Building search for a static site with Lunr and Preact"
+title = "Adding search to a static site with Lunr and Preact"
 description = """
 Leveraging the templating capabilities and Javascript rendering capabilities of
 Hugo to generate a Lunr index, rendered with search as you type using Preact.
@@ -28,8 +28,8 @@ To make this work, we need to go through three basic steps:
    search feature. We can do this using Hugo native functionality.
 1. Integrate a client-side javascript library with a process for indexing the
    site. I chose [Lunr][lunrHomepage] for this purpose. While there are other
-   options out there I'll touch on at the end of the post, Lunr looked to have
-   all the basic features I wanted and is at a stable point in it's development.
+   options I'll touch on at the end of the post, Lunr had all the basic features
+   I wanted and is at a stable point in it's development.
 1. Implement the search result rendering layer to display results from the
    generated index. For this I chose to use [Preact][preactSite], which is a
    lighter-weight version of React that provides similar functionality.
@@ -37,8 +37,8 @@ To make this work, we need to go through three basic steps:
 There are a number of projects out there that have done this sort of
 thing[^otherProjs] which I found incredibly useful as starting points and
 inspiration. I wanted to build on those to more closely integrate with the
-[JavaScript pipes][hugoJSPipes] functionality that Hugo provides, add a more
-complex rendering layer.
+[JavaScript pipes][hugoJSPipes] functionality that Hugo provides, which add a
+more complex rendering layer.
 
 ## Adding the search UI
 
@@ -52,32 +52,31 @@ The basic structure I used for the search implementation is as follows:
 The search query form is quite simple. It's written as a [Hugo
 Partial][hugoPartial] that can be injected into anywhere we want on the site,
 consisting of two basic elements, an input field and a submit button. For my
-site, I'll by placing this partial [into the navigation
+site, I'll be placing this partial [into the navigation
 bar](https://github.com/kujenga/website/blob/53f159154f115a360277dab9104991feab4a3fd1/layouts/partials/nav.html#L42-L43).
 
 {{< emgithub "https://github.com/kujenga/website/blob/1768cf384d54b7e7ec8c88a02dc0ec3819061fc5/layouts/partials/search-form.html#L1-L21" >}}
 
-Next, we need a page that this form will redirect the user two after a query is
+Next, we need a page that this form will redirect the user to after a query is
 submitted. The code snippet above references this new page in the `action` tag
 of the form, where we use the `.RelPermalink` [page variable][hugoPageVar] to
 specify the location of the redirect.
 
 Creating a single root level page in Hugo can be done in a few different ways,
-but the basic idea is that you need two files, a markdown file which is what
-represents the existence of the page, and a layout template which corresponds
-with that markdown file via the [template lookup order][hugoTmplLookup]. The
-following to code snippets show those two files as they have been created for
-this site.
+but the basic idea is that you need two files: a markdown file that represents
+the existence of the page, and a layout template that corresponds with that
+markdown file via the [template lookup order][hugoTmplLookup]. The following two
+code snippets show those two files as they have been created for this site.
 
 The markdown file causes the page to be rendered. It is empty because there is
-no particular content that we are rendering there by default, all the content is
+no particular content that we are rendering there by default. All the content is
 in the layout file. In order to make this approach work, you need the `type =
 "search"` line in the file so that the lookup order finds the corresponding
 "single" template.
 
 {{< emgithub "https://github.com/kujenga/website/blob/1768cf384d54b7e7ec8c88a02dc0ec3819061fc5/content/search.md?plain=1#L1-L6" >}}
 
-This template provides the basic scaffold for the results page. It is empty
+This template provides the basic scaffolding for the results page. It is empty
 because we will be rendering the main content with Javascript. The `<div
 id="results"></div>` element provides the attachment point where the results
 will be injected into the page. We'll cover that in detail in just a moment.
@@ -91,35 +90,35 @@ the actual search index.
 
 The next step in our process is to generate the index that we will be searching.
 For this use case, I want to be able to search across the pages within the
-website, which are written in Markdown before being rendered to HTML by Hugo.
+website, which are written in Markdown, before being rendered to HTML by Hugo.
 Using Hugo templating, we can iterate over the pages directly and pull together
 the data needed to construct the index.
 
 ### Gathering content from Hugo
 
-First, we need to use Hugo to gather together all information we need about the
-pages from within the website that we want to make searchable.
+First, we need to use Hugo to gather together all the information we need about
+the pages from within the website that we want to make searchable.
 
 To execute this templating logic, I split out the index into a javascript file
 with the name `index.tpl.js`. At build time, this file gets rendered into one
 with the name format of `index.js` with the data in it all filled out from Hugo.
-By splitting the templating logic out into a separate file from the search logic
-we will be looking at shortly, we get some quality of life improvements by being
-able to do things like disabling error linting for that file.
+By moving the templating logic from the search logic file into its own file, we
+get some quality of life improvements, such as disabling error linting for that
+file.
 
 The templating logic within this file is fairly straightforward if you go line
-by line. First, we create a `$store` template variable which will capture the
-page content that we want, keyed on their URL to enable quick lookups of the
-original entries later on. We then iterate over the pages of interest within the
-site, which in my case uses the [`where` function][hugoWhereFunc] to walk
-through the pages within the blog section. For each of those pages, we create an
-object using the built in [`dict` function][hugoDictFunc], and then use the
-[`merge` function][hugoMergeFunc] to add it to `$store`. So far, all this
-has been happening inside of the internal template variable state, with nothing
-being rendered out to the final JS file. As the last step, we take the store
-that we have constructed and run it through the [`jsonify`
-function][hugoJSONifyFunc] and store it globally as `window.store`, which we
-will reference to build the actual search index with Lunr in a moment.
+by line. First, we create a `$store` template variable to capture the page
+content that we want, keyed on their URL to enable quick lookups of the original
+entries later on. We then iterate over the pages of interest within the site,
+which in my case uses the [`where` function][hugoWhereFunc] to walk through the
+pages within the blog section. For each of those pages, we create an object
+using the built in [`dict` function][hugoDictFunc], and then use the [`merge`
+function][hugoMergeFunc] to add it to `$store`. So far, all of this has been
+happening inside of the internal template variable state, with nothing being
+rendered out to the final JS file. As the last step, we take the store that we
+have constructed and run it through the [`jsonify` function][hugoJSONifyFunc]
+and store it globally as `window.store`, which we will reference to build the
+actual search index with Lunr in a moment.
 
 {{< emgithub "https://github.com/kujenga/website/blob/1768cf384d54b7e7ec8c88a02dc0ec3819061fc5/assets/js/index.tpl.js#L1-L26" >}}
 
@@ -150,7 +149,7 @@ shortly. For now, we have a working index up and running!
 If you want to learn more about Lunr and the options it offers straight from the
 source, I recommend checking out their [getting started
 guide][lunrGettingStarted] which walks through the fundamentals of a very simple
-search implementation, as well as links to much more detailed resources on Lunr.
+search implementation and includes links to more detailed Lunr resources.
 
 ## Executing search queries
 
@@ -161,11 +160,11 @@ in your query string. Lunr also supports a variety of query syntax that uses
 special characters. We check for the use of any of those with the
 `lunrQueryChars` regex, and if so pass the query directly to Lunr.
 
-For all other cases however, we will customize the default behavior a bit,
-because I wanted to provide a "search as you type" functionality on the search
-result page itself. For this to work well, we need to support prefix matching on
-at least the last word in the query, which is what the parsing logic in the
-latter portion of this code snippet does.
+For all other cases however, we will customize the default behavior a bit to
+provide a "search as you type" functionality on the search result page itself.
+For this to work well, we need to support prefix matching on at least the last
+word in the query, which is what the parsing logic in the latter portion of this
+code snippet does.
 
 {{< emgithub "https://github.com/kujenga/website/blob/1768cf384d54b7e7ec8c88a02dc0ec3819061fc5/assets/js/search.jsx#L159-L202" >}}
 
@@ -218,9 +217,9 @@ which is exactly what we are doing here.
 The below function shows the initialization procedure for the page which runs at
 load time. First we parse any query out of the URL, and then we register the
 logic to re-render the page to facilitate a "search as you type" experience.
-Because this site is built around Bootstrap 4, we already have jQuery available to
-us, so we use that to update the query rendering when the user types an update
-to the query itself.
+Because this site is built around Bootstrap 4, we already have jQuery available,
+so we use that to update the query rendering when the user types an update to
+the query itself.
 
 The reason we have to cobble the Preact logic into the site using jQuery (or
 something similar) is that while Preact-type libraries have a fantastic ability
@@ -229,12 +228,12 @@ ability to monitor existing elements that they did not
 create[^preactLimitations] (though if you know of a good way to do this I would
 love to hear about it!). Filling that gap is where jQuery comes in. While native
 Javascript could have done something similar, jQuery just makes our lives a bit
-easier here.
+easier.
 
 {{< emgithub "https://github.com/kujenga/website/blob/1768cf384d54b7e7ec8c88a02dc0ec3819061fc5/assets/js/search.jsx#L220-L248" >}}
 
 The `update` function referenced therein is fairly straightforward, taking in
-the query from the result box if it changed, retrieving the corresponding
+the query from the result box if it is changed, retrieving the corresponding
 results and rendering them anew.
 
 {{< emgithub "https://github.com/kujenga/website/blob/1768cf384d54b7e7ec8c88a02dc0ec3819061fc5/assets/js/search.jsx#L204-L218" >}}
@@ -243,10 +242,10 @@ results and rendering them anew.
 
 So we now have some javascript files that do all this neat stuff, but how do we
 go about incorporating them into the website? We now look at the specifics of
-how we leverage [Hugo Javascript pipes][hugoJSPipes] which utilizes the super
+how we leverage [Hugo Javascript pipes][hugoJSPipes], which utilizes the super
 speedy [esbuild][esbuildSite] tool for compilation. I based my implementation
 off a fantastic [example repo][preactHugoExample] that I found which connected a
-lot of the docs here for me. This invocation does a few things:
+lot of the dots for me. This invocation does a few things:
 
 1. Define the `NODE_ENV` environment for the javascript compilation.
 1. Override the `JSXFactory` and `JSXFragment` options that are passed to
@@ -275,10 +274,10 @@ testing.
 To set up the unit tests, we mock out two key pieces of the website itself, the
 DOM and the search index. I already had [jest][jestSite] set up, which we will
 be using as our test runner. This will be integrated with testing based on
-[jsdom][jsdomSite] which jest provides for us via the configuration seen in this
-configuration file. This file also contains a few customizations for Preact
-which mirror the configuration that we did for esbuild that facilitate JSX
-parsing in the tests.
+[jsdom][jsdomSite] that jest provides for us via the configuration seen in this
+configuration file. This file also contains a few customizations for Preact that
+mirror the configuration we did for esbuild that facilitate JSX parsing in the
+tests.
 
 {{< emgithub "https://github.com/kujenga/website/blob/1768cf384d54b7e7ec8c88a02dc0ec3819061fc5/jest.config.js#L16-L18" >}}
 
@@ -301,7 +300,7 @@ DOM that is available to us through the injected jsdom.
 
 To round things off, we also add a test for the initialization and "search as
 you type" functionality. One of the limitations of jsdom is that navigation is
-not supported within it. To work around this, I found approach in [a blog
+not supported within it. To work around this, I found an approach in [a blog
 post][locationMockPost] covering how to mock the `window.location` object in
 jest, which is utilized here. With that in place, we can set the URL query
 parameter to emulate the search form submission on other site pages without
@@ -314,28 +313,28 @@ triggered.
 
 ### Browser-based testing
 
-While the above testing provides us with a pretty high level of confidence that
-search is working as expected, as I already had browser-based testing through
-puppeteer up and running for this site, it was straightforward enough to add an
-additional test case there which asserts that when we submit the search form on
-a page, we end up on a page that displays results, and that within those
-results, there is a snippet from my prior post on [building a neural network
-from scratch]({{< ref "/blog/go-mlp" >}}).
+The above testing provides us with a pretty high level of confidence that search
+is working as expected. As I already had browser-based testing through puppeteer
+up and running for this site, it was straightforward enough to add an additional
+test case which asserts that when we submit the search form on a page, we end up
+on a page that displays results, and that within those results, there is a
+snippet from my prior post on [building a neural network from scratch]({{< ref
+"/blog/go-mlp" >}}).
 
 {{< emgithub "https://github.com/kujenga/website/blob/1768cf384d54b7e7ec8c88a02dc0ec3819061fc5/e2e/site.test.js#L17-L30" >}}
 
 ## Alternatives and future work
 
 While the basic search functionality provided here is perfectly fine for the
-amount of content in this site presently, there are plenty of ways that the
+amount of content currently on this site, there are plenty of ways that the
 basic approach taken here could be implemented differently, or expanded and
-further refined which I'll briefly mention here.
+further refined, which I'll briefly mention here.
 
 A precursor to any meaningful iterations on a search system is a way to evaluate
 the quality of results. The "seriousness" of that evaluation can scale with the
 importance of the application. For example, to refine the query building logic
 above I used the test cases shown above as well as manual testing with various
-queries against specific pages in my site I would expect to be returned. To
+queries against specific pages in my site that I would expect to be returned. To
 provide a more formal evaluation, we could augment the above test suites to
 connect to the actual built index from the site and add various [offline
 measures][wikiIREvalOffline] that assert quality characteristics above a certain
@@ -345,12 +344,12 @@ performance could be measured against. As this site has more content added, or
 if your site already does, setting something like that up would be a great next
 step!
 
-Additionally, while Lunr has seemed to be a great off-the-shelf fit for the
-capabilities we built out here, there are alternative search implementation that
-could be used for similar effect which as also aimed at static sites.
+Additionally, while Lunr is a great off-the-shelf fit for the capabilities we
+built out here, there are alternative search implementations that could be used
+for similar effect as they are also intended for static sites.
 [Fuse.js](fuseJSSite) is a similarly pure javascript fuzzy-search tool that
 would provide a slightly different user experience more akin to an editor.
-[Stork][storkSite] is another alternative which could provide richer
+[Stork][storkSite] is another alternative that could provide richer
 functionality with match highlights, written in Rust and compiling to
 [WebAssembly][wasmSite]. The [tinysearch][tinysearchGH] project uses a similar
 Rust/WebAssembly architecture, but has an interesting approach of bloom filters
@@ -360,29 +359,29 @@ step here, and if you're looking at adding search to your own site you may well
 be interested in picking one of these others!
 
 I mentioned highlighting as a feature of Stork above, and at the moment the
-highlighting implementation we have here fairly basic. The highlighting
+highlighting implementation we have here is fairly basic. The highlighting
 algorithm could be improved by more intelligently choosing snippets from within
-the content of various results rather than just using the beginning of the text,
-more reliably giving the user give the user information as to reason for
+the content of various results rather than just using the beginning of the text.
+This could more reliably give the user information as to the reason for
 relevance of particular documents. This is a rich area with a fair amount of
 research available on query-based text summarization which could be interesting
 to experiment with for this application[^summarization].
 
 On the performance front, one note about our implementation here is that the
 index itself is being built at load time from the raw documents built into the
-browser. We could alternatively be compiling the index at the time the site is
-built, and then serving the pre-built index. Lunr provides documentation on
-[pre-building indexes][lunrPrebuild] that we could follow to do this. A fancy
-approach to integrate this with the site build could be to leverage
-[experimental esbuild plugins][esbuildPlugins] but Hugo does not support them
-yet and apparently [adding support is hard][hugoESBuildPlugins]. This would cut
-out on compute time in the browser, however it comes at the expense of a larger
-index file that needs to be served over the network (about 4x before compression
-for my site at the time of this writing, though compression and bigger sites
-likely yield a better ratio), which is what dissuaded me from doing this for my
-implementation, as index build times take less than 50ms. While I do pay for
-bandwidth, I do not pay for those few extra CPU cycles in your browser, thus
-I've decided to stick with the current approach for now.
+browser. We could alternatively compile the index at the time the site is built,
+and then serve the pre-built index. Lunr provides documentation on [pre-building
+indexes][lunrPrebuild] that we could follow to do this. A fancy approach to
+integrate this with the site build could be to leverage [experimental esbuild
+plugins][esbuildPlugins] but Hugo does not support them yet and apparently
+[adding support is hard][hugoESBuildPlugins]. This would cut out on compute time
+in the browser, however, it comes at the expense of a larger index file that
+needs to be served over the network (about 4x before compression for my site at
+the time of this writing, though compression and bigger sites likely yield a
+better ratio), which is what dissuaded me from doing this for my implementation,
+as index build times take less than 50ms. While I do pay for bandwidth, I do not
+pay for those few extra CPU cycles in your browser, thus I've decided to stick
+with the current approach for now.
 
 If others seem to agree with me that this is a good way to go about implementing
 Lunr search into your Hugo site, this approach may be also worth listing in the
