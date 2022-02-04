@@ -1,5 +1,5 @@
 +++
-date = 2022-01-08T23:19:59-05:00
+date = 2022-02-04T18:47:49-05:00
 title = "Adding search to a static site with Lunr and Preact"
 description = """
 Leveraging the templating capabilities and Javascript rendering capabilities of
