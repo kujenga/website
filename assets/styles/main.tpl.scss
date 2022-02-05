@@ -36,6 +36,11 @@ a {
   color: $links;
 }
 
+code {
+  // Remove the red coloring on inline code snippets throughout the site.
+  color: inherit;
+}
+
 .small,
 small {
   color: #777;
@@ -221,10 +226,6 @@ nav.navbar {
   p {
     font-size: 0.9rem;
   }
-
-  code {
-    color: inherit;
-  }
 }
 
 /* Blog Post */
@@ -264,6 +265,12 @@ nav.navbar {
     padding: 0.5rem 1rem;
     font-size: 80%;
     line-height: 1.05rem;
+  }
+
+  .toc {
+    li {
+      margin-bottom: 0;
+    }
   }
 }
 

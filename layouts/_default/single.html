@@ -23,8 +23,11 @@
       <!-- Post-specific stats -->
       <br />
       <h5>{{ .Date.Format "January 2, 2006" }}</h5>
-      <!-- NOTE: Reading time removed as it does not seem accurate, and word count is not that informative on it's own -->
-      <!-- <div>{{ .ReadingTime }} min - <small>{{ .WordCount }} words</small></div> -->
+      <!-- NOTE: Hidden as it is not accurate for posts with code
+        in them, and word count is not that informative on it's own. -->
+      <div style="display: none">
+        {{ .ReadingTime }} min - <small>{{ .WordCount }} words</small>
+      </div>
       <!-- <hr /> -->
       <!-- <strong>Categories</strong> -->
       <!-- <ul class="list-unstyled"> -->
