@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  {{ partial "header.html" . }}
+  <body>
+    <div class="container" id="playground">
+      <h1>{{ .Title }}</h1>
+      <div>{{ .Content }}</div>
+      <div class="row">
+        <div class="col">
+          <div class="form-group">
+            <label for="exampleFormControlTextarea1">Template</label>
+            <textarea
+              class="form-control"
+              id="exampleFormControlTextarea1"
+              rows="3"
+            ></textarea>
+          </div>
+          <div class="form-group">
+            <label for="exampleFormControlTextarea1">Data</label>
+            <textarea
+              class="form-control"
+              id="exampleFormControlTextarea1"
+              rows="3"
+            ></textarea>
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-group">
+            <label for="exampleFormControlTextarea1">Render</label>
+            <textarea
+              class="form-control"
+              id="exampleFormControlTextarea1"
+              rows="3"
+            ></textarea>
+          </div>
+          <button type="button" class="btn btn-primary">Render</button>
+        </div>
+      </div>
+    </div>
+    <!-- /container -->
+    {{ partial "footer.html" . }}
+  </body>
+</html>
