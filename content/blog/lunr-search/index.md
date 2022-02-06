@@ -210,6 +210,11 @@ string in this manner, the resulting values are returned to be rendered into the
 
 {{< emgithub "https://github.com/kujenga/website/blob/1768cf384d54b7e7ec8c88a02dc0ec3819061fc5/assets/js/search.jsx#L41-L79" >}}
 
+With those components in place, the end result looks like this! The inserted
+`<mark>` elements provide highlighting within the result.
+
+{{< img file=highlight-example-featured.png alt="Example highlighted search result" >}}
+
 One neat capability of Preact (and React itself) is that it can be integrated
 within the context of an existing site that is not fully based on the framework,
 which is exactly what we are doing here.
