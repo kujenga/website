@@ -16,11 +16,18 @@
         "
     src="
       {{- if (.Get `file`) -}}
-        {{- $resource := print `images` $.Page.RelPermalink (.Get `file`) -}}
-        {{- $image := resources.Get $resource | fingerprint `md5` -}}
+        {{- /* First look for the file by it's literal name. This generally
+        works well with page bundles. */ -}}
+        {{- $image := .Page.Resources.GetMatch (.Get `file`) -}}
+        {{- if not $image -}}
+          {{- /* Otherwise we support a scheme where it is in a mirrored path in
+          the images/ directory. */ -}}
+          {{- $image = resources.Get (print `images` $.Page.RelPermalink (.Get `file`)) -}}
+        {{- end -}}
+        {{- $image = $image | fingerprint `md5` -}}
         {{- $image.RelPermalink -}}
       {{- else if (.Get `resource`) -}}
-      {{- $image := resources.Get (.Get `resource`) | fingerprint `md5` }}
+        {{- $image := resources.Get (.Get `resource`) | fingerprint `md5` }}
         {{- $image.RelPermalink -}}
       {{- else -}}
         {{- .Get `src` -}}
