@@ -5,6 +5,7 @@ build/
 public/
 resources/
 VERSION*
+static/exp/
 
 # Testing
 reports/
