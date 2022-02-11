@@ -1,7 +1,7 @@
 default-src 'self';
-script-src 'self' 'unsafe-inline' https://code.jquery.com https://cdn.jsdelivr.net https://stackpath.bootstrapcdn.com https://f.ataylor.io https://www.google-analytics.com https://polyfill.io https://cdn.jsdelivr.net https://giscus.app;
+script-src 'self' 'unsafe-inline' https://code.jquery.com https://cdn.jsdelivr.net https://stackpath.bootstrapcdn.com https://f.ataylor.io https://polyfill.io https://cdn.jsdelivr.net https://giscus.app;
 style-src 'self' 'unsafe-inline' https://stackpath.bootstrapcdn.com https://cdn.jsdelivr.net https://fonts.googleapis.com;
-img-src 'self' data: https://www.google.com https://f.ataylor.io;
+img-src 'self' data: https://f.ataylor.io;
 font-src data: https://stackpath.bootstrapcdn.com https://fonts.gstatic.com https://cdn.jsdelivr.net;
-connect-src 'self' https://www.google-analytics.com https://www.google.com https://stats.g.doubleclick.net https://raw.githubusercontent.com;
+connect-src 'self' https://raw.githubusercontent.com;
 frame-src https://giscus.app;
