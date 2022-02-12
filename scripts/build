@@ -9,6 +9,9 @@ ENVIRONMENT="$("$D/environment")"
 
 set -x
 
+# Build experimental assets
+make -C exp/playground
+
 # Build the site
 hugo \
     --environment="$ENVIRONMENT" \
