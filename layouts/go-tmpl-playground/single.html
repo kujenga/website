@@ -5,45 +5,7 @@
     <div class="container" id="playground">
       <h1>{{ .Title }}</h1>
       <div>{{ .Content }}</div>
-      <div class="row">
-        <div class="col">
-          <div class="form-group">
-            <label for="templateTextArea">Template</label>
-            <textarea
-              class="form-control"
-              id="templateTextArea"
-              rows="5"
-              autocomplete="off"
-            >
-              {{- .Params.defaultTemplate -}}
-            </textarea>
-          </div>
-          <div class="form-group">
-            <label for="dataTextArea">Data (JSON)</label>
-            <textarea
-              class="form-control"
-              id="dataTextArea"
-              rows="5"
-              autocomplete="off"
-            >
-              {{- .Params.defaultValues -}}
-            </textarea>
-          </div>
-        </div>
-        <div class="col">
-          <div class="form-group">
-            <label for="renderTextArea">Render</label>
-            <textarea
-              class="form-control"
-              id="renderTextArea"
-              rows="5"
-            ></textarea>
-          </div>
-          <button id="renderBtn" type="button" class="btn btn-primary">
-            Render
-          </button>
-        </div>
-      </div>
+      <div id="app"></div>
     </div>
     <!-- /container -->
     {{ partial "footer.html" . }}
@@ -57,14 +19,9 @@
       ).then((result) => {
         go.run(result.instance);
       });
-
-      $('#renderBtn').click(() => {
-        let template = $('#templateTextArea').val();
-        let data = $('#dataTextArea').val();
-        // Render the template via WASM exposed function.
-        let output = GoTmplRender(template, data);
-        $('#renderTextArea').html(output);
-      });
     </script>
+
+    <!-- Script tag for JSX file -->
+    {{ partial "jsx.html" "js/exp/playground.jsx" }}
   </body>
 </html>
