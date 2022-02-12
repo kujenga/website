@@ -29,6 +29,11 @@
 <!-- prettier-ignore -->
 {{ partial "search-index.html" . }}
 
+<!-- Go WASM -->
+{{ if .Params.wasmEnabled }}
+<script src="/exp/wasm_exec.js"></script>
+{{ end }}
+
 <script>
   // Add anchor links to any desired content, comma-separated.
   anchors.add(

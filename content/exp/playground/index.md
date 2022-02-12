@@ -1,15 +1,11 @@
 +++
 title = "Go Templates Playground"
-type = "go-tmpl-playground"
+type = "exp"
 
-defaultTemplate = """
-Hello, {{ .Name }}!
-"""
-defaultValues = """
-{
-  "Name": "World"
-}
-"""
+wasmEnabled = true
+jsx = [
+    "js/exp/playground.jsx"
+]
 +++
 
 Web-based playground for executing Go templates and experimenting with syntax.

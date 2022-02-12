@@ -2,7 +2,7 @@
 <html lang="en">
   {{ partial "header.html" . }}
   <body>
-    <div class="container" id="playground">
+    <div class="container">
       <h1>{{ .Title }}</h1>
       <div>{{ .Content }}</div>
       <div id="app"></div>
@@ -10,9 +10,7 @@
     <!-- /container -->
     {{ partial "footer.html" . }}
 
-    <script src="/exp/wasm_exec.js"></script>
-
-    <!-- Script tag for JSX file -->
-    {{ partial "jsx.html" "js/exp/playground.jsx" }}
+    <!-- Script tags for JSX file -->
+    {{ range .Params.jsx }} {{ partial "jsx.html" . }} {{ end }}
   </body>
 </html>
