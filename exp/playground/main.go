@@ -1,34 +1,44 @@
 package main
 
 import (
+	"encoding/json"
+	"fmt"
 	"html/template"
 	"strings"
-
-	"github.com/gopherjs/gopherjs/js"
+	"syscall/js"
 )
 
-var page = template.Must(template.New("page").Parse(`
-<form action="" method="get" class="form-example">
-  <div class="form-example">
-    <label for="name">Name: </label>
-    <input type="text" name="name" id="name" required>
-  </div>
-  <div class="form-example">
-    <label for="email">Enter your email: </label>
-    <input type="email" name="email" id="email" required>
-  </div>
-  <div class="form-example">
-    <input type="submit" value="Subscribe!">
-  </div>
-</form>
-`))
-
 func main() {
-	var b strings.Builder
-	err := page.Execute(&b, nil)
-	if err != nil {
-		panic(err)
-	}
+	// Render provides the ability to take in a template string and input
+	// data and render the corresponding output.
+	render := js.FuncOf(func(this js.Value, args []js.Value) interface{} {
+		if len(args) != 2 {
+			return "Must provide two arguments: inputTmpl, inputData"
+		}
+		inputTmpl := args[0].String()
+		inputData := args[1].String()
 
-	js.Global.Get("document").Call("write", b.String())
+		tmpl, err := template.New("").Parse(inputTmpl)
+		if err != nil {
+			panic(err)
+		}
+
+		var data interface{}
+		if err := json.Unmarshal([]byte(inputData), &data); err != nil {
+			panic(err)
+		}
+
+		var b strings.Builder
+		if err := tmpl.Execute(&b, data); err != nil {
+			panic(err)
+		}
+
+		return b.String()
+	})
+
+	fmt.Println("registering GoTmplRender")
+	js.Global().Set("GoTmplRender", render)
+
+	// Wait forever
+	<-make(chan bool)
 }
