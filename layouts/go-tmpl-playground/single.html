@@ -11,15 +11,6 @@
     {{ partial "footer.html" . }}
 
     <script src="/exp/wasm_exec.js"></script>
-    <script>
-      const go = new Go();
-      WebAssembly.instantiateStreaming(
-        fetch('/exp/playground.wasm'),
-        go.importObject
-      ).then((result) => {
-        go.run(result.instance);
-      });
-    </script>
 
     <!-- Script tag for JSX file -->
     {{ partial "jsx.html" "js/exp/playground.jsx" }}

@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"html/template"
 	"strings"
 	"syscall/js"
@@ -20,24 +19,23 @@ func main() {
 
 		tmpl, err := template.New("").Parse(inputTmpl)
 		if err != nil {
-			panic(err)
+			return err.Error()
 		}
 
 		var data interface{}
 		if err := json.Unmarshal([]byte(inputData), &data); err != nil {
-			panic(err)
+			return err.Error()
 		}
 
 		var b strings.Builder
 		if err := tmpl.Execute(&b, data); err != nil {
-			panic(err)
+			return err.Error()
 		}
 
 		return b.String()
 	})
 
-	fmt.Println("registering GoTmplRender")
-	js.Global().Set("GoTmplRender", render)
+	js.Global().Set("ExpRenderGoTemplate", render)
 
 	// Wait forever
 	<-make(chan bool)

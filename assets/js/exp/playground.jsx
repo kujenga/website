@@ -1,4 +1,4 @@
-/* global GoTmplRender */
+/* global Go, ExpRenderGoTemplate */
 
 import { h, Component, render } from 'preact';
 
@@ -10,22 +10,29 @@ class Playground extends Component {
     super();
     this.state = {
       template: 'Hello, {{ .Name }}!',
-      data: JSON.stringify({ Name: 'World' }),
-      rendered: '',
+      data: JSON.stringify({ Name: 'World' }, null, '    '),
     };
+    this.state.rendered = ExpRenderGoTemplate(
+      this.state.template,
+      this.state.data
+    );
   }
 
   updateTemplate = (e) => {
-    this.setState((prev) => Object.assign(prev, { template: e.target.value }));
+    this.setState((prev) =>
+      Object.assign(prev, {
+        template: e.target.value,
+        rendered: ExpRenderGoTemplate(e.target.value, prev.data),
+      })
+    );
   };
 
   updateData = (e) => {
-    this.setState((prev) => Object.assign(prev, { data: e.target.value }));
-  };
-
-  generate = () => {
     this.setState((prev) =>
-      Object.assign(prev, { rendered: GoTmplRender(prev.template, prev.data) })
+      Object.assign(prev, {
+        data: e.target.value,
+        rendered: ExpRenderGoTemplate(prev.template, e.target.value),
+      })
     );
   };
 
@@ -40,7 +47,7 @@ class Playground extends Component {
               id="templateTextArea"
               value={state.template}
               onInput={this.updateTemplate}
-              rows="5"
+              rows="8"
               autocomplete="off"
             />
           </div>
@@ -63,18 +70,10 @@ class Playground extends Component {
               class="form-control"
               id="renderTextArea"
               value={state.rendered}
-              rows="5"
+              rows="16"
               disabled="true"
             />
           </div>
-          <button
-            id="renderBtn"
-            type="button"
-            class="btn btn-primary"
-            onClick={this.generate}
-          >
-            Render
-          </button>
         </div>
       </div>
     );
@@ -85,7 +84,18 @@ class Playground extends Component {
  * main initializes the playground application.
  */
 function main() {
-  render(<Playground />, document.getElementById('app'));
+  // Getch the WASM file and stream it into the page. Once that is complete, we
+  // render the Playground application.
+  // https://golangbot.com/webassembly-using-go/
+  const go = new Go();
+  WebAssembly.instantiateStreaming(
+    fetch('/exp/playground.wasm'),
+    go.importObject
+  ).then((result) => {
+    go.run(result.instance);
+
+    render(<Playground />, document.getElementById('app'));
+  });
 }
 
 main();
