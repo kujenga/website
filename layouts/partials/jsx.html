@@ -1,0 +1,20 @@
+<!-- JS Build defines -->
+{{ $defines := dict "process.env.NODE_ENV" hugo.Environment }}
+<!-- JS Build options. the JSX* options are key to using the lighter weight
+"Preact" https://preactjs.com/ rather than the defaults that work for React
+specifically. -->
+{{ $options := dict "defines" $defines "JSXFactory" "h" "JSXFragment" "Fragment"
+"minify" true }}
+<!-- per-environment customizations -->
+{{ if eq hugo.Environment "development" }}
+<!-- In non-production, enable source maps -->
+<!-- TODO: Enable always when options other than "inline" are available -->
+{{ $options = merge $options (dict "sourcemap" "inline") }} {{ end }}
+<!-- Search logic -->
+{{ $js := resources.Get . | js.Build $options }}
+<!-- SRI hashing: https://gohugo.io/hugo-pipes/fingerprint/ -->
+{{ $secureJS := $js | resources.Fingerprint "sha256" }}
+<script
+  src="{{ $secureJS.RelPermalink }}"
+  integrity="{{ $secureJS.Data.Integrity }}"
+></script>
