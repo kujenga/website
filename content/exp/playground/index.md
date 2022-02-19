@@ -1,5 +1,5 @@
 +++
-title = "Go Templates Playground"
+title = "Go Template Playground"
 type = "exp"
 
 wasmEnabled = true
@@ -8,4 +8,7 @@ jsx = [
 ]
 +++
 
-Web-based playground for executing Go templates and experimenting with syntax.
+Web-based playground for experimenting with Go template syntax via the [html/template][tmplPkg]
+
+<!-- Links -->
+[tmplPkg]: https://pkg.go.dev/html/template
