@@ -1,10 +1,16 @@
-/* global Go, ExpRenderGoTemplate */
+/* global Go, ExpRenderGoTemplate, ExpConvertData */
 
 import { h, Component, render } from 'preact';
 
+const Format = {
+  YAML: 'YAML',
+  JSON: 'JSON',
+};
+
 const Defaults = {
   template: 'Hello, {{ .Name }}!',
-  data: JSON.stringify({ Name: 'World' }, null, '  '),
+  data: 'Name: World',
+  dataFormat: Format.YAML,
   autoRender: true,
 };
 
@@ -29,7 +35,8 @@ class Playground extends Component {
     if (forceRender || this.state.autoRender) {
       s.rendered = ExpRenderGoTemplate(
         s.template || prev.template,
-        s.data || prev.data
+        s.data || prev.data,
+        s.dataFormat || prev.dataFormat
       );
     }
     return Object.assign(prev, s);
@@ -59,6 +66,17 @@ class Playground extends Component {
     );
   };
 
+  updateDataFormat = (e) => {
+    this.setState((prev) => {
+      const newFormat = e.target.value;
+      const newData = ExpConvertData(prev.data, prev.dataFormat, newFormat);
+      return Object.assign(prev, {
+        data: newData,
+        dataFormat: newFormat,
+      });
+    });
+  };
+
   render(props, state) {
     return (
       <div class="row">
@@ -75,7 +93,24 @@ class Playground extends Component {
             />
           </div>
           <div class="form-group">
-            <label for="dataTextArea">Data (JSON)</label>
+            <div class="form-inline">
+              <label for="dataTextArea">Data</label>
+              <label class="sr-only" for="dataFormat">
+                Format
+              </label>
+              <select
+                class="custom-select custom-select-sm ml-2 mb-1"
+                id="dataFormat"
+                value={state.dataFormat}
+                onChange={this.updateDataFormat}
+              >
+                {Object.keys(Format).map((v) => (
+                  <option key={v} value={v}>
+                    {v}
+                  </option>
+                ))}
+              </select>
+            </div>
             <textarea
               class="form-control mono"
               id="dataTextArea"
