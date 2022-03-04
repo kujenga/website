@@ -2,7 +2,7 @@
 #
 # This script outputs a version for use in the Google App Engine deployment.
 
-set -euo pipefail
+set -eo pipefail
 
 # Directory containing this script.
 D=$( cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P )
@@ -23,7 +23,9 @@ ENVIRONMENT="$("$D/environment")"
 
 GIT_HASH="g$(git rev-parse --short HEAD)"
 
-BRANCH="$(git symbolic-ref --short HEAD | tr / -)"
+# Strip/transform characters not allowed for App Engine versions.
+BRANCH="$(git symbolic-ref --short HEAD | tr '/_' '-' | tr -d '.')"
+BRANCH="$(python3 -c "print('$BRANCH'[-30:].lstrip('-').lower())")"
 
 BUILD='local'
 if [[ -n "$CIRCLE_BUILD_NUM" ]]; then
