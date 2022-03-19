@@ -10,6 +10,7 @@ resources/
 app/site/public/
 coverage/
 assets/js/exp/wasm/
+assets/jsconfig.json
 
 # Old site
 old/
