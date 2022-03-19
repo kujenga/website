@@ -5,7 +5,7 @@ build/
 public/
 resources/
 VERSION*
-static/exp/
+assets/js/exp/wasm/
 
 # Testing
 reports/

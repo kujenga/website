@@ -9,6 +9,7 @@ static/
 resources/
 app/site/public/
 coverage/
+assets/js/exp/wasm/
 
 # Old site
 old/
@@ -16,3 +17,6 @@ old/
 # Not wanted on .md content currently
 *.md
 content/
+
+# Specific files where prettier is not needed.
+layouts/partials/jsx.html

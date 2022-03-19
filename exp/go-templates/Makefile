@@ -1,5 +1,5 @@
 
-TARGET := ../../static/exp
+TARGET := ../../assets/js/exp/wasm
 
 .PHONY: all
 all: \

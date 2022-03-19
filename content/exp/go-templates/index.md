@@ -4,7 +4,7 @@ type = "exp"
 
 wasmEnabled = true
 jsx = [
-    "js/exp/go-templates.jsx"
+    "js/exp/go-templates.tpl.jsx"
 ]
 +++
 

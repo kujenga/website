@@ -1,6 +1,6 @@
-/* global Go, ExpRenderGoTemplate, ExpConvertData */
+/* global ExpRenderGoTemplate, ExpConvertData */
 
-import { h, Component, render } from 'preact';
+import { h, Component } from 'preact';
 
 const Format = {
   YAML: 'YAML',
@@ -172,22 +172,4 @@ class Playground extends Component {
   }
 }
 
-/**
- * main initializes the playground application.
- */
-function main() {
-  // Getch the WASM file and stream it into the page. Once that is complete, we
-  // render the Playground application.
-  // https://golangbot.com/webassembly-using-go/
-  const go = new Go();
-  WebAssembly.instantiateStreaming(
-    fetch('/exp/go-templates.wasm'),
-    go.importObject
-  ).then((result) => {
-    go.run(result.instance);
-
-    render(<Playground />, document.getElementById('app'));
-  });
-}
-
-main();
+export { Playground };
