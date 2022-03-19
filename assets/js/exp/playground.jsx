@@ -1,4 +1,4 @@
-/* global ExpRenderGoTemplate, ExpConvertData */
+/* global Go, ExpRenderGoTemplate, ExpConvertData */
 
 import { h, Component } from 'preact';
 
@@ -20,7 +20,8 @@ const Defaults = {
 class Playground extends Component {
   constructor() {
     super();
-    this.state = this.newState({}, Defaults, true);
+    this.initialized = false;
+    this.state = this.newState({ loading: true, error: null }, Defaults, true);
   }
 
   /**
@@ -32,7 +33,7 @@ class Playground extends Component {
    * @returns {object} - Complete new state value to pass to setState.
    */
   newState(prev, s, forceRender = false) {
-    if (forceRender || this.state.autoRender) {
+    if (global.ExpRenderGoTemplate && (forceRender || this.state.autoRender)) {
       s.rendered = ExpRenderGoTemplate(
         s.template || prev.template,
         s.data || prev.data,
@@ -40,6 +41,29 @@ class Playground extends Component {
       );
     }
     return Object.assign(prev, s);
+  }
+
+  initialize(props) {
+    if (this.initialized) {
+      return;
+    }
+    // Getch the WASM file and stream it into the page. Once that is complete, we
+    // render the Playground application.
+    // https://golangbot.com/webassembly-using-go/
+    const go = new Go();
+    WebAssembly.instantiateStreaming(fetch(props.wasm), go.importObject)
+      .then((result) => {
+        go.run(result.instance);
+        // Indicate that loading has finished.
+        this.setState((prev) => this.newState(prev, { loading: false }));
+      })
+      .catch((e) => {
+        console.error('error:', e);
+        this.setState((prev) =>
+          this.newState(prev, { loading: false, error: e })
+        );
+      });
+    this.initialized = true;
   }
 
   updateTemplate = (e) => {
@@ -78,6 +102,38 @@ class Playground extends Component {
   };
 
   render(props, state) {
+    this.initialize(props);
+
+    let renderOutput = (
+      <div>
+        <textarea
+          class="form-control mono"
+          id="renderTextArea"
+          value={state.rendered}
+          rows="12"
+          disabled="true"
+        />
+      </div>
+    );
+    if (state.error) {
+      renderOutput = (
+        <div class="alert alert-warning" role="alert">
+          <h4 class="alert-heading">Error initializing template engine</h4>
+          <hr />
+          <p>{`${state.error}`}</p>
+        </div>
+      );
+    }
+    if (state.loading) {
+      renderOutput = (
+        <div class="d-flex justify-content-center">
+          <div class="spinner-border text-secondary" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div class="row">
         <div class="col">
@@ -124,13 +180,7 @@ class Playground extends Component {
         <div class="col">
           <div class="form-group">
             <label for="renderTextArea">Rendered</label>
-            <textarea
-              class="form-control mono"
-              id="renderTextArea"
-              value={state.rendered}
-              rows="12"
-              disabled="true"
-            />
+            {renderOutput}
           </div>
           <div class="form-group">
             <label>Configuration</label>
