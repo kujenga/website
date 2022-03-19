@@ -1,0 +1,7 @@
+{
+  // https://github.com/josa42/coc-go#how-to-use-coc-go-with-wasm
+  "go.goplsEnv": {
+    "GOOS": "js",
+    "GOARCH": "wasm"
+  }
+}
