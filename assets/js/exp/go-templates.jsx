@@ -181,7 +181,7 @@ function main() {
   // https://golangbot.com/webassembly-using-go/
   const go = new Go();
   WebAssembly.instantiateStreaming(
-    fetch('/exp/playground.wasm'),
+    fetch('/exp/go-templates.wasm'),
     go.importObject
   ).then((result) => {
     go.run(result.instance);

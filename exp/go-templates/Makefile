@@ -4,13 +4,13 @@ TARGET := ../../static/exp
 .PHONY: all
 all: \
 	$(TARGET)/wasm_exec.js \
-	$(TARGET)/playground.wasm
+	$(TARGET)/go-templates.wasm
 
 $(TARGET)/wasm_exec.js:
 	mkdir -p $(dir $@)
 	cp $(shell go env GOROOT)/misc/wasm/wasm_exec.js $@
 
-$(TARGET)/playground.wasm: $(wildcard *.go **/*.go)
+$(TARGET)/go-templates.wasm: $(wildcard *.go **/*.go)
 	mkdir -p $(dir $@)
 	GOOS=js GOARCH=wasm go build \
 	     -o $@

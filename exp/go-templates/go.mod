@@ -1,4 +1,4 @@
-module github.com/kujenga/website/exp/playground
+module github.com/kujenga/website/exp/go-templates
 
 go 1.17
 

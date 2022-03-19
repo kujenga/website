@@ -1,10 +1,10 @@
 +++
-title = "Go Template Playground"
+title = "Go Templates Playground"
 type = "exp"
 
 wasmEnabled = true
 jsx = [
-    "js/exp/playground.jsx"
+    "js/exp/go-templates.jsx"
 ]
 +++
 
