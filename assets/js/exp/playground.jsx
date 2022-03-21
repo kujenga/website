@@ -51,7 +51,11 @@ class Playground extends Component {
     // render the Playground application.
     // https://golangbot.com/webassembly-using-go/
     const go = new Go();
-    WebAssembly.instantiateStreaming(fetch(props.wasm), go.importObject)
+    WebAssembly.instantiateStreaming(
+      // Fetch WASM file specified in props.
+      fetch(props.wasm),
+      go.importObject
+    )
       .then((result) => {
         go.run(result.instance);
         // Indicate that loading has finished.
