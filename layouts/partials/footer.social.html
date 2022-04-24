@@ -14,6 +14,18 @@
           >.
         </p>
       </div>
+      <!-- Bug report link -->
+      {{ if .Params.bugReports }}
+      <div class="bug-report float-right">
+        <p class="text-muted">
+          <a href="https://github.com/kujenga/website/issues/new">
+            <i class="fa fa-bug" aria-hidden="true"></i>
+            Report a bug
+          </a>
+        </p>
+      </div>
+      {{ end }}
+      <!-- Social links -->
       {{ if not .Params.disableSocial }}
       <div class="col-sm">
         <ul class="float-right">

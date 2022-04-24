@@ -1,0 +1,20 @@
+#!/bin/bash
+#
+# Installs tooling for the CI environment.
+
+set -exuo pipefail
+
+# See: https://github.com/gohugoio/hugo/releases for latest.
+HUGO_VERSION='0.97.3'
+HUGO_SHA256='e0f95508ee9366750a33c1a87dc6fd1a5229536c017026074e954b21780033cb'
+HUGO_FILE="hugo_extended_${HUGO_VERSION}_Linux-64bit.deb"
+BASE_URL='https://github.com/gohugoio/hugo/releases/download'
+
+# Download file
+curl -sSL -o "/tmp/${HUGO_FILE}" "${BASE_URL}/v${HUGO_VERSION}/${HUGO_FILE}"
+
+# Verify hash
+echo "${HUGO_SHA256}  /tmp/${HUGO_FILE}" | shasum -a 256 -c -
+
+# Install
+sudo dpkg -i "/tmp/${HUGO_FILE}"
