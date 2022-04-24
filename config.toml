@@ -17,12 +17,18 @@ enableRobotsTXT = true
   twitter = "@ataylor0123"
 
 [params]
+  images = [
+    "/img/social/brand-transparent.png",
+  ]
   twitter = "https://twitter.com/ataylor0123"
   github = "https://github.com/kujenga"
   linkedin = "https://linkedin.com/in/ataylor0123"
   instagram = "https://instagram.com/ataylor0123/"
   angellist = "https://angel.co/ataylor0123"
   keybase = "https://keybase.io/ataylor"
+
+[social]
+  twitter = "ataylor0123"
 
 # https://gohugo.io/templates/sitemap-template/#configure-sitemapxml
 [sitemap]
