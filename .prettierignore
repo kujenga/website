@@ -21,3 +21,4 @@ content/
 
 # Specific files where prettier is not needed.
 layouts/partials/jsx.html
+layouts/partials/twitter_cards.html
