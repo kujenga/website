@@ -5,6 +5,8 @@ build/
 public/
 resources/
 VERSION*
+assets/js/exp/wasm/
+assets/jsconfig.json
 
 # Testing
 reports/

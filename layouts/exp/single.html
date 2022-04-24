@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+  {{ partial "header.html" . }}
+  <body>
+    <div class="container">
+      <h1>{{ .Title }}</h1>
+      <div>{{ .Content }}</div>
+      <div id="app"></div>
+      {{ partial "footer.social.html" . }}
+    </div>
+    <!-- /container -->
+    {{ partial "footer.html" . }}
+
+    <!-- Script tags for JSX file -->
+    {{ range .Params.jsx }} {{ partial "jsx.html" . }} {{ end }}
+  </body>
+</html>

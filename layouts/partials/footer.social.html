@@ -4,8 +4,9 @@
     <div class="row">
       <div class="col-sm copyright">
         <p class="text-muted">
-          {{ replace .Site.Copyright "{year}" now.Year | safeHTML }}, Licensed
-          under
+          <a href="{{ .Site.BaseURL }}">
+            {{ replace .Site.Copyright "{year}" now.Year | safeHTML }} </a
+          >, Licensed under
           <a
             rel="license"
             href="https://github.com/kujenga/website/blob/main/LICENSE"
@@ -13,6 +14,7 @@
           >.
         </p>
       </div>
+      {{ if not .Params.disableSocial }}
       <div class="col-sm">
         <ul class="float-right">
           <li class="list-inline-item">
@@ -71,6 +73,7 @@
           </li>
         </ul>
       </div>
+      {{ end }}
     </div>
   </div>
 </footer>

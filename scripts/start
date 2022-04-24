@@ -12,4 +12,5 @@ export HUGO_CONTENT_SECURITY_POLICY
 set -x
 
 hugo server --watch \
-    --buildDrafts
+    --buildDrafts \
+    "$@"

@@ -29,6 +29,17 @@
 <!-- prettier-ignore -->
 {{ partial "search-index.html" . }}
 
+<!-- Go WASM -->
+{{ if .Params.wasmEnabled }}
+<!-- Import and hash -->
+{{ $wasmExec := resources.Get "/js/exp/wasm/wasm_exec.js" |
+resources.Fingerprint "sha256" }}
+<script
+  src="{{ $wasmExec.RelPermalink }}"
+  integrity="{{ $wasmExec.Data.Integrity }}"
+></script>
+{{ end }}
+
 <script>
   // Add anchor links to any desired content, comma-separated.
   anchors.add(
