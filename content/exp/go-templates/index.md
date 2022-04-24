@@ -8,6 +8,9 @@ wasmEnabled = true
 jsx = [
     "js/exp/go-templates.tpl.jsx"
 ]
+images = [
+    "/img/social/gopher-biplane.png"
+]
 +++
 
 Playground for experimenting with Go template syntax, built on WASM. See
