@@ -40,6 +40,11 @@ jobs:
             node --version
             npm --version
 
+      # Tooling install
+      - run:
+          name: Install tooling
+          command: ./.circleci/install-tools
+
       # NPM install
       - run:
           name: Install Node-based tooling
@@ -48,20 +53,16 @@ jobs:
       # Install
       - restore_cache:
           keys:
-            - v1-go-{{ checksum "app/go.mod" }}-{{ checksum "tools/go.mod" }}
-            - v1-go-
-      - run:
-          name: Install Go-based tooling
-          working_directory: 'tools'
-          command: ./install-tools
+            - v2-go-{{ checksum "app/go.mod" }}
+            - v2-go-
       - run:
           # NOTE: We do not install this tooling now, as compiling the web app
           # requires the embedded static assets to be present.
           name: Download Go app dependencies
           working_directory: 'app'
-          command: go mod download
+          command: go mod download -x
       - save_cache:
-          key: v1-go-{{ checksum "app/go.mod" }}-{{ checksum "tools/go.mod" }}
+          key: v2-go-{{ checksum "app/go.mod" }}
           paths:
             # Observed from `go env` output, above
             - ~/go

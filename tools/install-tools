@@ -1,8 +1,0 @@
-#!/bin/bash
-
-set -euo pipefail
-
-# Install Hugo at our pinned version:
-# https://github.com/gohugoio/hugo/tree/v0.78.2#build-and-install-the-binaries-from-source-advanced-install
-# The "extended" tag enabled SCSS processing components of Hugo.
-go install -v --tags extended github.com/gohugoio/hugo
