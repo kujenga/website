@@ -3,6 +3,7 @@
 version: 2.1
 
 orbs:
+  node: circleci/node@5.0.2
   gcp-cli: circleci/gcp-cli@2.1.0
 
 commands:
@@ -46,9 +47,7 @@ jobs:
           command: ./.circleci/install-tools
 
       # NPM install
-      - run:
-          name: Install Node-based tooling
-          command: npm install
+      - node/install-packages
 
       # Install
       - restore_cache:
