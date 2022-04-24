@@ -9,7 +9,9 @@ jsx = [
 ]
 +++
 
-Web-based playground for experimenting with Go template syntax via the [html/template][tmplPkg]
+Playground for experimenting with Go template syntax, built on WASM. See
+[text/template][textPkg] and [html/template][htmlPkg] for documentation.
 
 <!-- Links -->
-[tmplPkg]: https://pkg.go.dev/html/template
+[textPkg]: https://pkg.go.dev/text/template
+[htmlPkg]: https://pkg.go.dev/html/template
