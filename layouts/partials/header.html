@@ -41,7 +41,7 @@
   <!-- prettier-ignore -->
   {{ template "_internal/opengraph.html" . }}
   <!-- prettier-ignore -->
-  {{ template "_internal/twitter_cards.html" . }}
+  {{ template "partials/twitter_cards.html" . }}
 
 
   {{- $csp := getenv "HUGO_CONTENT_SECURITY_POLICY" }} {{- if and (eq
