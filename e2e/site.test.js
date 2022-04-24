@@ -42,4 +42,26 @@ describe('Site', () => {
     // Wait for giscus comments to appear.
     await page.waitForSelector('iframe.giscus-frame');
   });
+
+  it('should have a functioning go templates playground', async () => {
+    // Navigate to the URL for a blog post with all assets.
+    await page.evaluate(
+      () => (window.location.pathname = '/exp/go-templates/')
+    );
+    // Wait for rendered text area to appear.
+    await page.waitForSelector('textarea#renderTextArea');
+    // Expect that the default inputs are present.
+    expect(
+      await page.evaluate(
+        () => document.getElementById('templateTextArea').value
+      )
+    ).toBe('Hello, {{ .Name }}!');
+    expect(
+      await page.evaluate(() => document.getElementById('dataTextArea').value)
+    ).toBe('Name: World');
+    // Expect that the default output is rendered.
+    expect(
+      await page.evaluate(() => document.getElementById('renderTextArea').value)
+    ).toBe('Hello, World!');
+  });
 });
