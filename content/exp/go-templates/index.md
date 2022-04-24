@@ -3,6 +3,7 @@ title = "Go Templates Playground"
 type = "exp"
 
 disableSocial = true
+bugReports = true
 wasmEnabled = true
 jsx = [
     "js/exp/go-templates.tpl.jsx"
