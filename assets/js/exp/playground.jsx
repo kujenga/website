@@ -47,7 +47,7 @@ class Playground extends Component {
     if (this.initialized) {
       return;
     }
-    // Getch the WASM file and stream it into the page. Once that is complete, we
+    // Fetch the WASM file and stream it into the page. Once that is complete, we
     // render the Playground application.
     // https://golangbot.com/webassembly-using-go/
     const go = new Go();

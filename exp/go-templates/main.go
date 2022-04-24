@@ -31,7 +31,7 @@ func main() {
 
 		data, err := decode(inputData, dataFmt)
 		if err != nil {
-			return fmt.Sprintf("Error decoding from '%s': %v", dataFmt, err)
+			return fmt.Sprintf("error decoding from '%s': %v", dataFmt, err)
 		}
 
 		var b strings.Builder

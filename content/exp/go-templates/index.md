@@ -13,8 +13,8 @@ images = [
 ]
 +++
 
-Playground for experimenting with Go template syntax, built on WASM. See
-[text/template][textPkg] and [html/template][htmlPkg] for documentation.
+Live parser for Go template syntax, built on WASM. See [text/template][textPkg]
+and [html/template][htmlPkg] for documentation.
 
 <!-- Links -->
 [textPkg]: https://pkg.go.dev/text/template
