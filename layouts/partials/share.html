@@ -1,3 +1,4 @@
+<!-- Events captured here for Fathom: https://usefathom.com/docs/features/events -->
 <div class="col col-sm-1 ml-auto">
   <!-- Jump to the comments section -->
   <a href="#comments" aria-label="Go to comments">
@@ -10,6 +11,8 @@
     href="https://twitter.com/intent/tweet?text={{ (print .Title ` by ` .Site.Author.twitter)| urlquery }}&url={{ .Permalink | urlquery }}"
     aria-label="Twitter share"
     target="_blank"
+    rel="noreferrer"
+    onclick="fathom.trackGoal('6OSCOH3M', 0);"
   >
     <i class="fa fa-twitter" aria-hidden="true"></i>
   </a>
@@ -20,6 +23,8 @@
     href="https://www.linkedin.com/sharing/share-offsite/?url={{ .Permalink | urlquery }}"
     aria-label="LinkedIn share"
     target="_blank"
+    rel="noreferrer"
+    onclick="fathom.trackGoal('2896ICAQ', 0);"
   >
     <i class="fa fa-linkedin" aria-hidden="true"></i>
   </a>
@@ -29,6 +34,7 @@
   <a
     href="mailto:?subject={{ (print .Title `by Aaron Taylor`) | urlquery }}&body={{ .Permalink | urlquery }}"
     aria-label="email share"
+    onclick="fathom.trackGoal('ZUIHHJYK', 0);"
   >
     <i class="fa fa-envelope-o" aria-hidden="true"></i>
   </a>

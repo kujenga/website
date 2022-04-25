@@ -3,5 +3,5 @@ script-src 'self' 'unsafe-eval' 'unsafe-inline' https://code.jquery.com https://
 style-src 'self' 'unsafe-inline' https://stackpath.bootstrapcdn.com https://cdn.jsdelivr.net https://fonts.googleapis.com;
 img-src 'self' data: https://f.ataylor.io;
 font-src data: https://stackpath.bootstrapcdn.com https://fonts.gstatic.com https://cdn.jsdelivr.net;
-connect-src 'self' https://raw.githubusercontent.com;
+connect-src 'self' https://f.ataylor.io https://raw.githubusercontent.com;
 frame-src https://giscus.app;

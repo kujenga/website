@@ -5,6 +5,8 @@
 Built with [Hugo][hugo] and deployed on [Google App Engine][gae] via
 [CircleCI][ci]. See it live at [ataylor.io](https://ataylor.io).
 
+It uses [Fathom][fathomReferral] for privacy-first website analytics.
+
 Directories are laid out as follows:
 - `app` contains source code for the App Engine application.
   - `app/site/public` is where static assets from the Hugo site are built for
@@ -65,6 +67,7 @@ npm run test:e2e
 [hugo]: https://gohugo.io
 [gae]: https://cloud.google.com/appengine
 [ci]: https://circleci.com/gh/kujenga/website
+[fathomReferral]: https://usefathom.com/ref/HWQXER
 [hugoPipes]: https://gohugo.io/hugo-pipes/introduction/
 [hugoContent]: https://gohugo.io/content-management/organization/
 [hugoData]: https://gohugo.io/templates/data-templates/
