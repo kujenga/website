@@ -10,6 +10,7 @@
     href="https://twitter.com/intent/tweet?text={{ (print .Title ` by ` .Site.Author.twitter)| urlquery }}&url={{ .Permalink | urlquery }}"
     aria-label="Twitter share"
     target="_blank"
+    rel="noreferrer"
   >
     <i class="fa fa-twitter" aria-hidden="true"></i>
   </a>
@@ -20,6 +21,7 @@
     href="https://www.linkedin.com/sharing/share-offsite/?url={{ .Permalink | urlquery }}"
     aria-label="LinkedIn share"
     target="_blank"
+    rel="noreferrer"
   >
     <i class="fa fa-linkedin" aria-hidden="true"></i>
   </a>
