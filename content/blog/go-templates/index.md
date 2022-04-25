@@ -1,6 +1,6 @@
 +++
 date = "2022-04-24T10:23:25-04:00"
-title = "Building a Go template language playground with Wasm"
+title = "Building a Go template playground with Wasm"
 description = """Creating an interactive live parser to experiment with the Go
 templating language, built using WebAssembly and running the Go standard library
 directly in your browser."""
@@ -11,26 +11,27 @@ images = [
 toc = true
 +++
 
-This post walks through how I created this [web page][playground], which pulls
-Go template rendering capabilities into the browser with [WebAssembly][wasm]
-(Wasm), placing them within a dynamic app built with [Preact][preact]. I was
-motivated to this after recently seeing the utility of other similar
-environments out there for different programming languages[^others], but to my
-knowledge nothing exists of this nature for Go, despite relatively wide adoption
-of the Go template language for projects like [Helm][helm] and [Hugo][hugo].
-Additionally, I've been interested for a while in incorporating Wasm into an
-actual deployed project, and this seemed like a great opportunity for it, as
-well as chance to play with alternate approaches to help bring what are
-traditionally backend languages to the browser.
+This post walks through how I created the [Go Templates Playground][playground].
+It pulls Go template rendering capabilities directly into your browser with
+[WebAssembly][wasm] (Wasm). I was motivated to this after recently seeing the
+utility of other similar environments out there for different programming
+languages[^others]. The Go template language has relatively wide adoption in
+projects like [Helm][helm] and [Hugo][hugo], which this tool can be used to
+prototype and experiment for. I've also been interested in incorporating Wasm
+into a deployed project, and this was a great opportunity for it, as well as
+chance to play with alternate approaches to help bring what are traditionally
+backend languages to the browser. It is built into my [personal site][ghRepo] to
+simplify development and deployment.
 
 **If you just want to jump over to the playground, check it out
 [here][playground].**
 
 As context for the approach I'll be walking through here, I decided to make the
 Go side of this application as lightweight as possible, pairing it with a
-single-page Javascript application build with [Preact][preact] to handle the
+single-page Javascript application built with [Preact][preact] that handles the
 rendering layer, rather than trying to make rendering happen from within Go as
-well. I'll mention some alternatives near the end of the post.
+well. The result is a fully static page with no server-side logic. I'll mention
+some alternatives near the end of the post.
 
 ## Turning Go into Wasm
 
@@ -49,7 +50,8 @@ walking through the fundamental steps needed to get things working.
 In the below snippet we define a variable called `render` which is a function
 wrapped with the [`syscall/js.FuncOf`][goSyscallJSFuncOf] function. In the last
 line of the snippet, that variable is then set on the `global` object, making it
-available globally on the page that this code is loaded into.
+available globally on the page that this code is loaded into. You can click
+through at the bottom of the snippet to see the full file.
 
 The function itself is relatively straightforward, performing the following
 steps:
@@ -192,7 +194,10 @@ https://github.com/Masterminds/sprig functionality that is provided in Helm and 
 
 If you made it this far I hope that you enjoyed this post, and that you will get
 some utility out of the templating playground itself! If you have any feedback
-or questions, feel free to leave a comment or reach out!
+or questions, feel free to leave a comment or reach out. If you want to
+experiment with the code locally, check out the [README][repoReadme] for the
+repository to install, and you can play around with the files above.
+Contributions or suggestions would be very welcome!
 
 <!-- Citations -->
 [^others]: One inspiration for this project was
@@ -213,6 +218,7 @@ or questions, feel free to leave a comment or reach out!
 <!-- Links -->
 [wasm]: https://webassembly.org/
 [playground]: /exp/go-templates/
+[ghRepo]: https://github.com/kujenga/website
 [preact]: https://preactjs.com/
 [helm]: https://helm.sh/
 [hugo]: https://gohugo.io/
@@ -224,3 +230,4 @@ or questions, feel free to leave a comment or reach out!
 [wasmInstantiateStreaming]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WebAssembly/instantiateStreaming
 [gopherjs]: https://github.com/gopherjs/gopherjs
 [gopherJSJquery]: https://github.com/gopherjs/jquery
+[repoReadme]: https://github.com/kujenga/website#development
