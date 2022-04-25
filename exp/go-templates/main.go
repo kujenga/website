@@ -10,6 +10,13 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
+// NOTE: This file currently has some minor incompatibilities with Go 1.18 due
+// to the introduction of the `any` type into syscall/js. Because it is
+// deployed to a Google App Engine environment which only supports 1.16 at
+// present, I have not upgradeded to match the changed interface. When Go 1.18
+// is available on App Engine I will update this accordingly:
+// https://cloud.google.com/appengine/docs/standard/go/release-notes
+
 func main() {
 	// Render provides the ability to take in a template string and input
 	// data and render the corresponding output.
