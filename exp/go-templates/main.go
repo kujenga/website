@@ -7,6 +7,7 @@ import (
 	"strings"
 	"syscall/js"
 
+	"github.com/Masterminds/sprig"
 	"gopkg.in/yaml.v3"
 )
 
@@ -22,7 +23,7 @@ func main() {
 	// data and render the corresponding output.
 	render := js.FuncOf(func(this js.Value, args []js.Value) interface{} {
 		if len(args) < 2 {
-			return "Must provide at least two arguments: inputTmpl, inputData, [dataFormat]"
+			return "Must provide at least two arguments: inputTmpl, inputData, [dataFormat], [enableSprig]"
 		}
 		inputTmpl := args[0].String()
 		inputData := args[1].String()
@@ -30,8 +31,16 @@ func main() {
 		if len(args) >= 3 {
 			dataFmt = args[2].String()
 		}
+		enableSprig := false
+		if len(args) >= 4 {
+			enableSprig = args[3].Bool()
+		}
 
-		tmpl, err := template.New("").Parse(inputTmpl)
+		tmpl := template.New("base")
+		if enableSprig {
+			tmpl = tmpl.Funcs(sprig.FuncMap())
+		}
+		tmpl, err := tmpl.Parse(inputTmpl)
 		if err != nil {
 			return fmt.Sprintf("error parsing template: %v", err)
 		}

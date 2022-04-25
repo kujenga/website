@@ -19,3 +19,7 @@ $(TARGET)/go-templates.wasm: $(wildcard *.go **/*.go)
 .PHONY: dev
 dev:
 	$(MAKE) ARGS=--watch
+
+.PHONY: clean
+clean:
+	rm -rf $(TARGET)
