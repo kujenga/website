@@ -13,9 +13,10 @@ images = [
 ]
 +++
 
-Live parser for Go template syntax, built on WASM. See [text/template][textPkg]
-and [html/template][htmlPkg] for documentation.
+Live parser for Go template syntax, built on [WebAssembly][wasm]. See
+[text/template][textPkg] and [html/template][htmlPkg] for documentation.
 
 <!-- Links -->
+[wasm]: https://webassembly.org/
 [textPkg]: https://pkg.go.dev/text/template
 [htmlPkg]: https://pkg.go.dev/html/template
