@@ -11,6 +11,10 @@ export HUGO_CONTENT_SECURITY_POLICY
 
 set -x
 
+# Make experimental assets
+make -C exp/go-templates
+
+# Start hugo server
 hugo server --watch \
     --buildDrafts \
     "$@"
