@@ -1,27 +1,27 @@
 +++
 date = "2022-04-24T10:23:25-04:00"
-title = "Building a Go template language playground with WASM"
-description = """Creating an interactive webpage to experiment with the Go
-templating language, build using WASM to run the Go standard library directly
-in your browser."""
+title = "Building a Go template language playground with Wasm"
+description = """Creating an interactive live parser to experiment with the Go
+templating language, built using WebAssembly and running the Go standard library
+directly in your browser."""
 categories = ['homepage']
-tags = ['Go', 'WASM', 'Templates']
+tags = ['Go', 'Wasm', 'Templates']
 images = [
 ]
 toc = true
 +++
 
-This post walks through how I created this webpage, which pulls Go template
-rendering capabilities into the browser with WebAssembly (WASM), placing them
-within a dynamic app built with Preact. I was motivated to this after recently
-seeing the utility of other similar environments out there for different
-programming languages[^others], but to my knowledge nothing exists of this
-nature for Go, despite relatively wide adoption of the Go template language for
-projects like [Helm][helm] and [Hugo][hugo]. Additionally, I've been interested
-for a while in incorporating WASM into an actual deployed project, and this
-seemed like a great opportunity for it, as well as chance to play with
-alternate approaches to help bring what are traditionally backend languages to
-the browser.
+This post walks through how I created this [web page][playground], which pulls
+Go template rendering capabilities into the browser with [WebAssembly][wasm]
+(Wasm), placing them within a dynamic app built with [Preact][preact]. I was
+motivated to this after recently seeing the utility of other similar
+environments out there for different programming languages[^others], but to my
+knowledge nothing exists of this nature for Go, despite relatively wide adoption
+of the Go template language for projects like [Helm][helm] and [Hugo][hugo].
+Additionally, I've been interested for a while in incorporating Wasm into an
+actual deployed project, and this seemed like a great opportunity for it, as
+well as chance to play with alternate approaches to help bring what are
+traditionally backend languages to the browser.
 
 **If you just want to jump over to the playground, check it out
 [here][playground].**
@@ -32,31 +32,32 @@ single-page Javascript application build with [Preact][preact] to handle the
 rendering layer, rather than trying to make rendering happen from within Go as
 well. I'll mention some alternatives near the end of the post.
 
-## Turning Go into WASM
+## Turning Go into Wasm
 
-As a first step, we put in place a package for the functionality we want to
-expose through WASM. I did this as a separate Go module within the same
-repository, under [exp/go-templates][ghExpTemplates]. Within that file, we
+As a first step, we setup a Go module for the functionality we want to expose
+through Wasm. I did this as a separate Go module within the same repository as
+the site itself, under [exp/go-templates][ghExpTemplates]. Within that file, we
 utilize the standard library (but experimental) [syscall/js][goSyscallJS]
 package to expose basic functionality that will compile a template and render it
-against the input data.
+with the input data.
 
-As the WASM support provided by Go is somewhat experimental and not all that
-well documented, I found this webpage
-[golangbot.com/webassembly-using-go/][golangbotWASM] to be a helpful guide,
+As the Wasm support provided by Go is somewhat experimental and does not seem
+not all that well documented, I found this webpage
+[golangbot.com/webassembly-using-go/][golangbotWasm] to be a helpful guide,
 walking through the fundamental steps needed to get things working.
 
 In the below snippet we define a variable called `render` which is a function
-wrapped with the [`syscall/js.FuncOf`][goSyscallJSFuncOf] function. That
-variable is then set on the global context, making it available to the page that
-this code is loaded into.
+wrapped with the [`syscall/js.FuncOf`][goSyscallJSFuncOf] function. In the last
+line of the snippet, that variable is then set on the `global` object, making it
+available globally on the page that this code is loaded into.
 
-The function itself is relatively straightforward:
+The function itself is relatively straightforward, performing the following
+steps:
 1. Parse the template
 1. Decode input data
 1. Execute the template
 
-Error handling is a bit "fast and loose" here, I opted to keep things simple by
+Error handling is a bit "fast and loose" here. I opted to keep things simple by
 returning a single string that will be rendered into the output in order to
 display error messages directly to the user. That could be split out for a more
 customized UI by returning a structured object for the result.
@@ -64,14 +65,14 @@ customized UI by returning a structured object for the result.
 {{< emgithub "https://github.com/kujenga/website/blob/e1a4754c5964d0a3aa5e33236628f0d829d6508f/exp/go-templates/main.go#L16-L44" >}}
 
 With that code in place, we need to build it into the `.wasm` file that will be
-executed within the browser environment. There are two pieces to that puzzle.
-First, the WASM produced by Go is not be directly interpretable by the browser.
-There is an intermediate layer in a file called `wasm_exec.js` which provides
-several utilities for initialization. We'll see how that's used in a moment, but
-for now we are just copying it into our `TARGET` directory for inclusion with
-the site.
+executed within the browser environment. There are two pieces to that puzzle,
+captured in these Makefile rules. First, the Wasm produced by Go is not be
+directly interpretable by the browser. There is an intermediate layer in a file
+called `wasm_exec.js` which provides several utilities for initialization. We'll
+see how that's used in a moment, but for now we are just copying it into our
+`TARGET` directory for inclusion with the site.
 
-The next section here is for compiling the WASM itself. That is achieved with
+The next section here is for compiling the Wasm itself. That is achieved with
 the standard `go build` command, merely by adding in `GOOS=js GOARCH=wasm` as
 environment variables. The `$@` Makefile syntax reverences the name of the
 current rule, producing a file called `go-templates.wasm` for us. The latter
@@ -80,18 +81,18 @@ this rule should re-run whenever those files change.
 
 {{< emgithub "https://github.com/kujenga/website/blob/e1a4754c5964d0a3aa5e33236628f0d829d6508f/exp/go-templates/Makefile#L9-L17" >}}
 
-## Bringing WASM into the UI
+## Bringing Wasm into the UI
 
 Now that we have our `wasm_exec.js` and `.wasm` files in hand, we need to pull
-them into our browser application. We'll do this in both places using
-[Hugo][hugo] templating logic, upon which this site is built. In the below
-snippet, we can actually pull the reference to the WASM file into a Go template
-variable within a comment (so that JS syntax highlighting/linting is
-undisturbed) using [Hugo Pipes][hugoPipes], and then pass that link into our
-[Preact][preact] component for use at initialization time. By using Hugo Pipes,
-we can add a hash to the filename, allowing for longer duration caching in the
-browser, which is particularly useful here since these the WASM files are
-somewhat sizable.
+them into our webpage. We'll do this for both files using [Hugo][hugo]
+templating logic, upon which this site is built. In the below snippet, we can
+actually pull the reference to the Wasm file into a Go template variable within
+a comment (so that JS syntax highlighting/linting is undisturbed) using [Hugo
+Pipes][hugoPipes], and then pass that link into our [Preact][preact] component
+for use at initialization time. By using Hugo Pipes, we can add a hash to the
+filename, allowing for longer duration caching in the browser, which is
+particularly useful here since these the Wasm files are somewhat sizable
+(multiple MBs).
 
 {{< emgithub "https://github.com/kujenga/website/blob/e1a4754c5964d0a3aa5e33236628f0d829d6508f/assets/js/exp/go-templates.tpl.jsx#L10-L17" >}}
 
@@ -101,25 +102,25 @@ within a script tag, SRI hash and all.
 
 {{< emgithub "https://github.com/kujenga/website/blob/e1a4754c5964d0a3aa5e33236628f0d829d6508f/layouts/partials/footer.html#L35-L40" >}}
 
-With those two pieces in place, we are now ready to initialize the WASM-based
+With those two pieces in place, we are now ready to initialize the Wasm-based
 functionality. The following Javascript function is called from within our
-main [Preact][[preact] class for rendering the application, which is where the state
-management here comes in.
+main [Preact][preact] class for rendering the application, which is why there
+are various function calls for updating application state.
 
-There are two pieces of the WebAssembly puzzle here that are worth noting. First
-is the call to `new Go()`, which activates the logic we brought in
-`wasm_exec.js` earlier. Second is the call to
-[`WebAssembly.instantiateStreaming`][wasmInstantiateStreaming], which uses the
-path to the WASM file that we got earlier via Hugo Pipes, and starts pulling in
-that WASM file and instantiating it as it is streaming in from the server. This
-is generally the most efficient way to pull in WASM code. We pass in
-`go.importObject` as the `importObject` parameter to this function, which maps
-the WASM assembly into our running application in a useful way.
+There are two pieces of the WebAssembly puzzle here that are worth taking note
+of. First is the call to `new Go()`, which activates the logic we brought in
+with `wasm_exec.js` earlier. Second is the call to
+[`WebAssembly.instantiateStreaming`][wasmInstantiateStreaming], which takes in a
+stream from fetching the Wasm file that we got earlier via Hugo Pipes, and
+instantiating it, as it is streaming in from the server. This is generally the
+most efficient way to pull in Wasm code. We pass in `go.importObject` as the
+`importObject` parameter to this function, which maps the Wasm assembly into our
+running application in a useful way.
 
-Once this is complete, we either mark it as successful, which causes the
-application to perform it's first template rendering, or we mark the error
-accordingly and display it to the user. The error display is useful here in
-particular because WASM is not well-supported on older browser environments.
+Once this is complete, we either mark it as successful in the promise, which
+causes the application to perform it's first template rendering, or we mark the
+error accordingly and display it to the user. The error display is useful here
+in particular because Wasm is not well-supported on older browser environments.
 
 {{< emgithub "https://github.com/kujenga/website/blob/e1a4754c5964d0a3aa5e33236628f0d829d6508f/assets/js/exp/playground.jsx#L46-L71" >}}
 
@@ -129,19 +130,19 @@ but gets the job done. You can see the file in it's entirety here:
 
 [assets/js/exp/playground.jsx](https://github.com/kujenga/website/blob/e1a4754c5964d0a3aa5e33236628f0d829d6508f/assets/js/exp/playground.jsx)
 
-One piece of interest is where the WASM code is invoked here. The `newState`
-method is a helper to produce the next version of the Preact "state" that is
-used to render the application in it's current form. This method is called at
+One interesting piece of that code is where the Wasm code is invoked. The
+`newState` method shown here is a helper to produce the next version of the
+Preact "state" that is used to render the application. This method is called at
 various locations to add the newly rendered template state, using the
-`ExpRenderGoTemplate` global function exposed from the Go WASM, to the overall
+`ExpRenderGoTemplate` global function exposed from the Go Wasm, to the overall
 Preact state.
 
 {{< emgithub "https://github.com/kujenga/website/blob/e1a4754c5964d0a3aa5e33236628f0d829d6508f/assets/js/exp/playground.jsx#L27-L44" >}}
 
 To tie things off, I added a basic end to end test to ensure that the basic
 functionality keeps working moving forward. These tests are written in puppeteer
-and because I already had them up and running for other areas of the website, it
-was as simple as adding the test case below.
+and because I already had the puppeteer logic up and running for other areas of
+the website, it was as simple as adding the test case we see here.
 
 {{< emgithub "https://github.com/kujenga/website/blob/e1a4754c5964d0a3aa5e33236628f0d829d6508f/e2e/site.test.js#L46-L66" >}}
 
@@ -149,25 +150,33 @@ was as simple as adding the test case below.
 
 It is definitely worth noting that there are other technologies out there that
 could be used for this sort of thing, most notably [GopherJS][gopherjs]. Rather
-than compiling to WASM, GopherJS takes the approach of compiling into Javascript
+than compiling to Wasm, GopherJS takes the approach of compiling into Javascript
 code that can then run directly in the browser. This results in a standard
 Javascript file that you can use like any other, avoiding the complexities of
-bundle size. It also results in a smaller file that the browser needs to load,
-as the entire Go runtime doesn't need to be brought along. For these reasons,
-it's a solid option and may be the better choice here. However, WASM is a really
-exciting technology on the horizon[^noNeedForDocker], so I was biased towards it
-going in, which swayed me in that direction.
+instantiating WebAssembly and browser compatibility concerns. It also results in
+a smaller file that the browser needs to load, as the entire Go runtime doesn't
+need to be brought along. For these reasons, it's a solid option and all things
+considered, may be the better choice here. However, Wasm is a really exciting
+technology on the very near horizon[^noNeedForDocker], so I was biased towards
+it going in.
 
-One thorn in the side of this project was that I did need to modify my
-`Content-Security-Policy` to get it to load in all browsers. I use Firefox as my
-daily driver, where this all works just fine, but in order for it to work in all
-of Safari, Chrome, and Edge I needed to add `unsafe-eval` to the `script-src`
-directive, allowing the WebAssembly to be brought in directly. I soon hope to
-swap this out for `wasm-unsafe-eval` which is a recent replacement[^cspWASM].
-Further beyond that however, WASM needs a mechanism to be loaded in that is not
-termed "unsafe".
+If you are interested in GopherJS, one opportunity to be aware of is that you
+can pair GopherJS itself with libraries like [gopherjs/jquery][gopherJSJquery]
+that control the UI rendering layer directly, allowing you to put as much of
+your rendering logic into the Go code as you might like. I experimented with
+these options but ultimately decided that it would be more efficient and seem to
+have a better end result to build the rendering layer directly with web-oriented
+technologies, which is how I landed on the Preact-based approach.
 
-vim editor settings needed tweaking to work with the file:
+One thorn in the side of this project was that I did need to modify my site's
+`Content-Security-Policy` to get the WebAssembly to load in all browsers. I use
+Firefox as my daily driver, where this all works just fine, but in order for it
+to work in all of Safari, Chrome, and Edge I needed to add `unsafe-eval` to the
+`script-src` directive, allowing the WebAssembly to be brought in directly. I
+soon hope to swap this out for `wasm-unsafe-eval` which is a recent
+replacement[^cspWasmIssue]. Going beyond that however, Wasm needs a mechanism to be
+loaded in that is not termed "unsafe"[^wasmCSPProposal].
+
 Another note for someone wading into these waters is that your editor by default
 may not have its tooling setup to work with the `GOOS=js GOARCH=wasm` targets,
 and is likely to have some errors in trying to perform normal operations on
@@ -181,25 +190,37 @@ Future work on this tool could extended the templating functions provided by the
 standard library with additional ones, such as the
 https://github.com/Masterminds/sprig functionality that is provided in Helm and Hugo.
 
+If you made it this far I hope that you enjoyed this post, and that you will get
+some utility out of the templating playground itself! If you have any feedback
+or questions, feel free to leave a comment or reach out!
+
 <!-- Citations -->
 [^others]: One inspiration for this project was
   http://jinja.quantprogramming.com/ which provides similar functionality for
   the [jinja](https://github.com/pallets/jinja/) templating language. I used
   their overall visual UI layout as a starting point for this project.
 [^noNeedForDocker]: There is a rather fun tweet from one of the creators
-  of Docker: "If WASM+WASI existed in 2008, we wouldn't have needed to created
+  of Docker: "If Wasm+WASI existed in 2008, we wouldn't have needed to created
   Docker": https://twitter.com/solomonstre/status/1111004913222324225
-[^cspWASM]: More details on this are captured here:
+[^cspWasmIssue]: More details on this are captured here:
   https://github.com/kujenga/website/issues/60
+[^wasmCSPProposal]: This GitHub repository seems to be the most recent proposal
+  along these lines:
+  https://github.com/WebAssembly/content-security-policy/blob/main/proposals/CSP.md
+  with discussion happening in the issues:
+  https://github.com/WebAssembly/content-security-policy/issues?q=is%3Aissue+sort%3Aupdated-desc
 
 <!-- Links -->
+[wasm]: https://webassembly.org/
+[playground]: /exp/go-templates/
+[preact]: https://preactjs.com/
 [helm]: https://helm.sh/
 [hugo]: https://gohugo.io/
-[playground]: /exp/go-templates/
 [ghExpTemplates]: https://github.com/kujenga/website/tree/main/exp/go-templates
 [goSyscallJS]: https://pkg.go.dev/syscall/js
-[golangbotWASM]: https://golangbot.com/webassembly-using-go/
+[golangbotWasm]: https://golangbot.com/webassembly-using-go/
 [goSyscallJSFuncOf]: https://pkg.go.dev/syscall/js#FuncOf
 [hugoPipes]: https://gohugo.io/hugo-pipes/introduction/#find-resources-in-assets
 [wasmInstantiateStreaming]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WebAssembly/instantiateStreaming
 [gopherjs]: https://github.com/gopherjs/gopherjs
+[gopherJSJquery]: https://github.com/gopherjs/jquery
