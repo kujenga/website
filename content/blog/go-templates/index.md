@@ -59,12 +59,17 @@ steps:
 1. Decode input data
 1. Execute the template
 
+For executing the template, we also optionally pull in the [sprig][sprigSite]
+template function library, which is commonly used in projects that make use of
+Go template to add a large suite of functions for common tasks. It is optional
+to provide a toggle for whether or not it should be disabled/enabled.
+
 Error handling is a bit "fast and loose" here. I opted to keep things simple by
 returning a single string that will be rendered into the output in order to
 display error messages directly to the user. That could be split out for a more
 customized UI by returning a structured object for the result.
 
-{{< emgithub "https://github.com/kujenga/website/blob/e1a4754c5964d0a3aa5e33236628f0d829d6508f/exp/go-templates/main.go#L16-L44" >}}
+{{< emgithub "https://github.com/kujenga/website/blob/66789e78b4ab7bf3a9245e88fd6a272db1653330/exp/go-templates/main.go#L24-L60" >}}
 
 With that code in place, we need to build it into the `.wasm` file that will be
 executed within the browser environment. There are two pieces to that puzzle,
@@ -81,7 +86,7 @@ current rule, producing a file called `go-templates.wasm` for us. The latter
 portion of that rule which specifies `$(wildcard *.go **/*.go)` indicates that
 this rule should re-run whenever those files change.
 
-{{< emgithub "https://github.com/kujenga/website/blob/e1a4754c5964d0a3aa5e33236628f0d829d6508f/exp/go-templates/Makefile#L9-L17" >}}
+{{< emgithub "https://github.com/kujenga/website/blob/66789e78b4ab7bf3a9245e88fd6a272db1653330/exp/go-templates/Makefile#L9-L17" >}}
 
 ## Bringing Wasm into the UI
 
@@ -96,13 +101,13 @@ filename, allowing for longer duration caching in the browser, which is
 particularly useful here since these the Wasm files are somewhat sizable
 (multiple MBs).
 
-{{< emgithub "https://github.com/kujenga/website/blob/e1a4754c5964d0a3aa5e33236628f0d829d6508f/assets/js/exp/go-templates.tpl.jsx#L10-L17" >}}
+{{< emgithub "https://github.com/kujenga/website/blob/66789e78b4ab7bf3a9245e88fd6a272db1653330/assets/js/exp/go-templates.tpl.jsx#L10-L17" >}}
 
 We then pull in Go's `wasm_exec.js` wrapper in similar fashion, using Hugo
 Pipes, but in this case as it's a standard `.js` file we can put it directly
 within a script tag, SRI hash and all.
 
-{{< emgithub "https://github.com/kujenga/website/blob/e1a4754c5964d0a3aa5e33236628f0d829d6508f/layouts/partials/footer.html#L35-L40" >}}
+{{< emgithub "https://github.com/kujenga/website/blob/66789e78b4ab7bf3a9245e88fd6a272db1653330/layouts/partials/footer.html#L35-L40" >}}
 
 With those two pieces in place, we are now ready to initialize the Wasm-based
 functionality. The following Javascript function is called from within our
@@ -124,13 +129,13 @@ causes the application to perform it's first template rendering, or we mark the
 error accordingly and display it to the user. The error display is useful here
 in particular because Wasm is not well-supported on older browser environments.
 
-{{< emgithub "https://github.com/kujenga/website/blob/e1a4754c5964d0a3aa5e33236628f0d829d6508f/assets/js/exp/playground.jsx#L46-L71" >}}
+{{< emgithub "https://github.com/kujenga/website/blob/66789e78b4ab7bf3a9245e88fd6a272db1653330/assets/js/exp/playground.jsx#L57-L82" >}}
 
 The rest of the app is a relatively straightforward Preact (React-style)
 application. It is somewhat monolithic as it is a relatively simple use case,
 but gets the job done. You can see the file in it's entirety here:
 
-[assets/js/exp/playground.jsx](https://github.com/kujenga/website/blob/e1a4754c5964d0a3aa5e33236628f0d829d6508f/assets/js/exp/playground.jsx)
+[assets/js/exp/playground.jsx](https://github.com/kujenga/website/blob/66789e78b4ab7bf3a9245e88fd6a272db1653330/assets/js/exp/playground.jsx)
 
 One interesting piece of that code is where the Wasm code is invoked. The
 `newState` method shown here is a helper to produce the next version of the
@@ -139,14 +144,14 @@ various locations to add the newly rendered template state, using the
 `ExpRenderGoTemplate` global function exposed from the Go Wasm, to the overall
 Preact state.
 
-{{< emgithub "https://github.com/kujenga/website/blob/e1a4754c5964d0a3aa5e33236628f0d829d6508f/assets/js/exp/playground.jsx#L27-L44" >}}
+{{< emgithub "https://github.com/kujenga/website/blob/66789e78b4ab7bf3a9245e88fd6a272db1653330/assets/js/exp/playground.jsx#L36-L55" >}}
 
 To tie things off, I added a basic end to end test to ensure that the basic
 functionality keeps working moving forward. These tests are written in puppeteer
 and because I already had the puppeteer logic up and running for other areas of
 the website, it was as simple as adding the test case we see here.
 
-{{< emgithub "https://github.com/kujenga/website/blob/e1a4754c5964d0a3aa5e33236628f0d829d6508f/e2e/site.test.js#L46-L66" >}}
+{{< emgithub "https://github.com/kujenga/website/blob/66789e78b4ab7bf3a9245e88fd6a272db1653330/e2e/site.test.js#L46-L66" >}}
 
 ## Odds and ends
 
@@ -186,11 +191,7 @@ files referencing `syscall/js`. To get around that, you can hopefully do some
 sort of directory-specific customization, which is what I did here for my setup
 of Vim with `gopls`.
 
-{{< emgithub "https://github.com/kujenga/website/blob/e1a4754c5964d0a3aa5e33236628f0d829d6508f/exp/go-templates/.vim/coc-settings.json#L3-L6" >}}
-
-Future work on this tool could extended the templating functions provided by the
-standard library with additional ones, such as the
-https://github.com/Masterminds/sprig functionality that is provided in Helm and Hugo.
+{{< emgithub "https://github.com/kujenga/website/blob/66789e78b4ab7bf3a9245e88fd6a272db1653330/exp/go-templates/.vim/coc-settings.json#L3-L6" >}}
 
 If you made it this far I hope that you enjoyed this post, and that you will get
 some utility out of the templating playground itself! If you have any feedback
@@ -226,6 +227,7 @@ Contributions or suggestions would be very welcome!
 [goSyscallJS]: https://pkg.go.dev/syscall/js
 [golangbotWasm]: https://golangbot.com/webassembly-using-go/
 [goSyscallJSFuncOf]: https://pkg.go.dev/syscall/js#FuncOf
+[sprigSite]: https://github.com/Masterminds/sprig
 [hugoPipes]: https://gohugo.io/hugo-pipes/introduction/#find-resources-in-assets
 [wasmInstantiateStreaming]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WebAssembly/instantiateStreaming
 [gopherjs]: https://github.com/gopherjs/gopherjs
