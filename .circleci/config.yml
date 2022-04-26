@@ -52,20 +52,14 @@ jobs:
       # Install
       - restore_cache:
           keys:
-            - v2-go-{{ checksum "app/go.mod" }}
-            - v2-go-
+            - v3-go-{{ arch }}-{{ checksum "app/go.sum" }}
+            - v3-go-{{ arch }}
       - run:
-          # NOTE: We do not install this tooling now, as compiling the web app
-          # requires the embedded static assets to be present.
+          # NOTE: We do not install now, as compiling the web app requires the
+          # embedded static assets to be built and present.
           name: Download Go app dependencies
           working_directory: 'app'
           command: go mod download -x
-      - save_cache:
-          key: v2-go-{{ checksum "app/go.mod" }}
-          paths:
-            # Observed from `go env` output, above
-            - ~/go
-            - ~/.cache
 
       # Site build
       - run:
@@ -91,6 +85,14 @@ jobs:
           name: Upload coverage to Codecov
           command: |
             bash <(curl -s https://codecov.io/bash) -s coverage
+
+        # Cache is saved after test execution to cache compliation artifacts.
+      - save_cache:
+          key: v3-go-{{ arch }}-{{ checksum "app/go.sum" }}
+          paths:
+            # Observed from `go env` output, above
+            - ~/go
+            - ~/.cache
 
       - hash_build
       - store_artifacts:
@@ -157,9 +159,7 @@ jobs:
       - checkout
       - attach_workspace:
           at: .
-      - run:
-          name: Install Node-based tooling
-          command: npm install
+      - node/install-packages
       - run:
           name: Run E2E tests
           command: npm run test:e2e

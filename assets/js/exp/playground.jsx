@@ -11,6 +11,7 @@ const Defaults = {
   template: 'Hello, {{ .Name }}!',
   data: 'Name: World',
   dataFormat: Format.YAML,
+  enableSprig: true,
   autoRender: true,
 };
 
@@ -33,14 +34,24 @@ class Playground extends Component {
    * @returns {object} - Complete new state value to pass to setState.
    */
   newState(prev, s, forceRender = false) {
-    if (global.ExpRenderGoTemplate && (forceRender || this.state.autoRender)) {
-      s.rendered = ExpRenderGoTemplate(
-        s.template || prev.template,
-        s.data || prev.data,
-        s.dataFormat || prev.dataFormat
-      );
+    const next = Object.assign(prev, s);
+    if (forceRender || this.state.autoRender) {
+      try {
+        next.rendered = ExpRenderGoTemplate(
+          next.template,
+          next.data,
+          next.dataFormat,
+          next.enableSprig
+        );
+      } catch (e) {
+        if (e instanceof ReferenceError) {
+          // ExpRenderGoTemplate not yet defined.
+        } else {
+          console.error(e);
+        }
+      }
     }
-    return Object.assign(prev, s);
+    return next;
   }
 
   initialize(props) {
@@ -62,7 +73,7 @@ class Playground extends Component {
         this.setState((prev) => this.newState(prev, { loading: false }));
       })
       .catch((e) => {
-        console.error('error:', e);
+        console.error('error initializing Wasm:', e);
         this.setState((prev) =>
           this.newState(prev, { loading: false, error: e })
         );
@@ -92,6 +103,15 @@ class Playground extends Component {
         autoRender: !this.state.autoRender,
       })
     );
+  };
+
+  toggleEnableSprig = () => {
+    this.setState((prev) => {
+      console.log('toggleEnableSprig:', prev);
+      return this.newState(prev, {
+        enableSprig: !this.state.enableSprig,
+      });
+    });
   };
 
   updateDataFormat = (e) => {
@@ -218,6 +238,26 @@ class Playground extends Component {
               >
                 Restore Defaults
               </button>
+            </div>
+            <div class="form-inline mt-2">
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="enableSprig"
+                  checked={state.enableSprig}
+                  onClick={this.toggleEnableSprig}
+                />
+                <label class="form-check-label" for="defaultCheck1">
+                  <a
+                    target="_blank"
+                    rel="noreferrer"
+                    href="https://masterminds.github.io/sprig/"
+                  >
+                    Enable Sprig
+                  </a>
+                </label>
+              </div>
             </div>
           </div>
         </div>

@@ -32,7 +32,7 @@
 <div class="col col-sm-1">
   <!-- ref: https://www.w3docs.com/snippets/html/how-to-create-mailto-links.html -->
   <a
-    href="mailto:?subject={{ (print .Title `by Aaron Taylor`) | urlquery }}&body={{ .Permalink | urlquery }}"
+    href="mailto:?subject={{ (print .Title ` by Aaron Taylor`) | urlquery }}&body={{ .Permalink | urlquery }}"
     aria-label="email share"
     onclick="fathom.trackGoal('ZUIHHJYK', 0);"
   >
