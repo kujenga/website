@@ -1,5 +1,5 @@
 +++
-date = "2022-04-24T10:23:25-04:00"
+date = "2022-04-30T13:04:06-04:00"
 title = "Building a Go template playground with Wasm"
 description = """Creating an interactive live parser to experiment with the Go
 templating language, built using WebAssembly and running the Go standard library
@@ -24,7 +24,7 @@ backend languages to the browser. It is built into my [personal site][ghRepo] to
 simplify development and deployment.
 
 **If you just want to jump over to the playground, check it out
-[here][playground].**
+[here]({{< ref "/exp/go-templates" >}}).**
 
 As context for the approach I'll be walking through here, I decided to make the
 Go side of this application as lightweight as possible, pairing it with a
@@ -218,7 +218,6 @@ Contributions or suggestions would be very welcome!
 
 <!-- Links -->
 [wasm]: https://webassembly.org/
-[playground]: /exp/go-templates/
 [ghRepo]: https://github.com/kujenga/website
 [preact]: https://preactjs.com/
 [helm]: https://helm.sh/
