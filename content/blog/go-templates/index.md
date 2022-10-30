@@ -11,17 +11,17 @@ images = [
 toc = true
 +++
 
-This post walks through how I created the [Go Templates Playground][playground].
-It pulls Go template rendering capabilities directly into your browser with
-[WebAssembly][wasm] (Wasm). I was motivated to this after recently seeing the
-utility of other similar environments out there for different programming
-languages[^others]. The Go template language has relatively wide adoption in
-projects like [Helm][helm] and [Hugo][hugo], which this tool can be used to
-prototype and experiment for. I've also been interested in incorporating Wasm
-into a deployed project, and this was a great opportunity for it, as well as
-chance to play with alternate approaches to help bring what are traditionally
-backend languages to the browser. It is built into my [personal site][ghRepo] to
-simplify development and deployment.
+This post walks through how I created the [Go Templates Playground]({{< relref
+"exp/go-templates" >}}). It pulls Go template rendering capabilities directly
+into your browser with [WebAssembly][wasm] (Wasm). I was motivated to this after
+recently seeing the utility of other similar environments out there for
+different programming languages[^others]. The Go template language has
+relatively wide adoption in projects like [Helm][helm] and [Hugo][hugo], which
+this tool can be used to prototype and experiment for. I've also been interested
+in incorporating Wasm into a deployed project, and this was a great opportunity
+for it, as well as chance to play with alternate approaches to help bring what
+are traditionally backend languages to the browser. It is built into my
+[personal site][ghRepo] to simplify development and deployment.
 
 **If you just want to jump over to the playground, check it out
 [here]({{< ref "/exp/go-templates" >}}).**
