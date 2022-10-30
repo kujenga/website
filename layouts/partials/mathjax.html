@@ -1,9 +1,4 @@
 {{- if .Page.Params.mathjax -}}
-<script
-  src="https://polyfill.io/v3/polyfill.min.js?features=es6"
-  integrity="sha384-/gVDxClajfhLceJ3mSEMzvn0p4N6Z0T9Aok/Ws0wADhP9+5rVhRPpCqcFKSiIWUM"
-  crossorigin="anonymous"
-></script>
 <script>
   // Configuration: https://docs.mathjax.org/en/latest/web/configuration.html
   MathJax = {
@@ -15,11 +10,21 @@
     },
   };
 </script>
+
+<!-- Ensure that versions are pinned for stable SRI hashes! -->
+
+<!-- https://polyfill.io/v3/url-builder/ -->
+<script
+  src="https://polyfill.io/v3/polyfill.min.js?version=3.111.0&features=es6"
+  integrity="sha384-WSLBwI+Q8tqRHaC+f1sjS/FVv5cWp7VAfrGB17HLfZlXhbp5F/RPVP7bYVHtiAWE"
+  crossorigin="anonymous"
+></script>
+<!-- https://www.mathjax.org/#gettingstarted -->
 <script
   id="MathJax-script"
   async
-  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
-  integrity="sha384-+BSz3oj3ILMYvOBr16U9i0H4RZRmGyQQ+1q9eqr8T3skmAFrJk8GmgwgqlCZdNSo"
+  src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"
+  integrity="sha384-Wuix6BuhrWbjDBs24bXrjf4ZQ5aFeFWBuKkFekO2t8xFU0iNaLQfp2K6/1Nxveei"
   crossorigin="anonymous"
 ></script>
 {{- end -}}
