@@ -175,14 +175,17 @@ these options but ultimately decided that it would be more efficient and seem to
 have a better end result to build the rendering layer directly with web-oriented
 technologies, which is how I landed on the Preact-based approach.
 
-One thorn in the side of this project was that I did need to modify my site's
+~~One thorn in the side of this project was that I did need to modify my site's
 `Content-Security-Policy` to get the WebAssembly to load in all browsers. I use
 Firefox as my daily driver, where this all works just fine, but in order for it
 to work in all of Safari, Chrome, and Edge I needed to add `unsafe-eval` to the
 `script-src` directive, allowing the WebAssembly to be brought in directly. I
 soon hope to swap this out for `wasm-unsafe-eval` which is a recent
 replacement[^cspWasmIssue]. Going beyond that however, Wasm needs a mechanism to be
-loaded in that is not termed "unsafe"[^wasmCSPProposal].
+loaded in that is not termed "unsafe"[^wasmCSPProposal].~~ UPDATE: The
+`wasm-unsafe-eval` CSP directive is now supported[^wasmUnsafeEval] in all
+major browsers. Adding that directive to the `Content-Security-Policy` header is
+needed to allow the WebAssembly to be loaded in.
 
 Another note for someone wading into these waters is that your editor by default
 may not have its tooling setup to work with the `GOOS=js GOARCH=wasm` targets,
@@ -215,6 +218,7 @@ Contributions or suggestions would be very welcome!
   https://github.com/WebAssembly/content-security-policy/blob/main/proposals/CSP.md
   with discussion happening in the issues:
   https://github.com/WebAssembly/content-security-policy/issues?q=is%3Aissue+sort%3Aupdated-desc
+[^wasmUnsafeEval]: See: https://caniuse.com/?search=wasm-unsafe-eval
 
 <!-- Links -->
 [wasm]: https://webassembly.org/
