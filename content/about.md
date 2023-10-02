@@ -11,12 +11,16 @@ type = "about"
 ## About me
 ### I've been building things all my life
 
-Today my work focuses on bringing Collaborative AI to the Salesforce platform.
-I am leading engineering teams in building machine learning and information
+Today my work focuses on building AI software for tax professionals as CTO at
+[Additive AI](https://www.additive.ai/).
+
+Previously I was the architect for all Generative AI products within Salesforce
+Industries. I joined Salesforce in November 2019 via the acquisition of Diffeo,
+where I was co-founder. Diffeo and the company I'd co-founded prior, Meta
+Search, were aimed at helping make sense of the world's information. Throughout,
+I lead our engineering teams in building machine learning and information
 retrieval systems to create user experiences that harness information from
-unstructured content. I joined Salesforce as part of the Diffeo acquisition in
-November 2019. Prior to joining Salesforce, I co-founded Diffeo and Meta Search
-to help to make sense of the world's information.
+unstructured content.
 
 </div>
 
@@ -26,14 +30,14 @@ to help to make sense of the world's information.
 
 <div class="col-md-12">
 
-I'm deeply interested in what we can do to carve a path out of the climate
-crisis, and I see driving innovation forward as our greatest hope to create the
-level of monumental changes needed to address the threat of climate change.
+I'm also deeply interested in what we can do to carve a path out of the climate
+crisis. Driving innovation forward is our greatest hope to create the level of
+monumental change needed to address the threat of climate change.
 
 When I'm not at my computer, you are likely to find me out on a bike or working
 my way up a rock wall.
 
-My email is "hi" at the domain for this site, feel free to reach out.
+My email is "hi" at "ataylor.io", feel free to reach out!
 
 <!-- TODO: reference revamped project page as well -->
 
@@ -45,28 +49,39 @@ My email is "hi" at the domain for this site, feel free to reach out.
 
 ## Experience
 
+### [Additive AI](https://www.additive.ai/)
+#### Co-Founder, CTO <small>July 2023 - Present</small>
+Building superpowers for tax professionals. [We're
+Hiring!!!](https://additive-ai.notion.site/additive-ai/Job-Board-e1c12f3472a7437085510a3c4217e996)
+
 ### [Salesforce](https://www.salesforce.com/)
-#### Senior Director, Software Engineering <small>February 2021 - Present</small>
-Bringing Collaborative AI to the Salesforce platform, scaling Einstein
-Relationship Insights.
+#### Senior Director, Software Engineering <small>February 2021 - July 2023</small>
+Architect for all Industries Generative AI products, building and leveraging
+EinsteinGPT to create breakthrough products for specific verticals with LLMs.
+
+Lead an expanded team to integrate Diffeo technologies and architect, build, and
+launch [Einstein Relationship Insights][ERI] as the first customer-facing
+product on Hyperforce, following on from the acquisition.
+
 #### Director, Software Engineering <small>November 2019 - February 2021</small>
-After being acquired by Salesforce, integrating Diffeo technologies to launch
-[Einstein Relationship Insights][ERI].
+<p></p>
 
 ### [Diffeo](https://diffeo.com) <small>(Acquired by Salesforce)</small>
 #### Co-Founder, VP Engineering <small>September 2016 - November 2019</small>
-Diffeo provides a recommender engine using collaborative machine intelligence to
-solve the challenges of disparate unstructured data. Diffeo provides
-recommendations in-context with existing user workflows to augment analysts and
-researchers, uncovering crucial insights and accelerating their work.
+Diffeo is built around recommender engine using collaborative machine
+intelligence to solve the challenges of disparate unstructured data. Diffeo
+provides recommendations in-context with existing user workflows to augment
+analysts and researchers, uncovering crucial insights and accelerating their
+work.
 
 ### [Meta](https://meta.sc) <small>(Acquired by Diffeo)</small>
 #### Co-Founder, CTO <small>January 2015 - September 2016</small>
-Developing a cloud platform that brings the power of a search engine to a user's
-own files. Architecting a service-based backend to provide a single user
-experience for file search and organization. It analyzes files with a similar
-intent to how a search engine would analyze the web, providing SmartTags based
-on found concepts and ideas.
+Created a cloud platform bringing the power of a web search engine to a user's
+own files. I lead our engineering team to architect and implement web and client
+applications as well as a scalable IR system, interfacing with user devices and
+cloud services to provide a single user experience for file search and
+organization. Built in Go and Python + Swift and JS, deployed on Google Cloud
+Platform.
 
 ### [Peck](https://itunes.apple.com/tr/app/peck-social-calendaring-event/id912464190)
 #### Co-Founder, Engineering Lead <small>Fall 2013 - January 2015</small>
