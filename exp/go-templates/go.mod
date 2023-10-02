@@ -12,5 +12,5 @@ require (
 	github.com/mitchellh/copystructure v1.2.0 // indirect
 	github.com/stretchr/testify v1.7.1 // indirect
 	golang.org/x/crypto v0.0.0-20220411220226-7b82a4e95df4 // indirect
-	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b
+	gopkg.in/yaml.v3 v3.0.0
 )
