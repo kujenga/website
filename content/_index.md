@@ -8,11 +8,10 @@ I love working with amazing people to build incredible products.
 My work focuses on building software systems at the intersection of artificial
 intelligence, information retrieval, and user experience.
 
-Today I'm working to bring [Collaborative AI][eriProduct] to the
-[Salesforce][salesforce] platform, building on the acquisition of
-[Diffeo][diffeoWiki] in 2019. After attending Williams College I co-founded
-[Meta Search][metaAcqNews] and Diffeo to help make sense of the world's
-information.
+Today I'm working on AI products for tax professionals as CTO at [Additive
+AI](https://www.additive.ai/). My prior [work][eriProduct] at
+[Salesforce][salesforce], [Diffeo][diffeoWiki], and [Meta Search][metaAcqNews]
+has focused on building products to make sense of the world's information.
 
 I'm deeply interested in what we can do to carve a path out of the climate
 crisis. When I'm not at my computer, you are likely to find me on a bike or rock
