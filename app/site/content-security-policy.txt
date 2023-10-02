@@ -1,5 +1,5 @@
 default-src 'self';
-script-src 'self' 'unsafe-eval' 'unsafe-inline' https://code.jquery.com https://cdn.jsdelivr.net https://stackpath.bootstrapcdn.com https://f.ataylor.io https://polyfill.io https://cdn.jsdelivr.net https://giscus.app;
+script-src 'self' 'wasm-unsafe-eval' 'unsafe-inline' https://code.jquery.com https://cdn.jsdelivr.net https://stackpath.bootstrapcdn.com https://f.ataylor.io https://polyfill.io https://cdn.jsdelivr.net https://giscus.app;
 style-src 'self' 'unsafe-inline' https://stackpath.bootstrapcdn.com https://cdn.jsdelivr.net https://fonts.bunny.net;
 img-src 'self' data: https://f.ataylor.io;
 font-src data: https://stackpath.bootstrapcdn.com https://fonts.bunny.net https://cdn.jsdelivr.net;
