@@ -18,5 +18,7 @@ module.exports = {
     // THird party files we cannot modify directly.
     'assets/embed-like-gist/**/*',
   ],
-  rules: {},
+  rules: {
+    'jsdoc/tag-lines': ['warn', 'never', { startLines: 1 }],
+  },
 };

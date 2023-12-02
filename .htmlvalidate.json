@@ -4,6 +4,7 @@
     "no-trailing-whitespace": 0,
     "no-inline-style": 0,
     "script-type": 0,
+    "doctype-style": 0,
     "valid-id": ["error", { "relaxed": true }],
     "void-style": 0
   }

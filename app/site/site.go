@@ -62,6 +62,7 @@ func (s *Server) router() http.Handler {
 			`ataylor\.io`,
 			`ataylor-io\.appspot\.com`,
 			`.*-dot-ataylor-io\.appspot\.com`,
+			`.*-dot-ataylor-io\.uc\.r\.appspot\.com`,
 		},
 		AllowedHostsAreRegex: true,
 		SSLRedirect:          true,

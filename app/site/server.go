@@ -2,13 +2,12 @@ package site
 
 import (
 	"embed"
+	"fmt"
 	"io/fs"
 	"net/http"
 	"os"
 	"strings"
 	"time"
-
-	"github.com/pkg/errors"
 )
 
 //go:embed public
@@ -48,11 +47,11 @@ func fileServer() (http.Handler, error) {
 	// Read in the BUILD_DATE file and parse the timestamp.
 	raw, err := fs.ReadFile(servedDirectory, "BUILD_DATE")
 	if err != nil {
-		return nil, errors.Wrap(err, "error opening BUILD_DATE file")
+		return nil, fmt.Errorf("error opening BUILD_DATE file: %w", err)
 	}
 	buildDate, err := time.Parse(time.RFC3339, strings.TrimSpace((string)(raw)))
 	if err != nil {
-		return nil, errors.Wrap(err, "invalid format for BUILD_DATE file")
+		return nil, fmt.Errorf("invalid format for BUILD_DATE file: %w", err)
 	}
 
 	// Static file handler
