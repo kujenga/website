@@ -29,6 +29,11 @@ const config = {
       },
     ],
   },
+  transformIgnorePatterns: [
+    // Resolve jest parsing issue:
+    // https://github.com/react-dnd/react-dnd/issues/3443#issuecomment-1121131998
+    '/node_modules/(?!preact)',
+  ],
   moduleNameMapper: {
     // https://preactjs.com/guide/v10/getting-started#aliasing-in-jest
     '^react$': 'preact/compat',
