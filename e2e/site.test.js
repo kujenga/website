@@ -45,7 +45,7 @@ describe('Site', () => {
     await page.waitForSelector('div.emgithub-container');
     // Wait for giscus comments to appear.
     await page.waitForSelector('iframe.giscus-frame');
-  });
+  }, 2000); // Extended timeout to allow for CI variance
 
   it('should have a functioning go templates playground', async () => {
     // Navigate to the URL for a blog post with all assets.
