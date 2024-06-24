@@ -6,7 +6,10 @@
       Table of Contents
       <i class="fa fa-plus" aria-hidden="true"></i>
     </a>
-    <div id="toc" class="collapse">{{.TableOfContents}}</div>
+    <div id="toc" class="collapse">
+      {{ .TableOfContents | replaceRE "id=\"TableOfContents\""
+      "id=\"TableOfContents\" aria-label=\"Table of Contents\"" | safeHTML }}
+    </div>
   </aside>
 </div>
 {{ end }}
