@@ -3,8 +3,8 @@
 version: 2.1
 
 orbs:
-  node: circleci/node@5.0.2
-  gcp-cli: circleci/gcp-cli@2.1.0
+  node: circleci/node@5.2.0
+  gcp-cli: circleci/gcp-cli@3.2.1
 
 commands:
   # This command is used to validate that the files passed from the build to
@@ -106,13 +106,13 @@ jobs:
     executor: gcp-cli/google
     steps:
       # Uses pre-defined environment variables:
-      # https://circleci.com/developer/orbs/orb/circleci/gcp-cli#commands-initialize
+      # https://circleci.com/developer/orbs/orb/circleci/gcp-cli#commands-setup
       # The service account was provisioned according to the instructions here,
       # with the exception of scoping the iam.serviceAccountUser role to the
       # specific App Engine service account, and the compute.storageAdmin role
       # to the specific storage buckets, ref:
       # https://cloud.google.com/appengine/docs/standard/go/roles#recommended_role_for_application_deployment
-      - gcp-cli/initialize
+      - gcp-cli/setup
       - run:
           name: Disable gcloud CLI prompts
           command: gcloud config set core/disable_prompts true
