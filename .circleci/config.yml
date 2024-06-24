@@ -24,7 +24,7 @@ commands:
 jobs:
   build:
     docker:
-      - image: cimg/go:1.21-node
+      - image: cimg/go:1.22-node
 
     steps:
       - checkout
@@ -154,7 +154,7 @@ jobs:
 
   verify:
     docker:
-      - image: cimg/go:1.21-browsers
+      - image: cimg/go:1.22-browsers
     steps:
       - checkout
       - attach_workspace:

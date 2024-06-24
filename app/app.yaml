@@ -1,7 +1,7 @@
 # App Engine configuration file. Docs:
 # https://cloud.google.com/appengine/docs/standard/go/config/appref#runtime_and_app_elements
 
-runtime: go121
+runtime: go122
 
 # Smallest auto-scaling standard instance, $0.05/hr
 # https://cloud.google.com/appengine/docs/standard#instance_classes
