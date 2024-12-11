@@ -17,7 +17,7 @@ require (
 	github.com/mitchellh/reflectwalk v1.0.2 // indirect
 	github.com/shopspring/decimal v1.2.0 // indirect
 	github.com/spf13/cast v1.3.1 // indirect
-	golang.org/x/crypto v0.17.0 // indirect
+	golang.org/x/crypto v0.31.0 // indirect
 )
 
 replace github.com/imdario/mergo => github.com/imdario/mergo v0.3.16
