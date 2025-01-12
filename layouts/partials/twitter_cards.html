@@ -22,6 +22,6 @@
   {{- with .Description }}{{ . }}{{ else -}}
   {{- if .IsPage}}{{ .Summary }}{{ else -}}
   {{- with .Site.Params.description }}{{ . }}{{ end }}{{ end }}{{ end -}}"/>
-{{ with .Site.Social.twitter -}}
+{{ with .Site.Params.Social.twitter -}}
 <meta name="twitter:site" content="@{{ . }}"/>
 {{ end -}}
