@@ -19,9 +19,9 @@ const config = {
   transform: {
     // Configure so use esbuild, matching Hugo, with extra configuration for
     // Preact usage in the jsx files.
-    // https://www.npmjs.com/package/esbuild-jest
+    // https://www.npmjs.com/package/esbuild-jest2
     '^.+\\.[tj]sx?$': [
-      'esbuild-jest',
+      'esbuild-jest2',
       {
         jsxFactory: 'h',
         jsxFragment: 'Fragment',

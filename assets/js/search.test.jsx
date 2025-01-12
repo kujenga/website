@@ -1,5 +1,11 @@
 /* global $ */
 import { readFileSync } from 'fs';
+import { h } from 'preact';
+
+beforeAll(() => {
+  // Without this, h is not defined when we call the tests, for some reason.
+  global.h = h;
+});
 
 // Provide jquery in a global context. This approach is used rather than a
 // direct import because jquery is used across pages and imported from a global
