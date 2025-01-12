@@ -3,8 +3,8 @@
 version: 2.1
 
 orbs:
-  node: circleci/node@5.2.0
-  gcp-cli: circleci/gcp-cli@3.2.1
+  node: circleci/node@7.0.0
+  gcp-cli: circleci/gcp-cli@3.3.0
 
 commands:
   # This command is used to validate that the files passed from the build to
