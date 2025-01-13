@@ -10,7 +10,7 @@ $(TARGET)/wasm_exec.js:
 	mkdir -p $(dir $@)
 	cp $(shell go env GOROOT)/misc/wasm/wasm_exec.js $@
 
-$(TARGET)/go-templates.wasm: $(wildcard *.go **/*.go)
+$(TARGET)/go-templates.wasm: $(wildcard go.* *.go **/*.go)
 	mkdir -p $(dir $@)
 	GOOS=js GOARCH=wasm go build \
 	     -o $@
