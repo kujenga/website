@@ -5,9 +5,9 @@
 set -exuo pipefail
 
 # See: https://github.com/gohugoio/hugo/releases for latest.
-HUGO_VERSION='0.97.3'
-HUGO_SHA256='e0f95508ee9366750a33c1a87dc6fd1a5229536c017026074e954b21780033cb'
-HUGO_FILE="hugo_extended_${HUGO_VERSION}_Linux-64bit.deb"
+HUGO_VERSION='0.140.2'
+HUGO_SHA256='fe765fa8ad9d43bc13e64ee27e0b45d55182b8cf298c5bca2e46cc0889e6826c'
+HUGO_FILE="hugo_extended_${HUGO_VERSION}_linux-amd64.deb"
 BASE_URL='https://github.com/gohugoio/hugo/releases/download'
 
 # Download file

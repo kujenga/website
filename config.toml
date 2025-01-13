@@ -10,50 +10,48 @@ enableRobotsTXT = true
 
 # allow HTML to be used in markdown files
 [markup.goldmark.renderer]
-  unsafe = true
-
-[author]
-  name = "Aaron Taylor"
-  twitter = "@ataylor0123"
+unsafe = true
 
 [params]
-  images = [
-    "/img/social/brand-transparent.png",
-  ]
-  twitter = "https://twitter.com/ataylor0123"
-  github = "https://github.com/kujenga"
-  linkedin = "https://linkedin.com/in/ataylor0123"
-  instagram = "https://instagram.com/ataylor0123/"
-  angellist = "https://angel.co/ataylor0123"
-  keybase = "https://keybase.io/ataylor"
+images = ["/img/social/brand-transparent.png"]
+twitter = "https://twitter.com/ataylor0123"
+github = "https://github.com/kujenga"
+linkedin = "https://linkedin.com/in/ataylor0123"
+instagram = "https://instagram.com/ataylor0123/"
+angellist = "https://angel.co/ataylor0123"
+keybase = "https://keybase.io/ataylor"
 
-[social]
-  twitter = "ataylor0123"
+[params.author]
+name = "Aaron Taylor"
+twitter = "@ataylor0123"
+
+[params.social]
+twitter = "ataylor0123"
 
 # https://gohugo.io/templates/sitemap-template/#configure-sitemapxml
 [sitemap]
-  filename = 'sitemap.xml'
+filename = 'sitemap.xml'
 
 # docs: https://gohugo.io/templates/menu-templates/
 [menu]
-  [[menu.nav]]
-    identifier = "blog"
-    name = "This is the blog section"
-    title = "Blog"
-    url = "/blog/"
-    weight = -110
-  [[menu.nav]]
-    identifier = "about"
-    name = "This the about section"
-    title = "About"
-    url = "/about/"
-    weight = -100
+[[menu.nav]]
+identifier = "blog"
+name = "This is the blog section"
+title = "Blog"
+url = "/blog/"
+weight = -110
+[[menu.nav]]
+identifier = "about"
+name = "This the about section"
+title = "About"
+url = "/about/"
+weight = -100
 
 # https://gohugo.io/getting-started/configuration-markup#highlight
 [markup]
-  [markup.highlight]
-    # Use generated syntax highlighting:
-    # https://gohugo.io/content-management/syntax-highlighting/#highlighting-in-code-fences
-    noClasses = false
-    # Best for Go!
-    tabWidth = 8
+[markup.highlight]
+# Use generated syntax highlighting:
+# https://gohugo.io/content-management/syntax-highlighting/#highlighting-in-code-fences
+noClasses = false
+# Best for Go!
+tabWidth = 8

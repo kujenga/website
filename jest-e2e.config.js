@@ -22,9 +22,9 @@ const config = {
   ],
   transform: {
     // Configure so use esbuild, matching Hugo.
-    // https://www.npmjs.com/package/esbuild-jest
+    // https://www.npmjs.com/package/esbuild-jest2
     '^.+\\.[tj]sx?$': [
-      'esbuild-jest',
+      'esbuild-jest2',
       {
         sourcemap: true,
       },
