@@ -8,7 +8,7 @@
 <div class="col col-sm-1">
   <!-- ref: https://developer.twitter.com/en/docs/twitter-for-websites/tweet-button/guides/web-intent -->
   <a
-    href="https://twitter.com/intent/tweet?text={{ (print .Title ` by ` .Site.Author.twitter)| urlquery }}&url={{ .Permalink | urlquery }}"
+    href="https://twitter.com/intent/tweet?text={{ (print .Title `, by @` .Site.Params.Social.twitter)| urlquery }}&url={{ .Permalink | urlquery }}"
     aria-label="Twitter share"
     target="_blank"
     rel="noreferrer"
