@@ -161,10 +161,13 @@ jobs:
           at: .
       - node/install-packages
       - run:
+          name: Install Playwright Browsers
+          command: npx playwright install --with-deps
+      - run:
           name: Run E2E tests
           command: npm run test:e2e
       - store_test_results:
-          path: reports
+          path: playwright-report
       # NOTE: Coverage is not included here because we are not
       # testing any appliation code.
 

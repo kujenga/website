@@ -9,7 +9,7 @@
     "start:prod": "cd app && go run -v main.go --dev",
     "test": "jest",
     "test:go": "./app/test",
-    "test:e2e": "jest --config jest-e2e.config.js",
+    "test:e2e": "playwright test",
     "lint": "./scripts/lint",
     "lint:js": "eslint --ignore-path .gitignore --ext .jsx,.js .",
     "lint:style": "stylelint assets/**/*.[s]css",
@@ -24,6 +24,8 @@
     "prepare": "husky"
   },
   "devDependencies": {
+    "@playwright/test": "^1.49.1",
+    "@types/node": "^22.10.5",
     "babel-jest": "^29.7.0",
     "esbuild": "^0.24.2",
     "esbuild-jest2": "^0.6.7",
@@ -36,9 +38,7 @@
     "jest": "^29.0.0",
     "jest-environment-jsdom": "^29.7.0",
     "jest-junit": "^16.0.0",
-    "jest-puppeteer": "^11.0.0",
     "prettier": "^3.4.2",
-    "puppeteer": "^24.0.0",
     "stylelint": "^16.13.0",
     "stylelint-config-standard": "^37.0.0",
     "stylelint-config-standard-scss": "^14.0.0",
