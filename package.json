@@ -24,7 +24,7 @@
     "prepare": "husky"
   },
   "devDependencies": {
-    "@playwright/test": "^1.49.1",
+    "@playwright/test": "^1.56.1",
     "@types/node": "^22.10.5",
     "babel-jest": "^29.7.0",
     "esbuild": "^0.25.0",
