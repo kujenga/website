@@ -8,14 +8,14 @@ I love working with amazing people to build incredible products.
 My work focuses on building software systems at the intersection of artificial
 intelligence, information retrieval, and user experience.
 
-Today I'm working on AI products for tax professionals as CTO at [Additive
-AI](https://www.additive.ai/). My prior [work][eriProduct] at
+Today I'm working on AI products for tax professionals as VP of Engineering at
+[Thomson Reuters][thomsonreuters], following the [acquisition of Additive
+AI][additive-acq] which I co-founded as CTO. My prior [work][eriProduct] at
 [Salesforce][salesforce], [Diffeo][diffeoWiki], and [Meta Search][metaAcqNews]
 has focused on building products to make sense of the world's information.
 
-I'm deeply interested in what we can do to carve a path out of the climate
-crisis. When I'm not at my computer, you are likely to find me on a bike or rock
-wall.
+I'm deeply interested in building a path out of the climate crisis. When I'm not
+at my computer, you are likely to find me out on a run with my dog Sophie.
 
 
 <!-- Links -->
@@ -26,3 +26,5 @@ wall.
 [williamsCS]: https://csci.williams.edu/
 [williamsPOEC]: https://political-economy.williams.edu/
 [williams]: https://www.williams.edu/
+[thomsonreuters]: https://www.thomsonreuters.com/
+[additive-acq]: https://www.thomsonreuters.com/en/press-releases/2025/september/thomson-reuters-acquires-additive-a-specialist-in-ai-powered-tax-document-processing

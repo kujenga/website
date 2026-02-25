@@ -11,16 +11,17 @@ type = "about"
 ## About me
 ### I've been building things all my life
 
-Today my work focuses on building AI software for tax professionals as CTO at
-[Additive AI](https://www.additive.ai/).
+Today my work focuses on building AI software for tax professionals as VP of
+Engineering at [Thomson Reuters][thomsonreuters], following the [acquisition of
+Additive AI][additive-acq] where I was co-founder and CTO.
 
 Previously I was the architect for all Generative AI products within Salesforce
 Industries. I joined Salesforce in November 2019 via the acquisition of Diffeo,
-where I was co-founder. Diffeo and the company I'd co-founded prior, Meta
-Search, were aimed at helping make sense of the world's information. Throughout,
-I lead our engineering teams in building machine learning and information
-retrieval systems to create user experiences that harness information from
-unstructured content.
+where I was co-founder leading our engineering team. Diffeo and the company I'd
+co-founded prior, Meta Search, were aimed at helping make sense of the world's
+information. Throughout, I led our engineering teams in building machine
+learning and information retrieval systems to create user experiences that
+harness information from unstructured content.
 
 </div>
 
@@ -30,16 +31,15 @@ unstructured content.
 
 <div class="col-md-12">
 
-I'm also deeply interested in what we can do to carve a path out of the climate
+I'm also deeply interested in what we can do to build a path out of the climate
 crisis. Driving innovation forward is our greatest hope to create the level of
-monumental change needed to address the threat of climate change.
+monumental change needed to create a better future.
 
-When I'm not at my computer, you are likely to find me out on a bike or working
-my way up a rock wall.
+When I'm not at my computer, you are likely to find me out on a run, bike ride
+or working my way up a rock wall.
 
 My email is "hi" at "ataylor.io", feel free to reach out!
 
-<!-- TODO: reference revamped project page as well -->
 
 </div>
 
@@ -49,17 +49,24 @@ My email is "hi" at "ataylor.io", feel free to reach out!
 
 ## Experience
 
-### [Additive AI](https://www.additive.ai/)
-#### Co-Founder, CTO <small>July 2023 - Present</small>
-Building superpowers for tax professionals. [We're
-Hiring!!!](https://additive-ai.notion.site/additive-ai/Job-Board-e1c12f3472a7437085510a3c4217e996)
+### [Thomson Reuters][thomsonreuters]
+#### VP, Engineering <small>September 2025 - Present</small>
+Continuing to build AI superpowers for tax professionals after the acquisition
+of Additive! Our GenAI-native platform streamlines the repetitive,
+time-consuming task of ingesting and parsing pass-through entity documents,
+including Schedule K-1 federal tax forms, during tax preparation workflows.
+[We're Hiring!!!](https://jobs.ashbyhq.com/additiveai)
+
+### [Additive AI](https://www.additive.ai/) <small>(Acquired by [Thomson Reuters][additive-acq])</small>
+#### Co-Founder, CTO <small>July 2023 - September 2025</small>
+Building superpowers for tax professionals with AI-powered tax document processing.
 
 ### [Salesforce](https://www.salesforce.com/)
 #### Senior Director, Software Engineering <small>February 2021 - July 2023</small>
 Architect for all Industries Generative AI products, building and leveraging
 EinsteinGPT to create breakthrough products for specific verticals with LLMs.
 
-Lead an expanded team to integrate Diffeo technologies and architect, build, and
+Led an expanded team to integrate Diffeo technologies and architect, build, and
 launch [Einstein Relationship Insights][ERI] as the first customer-facing
 product on Hyperforce, following on from the acquisition.
 
@@ -77,7 +84,7 @@ work.
 ### [Meta](https://meta.sc) <small>(Acquired by Diffeo)</small>
 #### Co-Founder, CTO <small>January 2015 - September 2016</small>
 Created a cloud platform bringing the power of a web search engine to a user's
-own files. I lead our engineering team to architect and implement web and client
+own files. I led our engineering team to architect and implement web and client
 applications as well as a scalable IR system, interfacing with user devices and
 cloud services to provide a single user experience for file search and
 organization. Built in Go and Python + Swift and JS, deployed on Google Cloud
@@ -86,7 +93,7 @@ Platform.
 ### [Peck](https://itunes.apple.com/tr/app/peck-social-calendaring-event/id912464190)
 #### Co-Founder, Engineering Lead <small>Fall 2013 - January 2015</small>
 Won the annual Williams College Business Plan Competition and hired a team of 5
-to work out of [Lever](http://www.leverinc.org). Lead development of a mobile
+to work out of [Lever](http://www.leverinc.org). Led development of a mobile
 app for iOS and Android with Ruby on Rails backend. Now live on the iOS App
 Store. Peck is a social calendaring service for college students providing
 information and event-based communication.
@@ -137,7 +144,7 @@ control board, motor mount, and drive train assembly.
 
 ## Education
 
-### [Williams College](https://www.google.com/search?q=Williams+College) 16'
+### [Williams College](https://www.google.com/search?q=Williams+College) '16
 
 #### Majoring in Computer Science and Political Economy
 **Selected CS Coursework:** Distributed Systems, Data Mining, Computer
@@ -165,3 +172,5 @@ Metalworking and Fabrication, Woodworking, Piano (15 years)
 <!-- Links -->
 [ERI]: https://www.salesforce.com/products/sales-cloud/tools/einstein-relationship-insights/
 [kademlia]: http://xlattice.sourceforge.net/components/protocol/kademlia/specs.html
+[thomsonreuters]: https://www.thomsonreuters.com/
+[additive-acq]: https://www.thomsonreuters.com/en/press-releases/2025/september/thomson-reuters-acquires-additive-a-specialist-in-ai-powered-tax-document-processing
