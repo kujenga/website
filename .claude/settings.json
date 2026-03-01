@@ -1,4 +1,17 @@
 {
+  "permissions": {
+    "allow": [
+      "Bash(npm run:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "mcp__context7__*",
+      "WebFetch(domain:ataylor.io)",
+      "WebFetch(domain:gohugo.io)",
+      "WebFetch(domain:html-validate.org)",
+      "WebFetch(domain:giscus.app)",
+      "WebFetch(domain:prek.j178.dev)"
+    ]
+  },
   "enabledPlugins": {
     "frontend-design@claude-plugins-official": true
   }

@@ -39,7 +39,7 @@ npm run fix:fmt     # Prettier auto-fix
 ```
 
 ### Pre-push Hook
-The `.husky/pre-push` hook runs `lint`, `test`, and `test:go` before every push.
+Pre-push hooks run `lint`, `test`, and `test:go` before every push. Managed by [prek](https://prek.j178.dev/) via `prek.toml`, installed automatically on `npm install`.
 
 ## Architecture
 
@@ -71,4 +71,5 @@ Build → Deploy to App Engine (main branch only) → E2E verification against d
 - `app/app.yaml` — App Engine config (Go 1.23, F1 instance, auto-scaling)
 - `app/site/content-security-policy.txt` — CSP loaded by both dev server and production
 - `jest.config.js` — Jest with esbuild transformer, Preact aliases, jsdom environment
+- `prek.toml` — prek git hooks config (pre-push: lint, test, test:go)
 - `playwright.config.js` — Multi-browser E2E config
