@@ -101,22 +101,17 @@ describe('update', () => {
 });
 
 describe('initialize', () => {
-  // Mock window location based on:
-  // https://remarkablemark.org/blog/2018/11/17/mock-window-location/
-  const { location } = window;
-
   beforeAll(() => {
-    delete window.location;
-    window.location = { reload: jest.fn() };
-
-    // Setup the window.location with a parsable URL.
-    window.location.search = '?query=sg-1';
+    // Set the URL query parameter using the history API, which is supported
+    // by jsdom without triggering navigation errors (unlike direct
+    // window.location assignment which is blocked in jsdom v25+).
+    window.history.pushState({}, '', '?query=sg-1');
     // Set up document body, mirroring the HTML site.
     document.body.innerHTML = searchHTML;
   });
 
   afterAll(() => {
-    window.location = location;
+    window.history.pushState({}, '', '/');
   });
 
   test('initialize with basic query', () => {
