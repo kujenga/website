@@ -1,8 +1,8 @@
 module github.com/kujenga/website/app
 
-go 1.23.0
+go 1.26.0
 
-toolchain go1.23.4
+toolchain go1.26.5
 
 require (
 	github.com/spf13/cobra v1.8.1

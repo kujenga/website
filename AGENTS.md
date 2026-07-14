@@ -68,7 +68,7 @@ Build → Deploy to App Engine (main branch only) → E2E verification against d
 
 ## Configuration Files
 - `config.toml` — Hugo config (publishes to `app/site/public`)
-- `app/app.yaml` — App Engine config (Go 1.23, F1 instance, auto-scaling)
+- `app/app.yaml` — App Engine config (Go 1.26, F1 instance, auto-scaling)
 - `app/site/content-security-policy.txt` — CSP loaded by both dev server and production
 - `jest.config.js` — Jest with esbuild transformer, Preact aliases, jsdom environment
 - `prek.toml` — prek git hooks config (pre-push: lint, test, test:go)
