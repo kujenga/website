@@ -51,6 +51,8 @@ Four "vision" tokens (one per entity, each a normalized `(row, col)` pair projec
 
 The foundation of the approach is a `Value` class that wraps every float in a node of a computation graph, based directly on the approach in [micrograd][micrograd]. Each operator overload records its inputs and defines a local backward closure:
 
+MARK
+
 ```python
 def __mul__(self, other):
     other = other if isinstance(other, Value) else Value(other)
