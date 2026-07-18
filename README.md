@@ -33,23 +33,23 @@ Directories are laid out as follows:
 ## Development
 
 To install dependencies, make sure you have a recent version of
-[node][nodeInstall], [go][goInstall], and [hugo][hugoInstall] installed, and run
-the following command:
+[bun][bunInstall], [node][nodeInstall], [go][goInstall], and
+[hugo][hugoInstall] installed, and run the following command:
 
 ```sh
-npm install
+bun install
 ```
 
 To run the application, perform the following command:
 
 ```sh
-npm run start
+bun run start
 ```
 
 To run unit tests, perform the following commands:
 
 ```sh
-npm test
+bun run test
 ```
 
 ```sh
@@ -60,7 +60,7 @@ go test -v ./...
 To run browser automation tests, perform the following command:
 
 ```sh
-npm run test:e2e
+bun run test:e2e
 ```
 
 <!-- Citations -->
@@ -75,6 +75,7 @@ npm run test:e2e
 [hugoLookup]: https://gohugo.io/templates/lookup-order/
 [hugoStatic]: https://gohugo.io/content-management/static-files/
 [hugoReleases]: https://github.com/gohugoio/hugo/releases
+[bunInstall]: https://bun.sh/docs/installation
 [nodeInstall]: https://nodejs.org/en/download/package-manager/
 [goInstall]: https://go.dev/doc/install
 [hugoInstall]: https://gohugo.io/getting-started/installing

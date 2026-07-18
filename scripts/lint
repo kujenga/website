@@ -2,7 +2,7 @@
 
 set -ex
 
-npm run lint:js
-npm run lint:style
-npm run lint:html
-npm run lint:fmt
+bun run lint:js
+bun run lint:style
+bun run lint:html
+bun run lint:fmt

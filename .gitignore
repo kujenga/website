@@ -15,6 +15,7 @@ coverage/
 
 # Hugo
 *.lock
+!bun.lock
 
 # Playwright
 /test-results/
