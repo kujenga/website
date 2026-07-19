@@ -1,4 +1,8 @@
 module.exports = {
+  // Stop ESLint from cascading to configs above the project root, which
+  // otherwise double-loads plugins when working from a nested git worktree
+  // (e.g. .claude/worktrees/*).
+  root: true,
   plugins: ['jest'],
   env: {
     browser: true,
