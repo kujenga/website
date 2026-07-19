@@ -16,7 +16,10 @@
       </div>
       <!-- Bug report link -->
       {{ if .Params.bugReports }}
-      <div class="bug-report float-end">
+      <!-- col-sm-auto: in Bootstrap 5 every .row child gets width:100%, so a
+           bare floated div would take its own line; an auto column after the
+           growing .col-sm keeps it pulled to the right edge as before. -->
+      <div class="col-sm-auto bug-report">
         <p class="text-muted">
           <a
             target="_blank"
