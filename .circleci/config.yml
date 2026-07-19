@@ -3,7 +3,9 @@
 version: 2.1
 
 orbs:
-  node: circleci/node@7.0.0
+  # v7.2.0+ has bun support in install-bun and install-packages:
+  # https://github.com/oven-sh/bun/discussions/22830
+  node: circleci/node@7.2.1
   gcp-cli: circleci/gcp-cli@3.3.0
 
 commands:
@@ -31,6 +33,14 @@ jobs:
       - run: git submodule sync
       - run: git submodule update --init
 
+      # Tooling install
+      - node/install-bun:
+          # Pinned for reproducible builds
+          version: '1.3.14'
+      - run:
+          name: Install tooling
+          command: ./.circleci/install-tools
+
       # Environment
       - run:
           name: Print environment information
@@ -39,15 +49,11 @@ jobs:
             go version
             go env
             node --version
-            npm --version
+            bun --version
 
-      # Tooling install
-      - run:
-          name: Install tooling
-          command: ./.circleci/install-tools
-
-      # NPM install
-      - node/install-packages
+      # Package install
+      - node/install-packages:
+          pkg-manager: bun
 
       # Install
       - restore_cache:
@@ -64,18 +70,18 @@ jobs:
       # Site build
       - run:
           name: Build site
-          command: npm run build
+          command: bun run build
 
       # Tests
       - run:
-          name: Run NPM lints
-          command: npm run lint
+          name: Run JS lints
+          command: bun run lint
       - run:
-          name: Run NPM tests
-          command: npm run test
+          name: Run JS tests
+          command: bun run test
       - run:
           name: Run Go tests
-          command: npm run test:go
+          command: bun run test:go
       - store_test_results:
           path: reports
       - store_artifacts:
@@ -159,13 +165,17 @@ jobs:
       - checkout
       - attach_workspace:
           at: .
-      - node/install-packages
+      - node/install-bun:
+          # Pinned for reproducible builds
+          version: '1.3.14'
+      - node/install-packages:
+          pkg-manager: bun
       - run:
           name: Install Playwright Browsers
-          command: npx playwright install --with-deps
+          command: bunx playwright install --with-deps
       - run:
           name: Run E2E tests
-          command: npm run test:e2e
+          command: bun run test:e2e
       - store_test_results:
           path: playwright-report
       # NOTE: Coverage is not included here because we are not

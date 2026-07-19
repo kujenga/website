@@ -10,36 +10,36 @@ Personal website for Aaron Taylor ([ataylor.io](https://ataylor.io)). A Hugo sta
 
 ### Development
 ```sh
-npm install          # Install dependencies (also inits git submodules via postinstall)
-npm start            # Start Hugo dev server with live reload and drafts enabled
-npm run start:prod   # Run Go production server locally
-npm run build        # Build Hugo site (output: app/site/public)
-npm run build:prod   # Build with ENVIRONMENT=production
-npm run clean        # Remove build artifacts
+bun install          # Install dependencies (also inits git submodules via postinstall)
+bun run start        # Start Hugo dev server with live reload and drafts enabled
+bun run start:prod   # Run Go production server locally
+bun run build        # Build Hugo site (output: app/site/public)
+bun run build:prod   # Build with ENVIRONMENT=production
+bun run clean        # Remove build artifacts
 ```
 
 ### Testing
 ```sh
-npm test                              # Jest unit tests (JS/JSX)
-npm run test:go                       # Go tests with coverage (runs app/test script)
+bun run test                          # Jest unit tests (JS/JSX)
+bun run test:go                       # Go tests with coverage (runs app/test script)
 cd app && go test -run TestName ./... # Run a single Go test
-npx jest path/to/file.test.jsx        # Run a single Jest test file
-npm run test:e2e                      # Playwright E2E tests (Chromium, Firefox, WebKit)
-npx playwright test e2e/site.spec.js  # Run a specific E2E test file
+bunx jest path/to/file.test.jsx       # Run a single Jest test file
+bun run test:e2e                      # Playwright E2E tests (Chromium, Firefox, WebKit)
+bunx playwright test e2e/site.spec.js # Run a specific E2E test file
 ```
 
 ### Linting & Formatting
 ```sh
-npm run lint        # Run all linters (script: scripts/lint)
-npm run lint:js     # ESLint (JS/JSX)
-npm run lint:style  # Stylelint (SCSS/CSS)
-npm run lint:html   # Build then validate HTML output
-npm run lint:fmt    # Prettier check
-npm run fix:fmt     # Prettier auto-fix
+bun run lint        # Run all linters (script: scripts/lint)
+bun run lint:js     # ESLint (JS/JSX)
+bun run lint:style  # Stylelint (SCSS/CSS)
+bun run lint:html   # Build then validate HTML output
+bun run lint:fmt    # Prettier check
+bun run fix:fmt     # Prettier auto-fix
 ```
 
 ### Pre-push Hook
-Pre-push hooks run `lint`, `test`, and `test:go` before every push. Managed by [prek](https://prek.j178.dev/) via `prek.toml`, installed automatically on `npm install`.
+Pre-push hooks run `lint`, `test`, and `test:go` before every push. Managed by [prek](https://prek.j178.dev/) via `prek.toml`, installed automatically on `bun install`.
 
 ## Architecture
 
