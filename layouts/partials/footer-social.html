@@ -16,7 +16,7 @@
       </div>
       <!-- Bug report link -->
       {{ if .Params.bugReports }}
-      <div class="bug-report float-right">
+      <div class="bug-report float-end">
         <p class="text-muted">
           <a
             target="_blank"
@@ -32,7 +32,7 @@
       <!-- Social links -->
       {{ if not .Params.disableSocial }}
       <div class="col-sm">
-        <ul class="float-right">
+        <ul class="float-end">
           <li class="list-inline-item">
             <a
               href="{{ .Site.Params.linkedin }}"

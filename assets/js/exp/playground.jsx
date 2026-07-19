@@ -152,7 +152,7 @@ class Playground extends Component {
       renderOutput = (
         <div class="d-flex justify-content-center">
           <div class="spinner-border text-secondary" role="status">
-            <span class="sr-only">Loading...</span>
+            <span class="visually-hidden">Loading...</span>
           </div>
         </div>
       );
@@ -175,11 +175,11 @@ class Playground extends Component {
           <div class="form-group">
             <div class="form-inline">
               <label for="dataTextArea">Data</label>
-              <label class="sr-only" for="dataFormat">
+              <label class="visually-hidden" for="dataFormat">
                 Format
               </label>
               <select
-                class="custom-select custom-select-sm ml-2 mb-1"
+                class="custom-select custom-select-sm ms-2 mb-1"
                 id="dataFormat"
                 value={state.dataFormat}
                 onChange={this.updateDataFormat}
@@ -217,7 +217,7 @@ class Playground extends Component {
               >
                 Render
               </button>
-              <div class="custom-control custom-switch ml-3">
+              <div class="custom-control custom-switch ms-3">
                 <input
                   type="checkbox"
                   class="custom-control-input"
