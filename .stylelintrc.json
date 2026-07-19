@@ -4,7 +4,8 @@
     "stylelint-prettier/recommended"
   ],
   "rules": {
-    "prettier/prettier": true
+    "prettier/prettier": true,
+    "media-feature-range-notation": "prefix"
   },
   "ignoreFiles": ["layouts/**/*.html"]
 }
