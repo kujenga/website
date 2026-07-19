@@ -1,4 +1,3 @@
-/* global $ */
 import { readFileSync } from 'fs';
 import { h } from 'preact';
 
@@ -6,11 +5,6 @@ beforeAll(() => {
   // Without this, h is not defined when we call the tests, for some reason.
   global.h = h;
 });
-
-// Provide jquery in a global context. This approach is used rather than a
-// direct import because jquery is used across pages and imported from a global
-// script tag so that the load is cached efficiently.
-global.$ = require('jquery');
 
 // HTML from the search page for use with tests.
 // NOTE: "build" must have been run for this to work.
@@ -131,9 +125,9 @@ describe('initialize', () => {
     // New query gets more results.
     const input = document.getElementById('search-input');
     input.value = 'stargate';
-    // Manual trigger seems to be needed with jsdom:
-    // https://www.htmlgoodies.com/javascript/testing-dom-events-using-jquery-and-jasmine-2-0/
-    $(input).trigger('keyup');
+    // Manual trigger seems to be needed with jsdom; bubbles so the delegated
+    // listener on the form sees it.
+    input.dispatchEvent(new window.Event('keyup', { bubbles: true }));
 
     // Expect three results rather than just 1 for the "stargate" query.
     const results = document.querySelectorAll('#results > ul > li');
