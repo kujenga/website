@@ -1,0 +1,18 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "hugo-dev",
+      "runtimeExecutable": "bun",
+      "runtimeArgs": ["run", "start"],
+      "port": 1313,
+      "autoPort": false
+    },
+    {
+      "name": "go-prod",
+      "runtimeExecutable": "bun",
+      "runtimeArgs": ["run", "start:prod"],
+      "port": 8080
+    }
+  ]
+}
