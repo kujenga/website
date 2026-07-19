@@ -101,6 +101,13 @@ nav.navbar {
 }
 
 .jumbotron {
+  // Bootstrap 5 removed .jumbotron; these first properties recreate the
+  // Bootstrap 4.5 component styles this page was built against.
+  // https://getbootstrap.com/docs/5.3/migration/#jumbotron
+  padding: 2rem 1rem;
+  margin-bottom: 2rem;
+  border-radius: 0.3rem;
+
   margin-top: -25px;
   color: black;
 
@@ -108,6 +115,10 @@ nav.navbar {
   background: url('{{ (resources.Get "images/view-tall-comp.jpg" | fingerprint "md5").RelPermalink }}');
   background-position: center;
   background-size: cover;
+
+  @media (min-width: 576px) {
+    padding: 4rem 2rem;
+  }
 }
 
 .jumbotron > .container {
