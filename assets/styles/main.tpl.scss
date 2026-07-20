@@ -269,6 +269,10 @@ nav.navbar {
 /* Blog Post */
 .type-blog {
   #content {
+    // Cap the text measure for readability; ~70ch tracks the body font and
+    // holds at every breakpoint, unlike percentage-based grid columns.
+    max-width: 70ch;
+
     .h1,
     .h2,
     .h3,
