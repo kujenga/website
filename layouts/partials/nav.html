@@ -1,4 +1,6 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light" aria-label="Primary">
+<!-- bg-body-tertiary matches the old bg-light in light mode and follows
+     data-bs-theme in dark mode (bg-light does not). -->
+<nav class="navbar navbar-expand-lg bg-body-tertiary" aria-label="Primary">
   <div class="container">
     <a class="navbar-brand" href="{{ .Site.Home.RelPermalink }}">
       {{- $navImage := (resources.Get
@@ -53,6 +55,44 @@
 
       <!-- Search form -->
       {{ partial "search-form.html" . }}
+
+      <!-- Color mode toggle; wired up by the theme script in header-includes -->
+      <div class="dropdown ms-2">
+        <button
+          class="btn nav-link dropdown-toggle"
+          type="button"
+          id="theme-toggle"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+          aria-label="Toggle color theme"
+        >
+          <i class="fa fa-adjust" aria-hidden="true" id="theme-icon"></i>
+        </button>
+        <ul
+          class="dropdown-menu dropdown-menu-end"
+          aria-labelledby="theme-toggle"
+        >
+          <li>
+            <button
+              class="dropdown-item"
+              type="button"
+              data-theme-value="light"
+            >
+              <i class="fa fa-sun-o fa-fw" aria-hidden="true"></i> Light
+            </button>
+          </li>
+          <li>
+            <button class="dropdown-item" type="button" data-theme-value="dark">
+              <i class="fa fa-moon-o fa-fw" aria-hidden="true"></i> Dark
+            </button>
+          </li>
+          <li>
+            <button class="dropdown-item" type="button" data-theme-value="auto">
+              <i class="fa fa-adjust fa-fw" aria-hidden="true"></i> Auto
+            </button>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </nav>

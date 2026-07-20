@@ -1,3 +1,72 @@
+<!-- Color mode handling, adapted from the Bootstrap 5.3 documentation:
+     https://getbootstrap.com/docs/5.3/customize/color-modes/#javascript
+     Inline and ahead of the stylesheets so the theme applies before first
+     paint. The stored preference ("light"/"dark") wins; otherwise the
+     system preference is followed, live. -->
+<script>
+  (() => {
+    'use strict';
+
+    const getStored = () => localStorage.getItem('theme');
+    const getPreferred = () => {
+      const stored = getStored();
+      if (stored === 'light' || stored === 'dark') {
+        return stored;
+      }
+      return window.matchMedia('(prefers-color-scheme: dark)').matches
+        ? 'dark'
+        : 'light';
+    };
+    const setTheme = (theme) => {
+      document.documentElement.setAttribute('data-bs-theme', theme);
+      // Keep the giscus comments iframe in sync, when present.
+      const giscus = document.querySelector('iframe.giscus-frame');
+      if (giscus) {
+        giscus.contentWindow.postMessage(
+          { giscus: { setConfig: { theme } } },
+          'https://giscus.app'
+        );
+      }
+    };
+
+    setTheme(getPreferred());
+    window
+      .matchMedia('(prefers-color-scheme: dark)')
+      .addEventListener('change', () => setTheme(getPreferred()));
+
+    // Wire up the navbar toggle once the DOM exists.
+    window.addEventListener('DOMContentLoaded', () => {
+      const reflect = () => {
+        const stored = getStored() || 'auto';
+        document.querySelectorAll('[data-theme-value]').forEach((btn) => {
+          btn.classList.toggle(
+            'active',
+            btn.getAttribute('data-theme-value') === stored
+          );
+        });
+        const icon = document.getElementById('theme-icon');
+        if (icon) {
+          const icons = { light: 'fa-sun-o', dark: 'fa-moon-o' };
+          icon.className = 'fa ' + (icons[stored] || 'fa-adjust');
+        }
+      };
+      document.querySelectorAll('[data-theme-value]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const value = btn.getAttribute('data-theme-value');
+          if (value === 'auto') {
+            localStorage.removeItem('theme');
+          } else {
+            localStorage.setItem('theme', value);
+          }
+          setTheme(getPreferred());
+          reflect();
+        });
+      });
+      reflect();
+    });
+  })();
+</script>
+
 <!-- Latest compiled and minified CSS for Bootstrap and Font Awesome -->
 <link rel="preconnect" href="https://cdn.jsdelivr.net" />
 <link
