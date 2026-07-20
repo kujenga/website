@@ -32,6 +32,15 @@ body {
   font-family: Lato, sans-serif;
 }
 
+// Bootstrap 5 added an xxl breakpoint (>=1400px viewport) that grows the
+// container to 1320px; keep the Bootstrap 4 maximum of 1140px so wide
+// screens match the layout this site was designed around.
+@media (min-width: 1400px) {
+  .container {
+    max-width: 1140px;
+  }
+}
+
 a {
   color: $links;
 
