@@ -53,11 +53,8 @@
         {{ end }}
       </ul>
 
-      <!-- Search form -->
-      {{ partial "search-form.html" . }}
-
       <!-- Color mode toggle; wired up by the theme script in header-includes -->
-      <div class="dropdown ms-2">
+      <div class="dropdown me-2">
         <button
           class="btn nav-link dropdown-toggle"
           type="button"
@@ -93,6 +90,9 @@
           </li>
         </ul>
       </div>
+
+      <!-- Search form -->
+      {{ partial "search-form.html" . }}
     </div>
   </div>
 </nav>
