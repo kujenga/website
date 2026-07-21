@@ -129,6 +129,18 @@ nav.navbar {
   button[type='submit']:hover {
     opacity: 1;
   }
+
+  // Mute the color mode toggle to match the search box's quiet treatment
+  // (same gray + opacity as the search icon) so it doesn't draw more
+  // attention than neighboring controls.
+  #theme-toggle {
+    color: var(--bs-secondary-color);
+    opacity: 0.7;
+  }
+
+  #theme-toggle:hover {
+    opacity: 1;
+  }
 }
 
 .lead {
