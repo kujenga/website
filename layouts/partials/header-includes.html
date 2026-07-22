@@ -1,13 +1,82 @@
+<!-- Color mode handling, adapted from the Bootstrap 5.3 documentation:
+     https://getbootstrap.com/docs/5.3/customize/color-modes/#javascript
+     Inline and ahead of the stylesheets so the theme applies before first
+     paint. The stored preference ("light"/"dark") wins; otherwise the
+     system preference is followed, live. -->
+<script>
+  (() => {
+    'use strict';
+
+    const getStored = () => localStorage.getItem('theme');
+    const getPreferred = () => {
+      const stored = getStored();
+      if (stored === 'light' || stored === 'dark') {
+        return stored;
+      }
+      return window.matchMedia('(prefers-color-scheme: dark)').matches
+        ? 'dark'
+        : 'light';
+    };
+    const setTheme = (theme) => {
+      document.documentElement.setAttribute('data-bs-theme', theme);
+      // Keep the giscus comments iframe in sync, when present.
+      const giscus = document.querySelector('iframe.giscus-frame');
+      if (giscus) {
+        giscus.contentWindow.postMessage(
+          { giscus: { setConfig: { theme } } },
+          'https://giscus.app'
+        );
+      }
+    };
+
+    setTheme(getPreferred());
+    window
+      .matchMedia('(prefers-color-scheme: dark)')
+      .addEventListener('change', () => setTheme(getPreferred()));
+
+    // Wire up the navbar toggle once the DOM exists.
+    window.addEventListener('DOMContentLoaded', () => {
+      const reflect = () => {
+        const stored = getStored() || 'auto';
+        document.querySelectorAll('[data-theme-value]').forEach((btn) => {
+          btn.classList.toggle(
+            'active',
+            btn.getAttribute('data-theme-value') === stored
+          );
+        });
+        const icon = document.getElementById('theme-icon');
+        if (icon) {
+          const icons = { light: 'fa-sun-o', dark: 'fa-moon-o' };
+          icon.className = 'fa ' + (icons[stored] || 'fa-adjust');
+        }
+      };
+      document.querySelectorAll('[data-theme-value]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const value = btn.getAttribute('data-theme-value');
+          if (value === 'auto') {
+            localStorage.removeItem('theme');
+          } else {
+            localStorage.setItem('theme', value);
+          }
+          setTheme(getPreferred());
+          reflect();
+        });
+      });
+      reflect();
+    });
+  })();
+</script>
+
 <!-- Latest compiled and minified CSS for Bootstrap and Font Awesome -->
-<link rel="preconnect" href="https://stackpath.bootstrapcdn.com" />
+<link rel="preconnect" href="https://cdn.jsdelivr.net" />
 <link
   rel="stylesheet"
-  href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
-  integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+  href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+  integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
   crossorigin="anonymous"
 />
 <link
-  href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+  href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"
   rel="stylesheet"
   integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
   crossorigin="anonymous"
@@ -34,9 +103,3 @@ toCSS | minify | fingerprint }}
   href="{{ $style.RelPermalink }}"
   integrity="{{ $style.Data.Integrity }}"
 />
-
-<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-<!--[if lt IE 9]>
-  <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]-->

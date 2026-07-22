@@ -2,7 +2,8 @@
   id="search"
   action="{{ with .GetPage `/search` }}{{ .RelPermalink }}{{ end }}"
   method="get"
-  class="form-inline"
+  class="d-flex align-items-center"
+  role="search"
 >
   <input
     type="search"

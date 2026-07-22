@@ -1,4 +1,3 @@
-/* global $ */
 import { h, render } from 'preact';
 import lunr from 'lunr';
 
@@ -232,16 +231,19 @@ function initialize() {
     update(query);
   }
 
-  // Live update the query results as people type on the page.
-  // (conditional since tests do not have jQuery at present)
-  $('form#search').on(
-    'keyup change paste',
-    'input, select, textarea',
-    function () {
-      const query = $(this).val();
-      update(query);
-    }
-  );
+  // Live update the query results as people type on the page. Events are
+  // delegated from the form so any input, select, or textarea is covered.
+  const form = document.querySelector('form#search');
+  if (form) {
+    const onEdit = (event) => {
+      if (event.target.matches('input, select, textarea')) {
+        update(event.target.value);
+      }
+    };
+    ['keyup', 'change', 'paste'].forEach((name) =>
+      form.addEventListener(name, onEdit)
+    );
+  }
 }
 
 // At load time, setup the web page.

@@ -152,7 +152,7 @@ class Playground extends Component {
       renderOutput = (
         <div class="d-flex justify-content-center">
           <div class="spinner-border text-secondary" role="status">
-            <span class="sr-only">Loading...</span>
+            <span class="visually-hidden">Loading...</span>
           </div>
         </div>
       );
@@ -161,8 +161,10 @@ class Playground extends Component {
     return (
       <div class="row">
         <div class="col">
-          <div class="form-group">
-            <label for="templateTextArea">Template</label>
+          <div class="mb-3">
+            <label class="form-label" for="templateTextArea">
+              Template
+            </label>
             <textarea
               class="form-control mono"
               id="templateTextArea"
@@ -172,14 +174,14 @@ class Playground extends Component {
               autocomplete="off"
             />
           </div>
-          <div class="form-group">
-            <div class="form-inline">
+          <div class="mb-3">
+            <div class="d-flex align-items-center">
               <label for="dataTextArea">Data</label>
-              <label class="sr-only" for="dataFormat">
+              <label class="visually-hidden" for="dataFormat">
                 Format
               </label>
               <select
-                class="custom-select custom-select-sm ml-2 mb-1"
+                class="form-select form-select-sm w-auto ms-2 mb-1"
                 id="dataFormat"
                 value={state.dataFormat}
                 onChange={this.updateDataFormat}
@@ -202,13 +204,15 @@ class Playground extends Component {
           </div>
         </div>
         <div class="col">
-          <div class="form-group">
-            <label for="renderTextArea">Rendered</label>
+          <div class="mb-3">
+            <label class="form-label" for="renderTextArea">
+              Rendered
+            </label>
             {renderOutput}
           </div>
-          <div class="form-group">
-            <label>Configuration</label>
-            <div class="form-inline">
+          <div class="mb-3">
+            <label class="form-label">Configuration</label>
+            <div class="d-flex align-items-center">
               <button
                 type="submit"
                 class="btn btn-primary"
@@ -217,20 +221,20 @@ class Playground extends Component {
               >
                 Render
               </button>
-              <div class="custom-control custom-switch ml-3">
+              <div class="form-check form-switch ms-3">
                 <input
                   type="checkbox"
-                  class="custom-control-input"
+                  class="form-check-input"
                   id="autoRender"
                   checked={state.autoRender}
                   onClick={this.toggleAutoRender}
                 />
-                <label class="custom-control-label" for="autoRender">
+                <label class="form-check-label" for="autoRender">
                   Auto-render
                 </label>
               </div>
             </div>
-            <div class="form-inline mt-2">
+            <div class="mt-2">
               <button
                 type="button"
                 class="btn btn-secondary"
@@ -239,7 +243,7 @@ class Playground extends Component {
                 Restore Defaults
               </button>
             </div>
-            <div class="form-inline mt-2">
+            <div class="mt-2">
               <div class="form-check">
                 <input
                   class="form-check-input"
@@ -248,7 +252,7 @@ class Playground extends Component {
                   checked={state.enableSprig}
                   onClick={this.toggleEnableSprig}
                 />
-                <label class="form-check-label" for="defaultCheck1">
+                <label class="form-check-label" for="enableSprig">
                   <a
                     target="_blank"
                     rel="noreferrer"

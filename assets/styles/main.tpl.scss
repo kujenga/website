@@ -5,6 +5,22 @@
 // https://gohugo.io/content-management/syntax-highlighting/#highlighting-in-code-fences
 @import 'syntax-github';
 
+// Dark color mode, driven by data-bs-theme on <html> (set from the system
+// preference or the stored navbar-toggle choice by the script in
+// header-includes.html). Custom styles below use Bootstrap's semantic CSS
+// variables (--bs-body-bg, --bs-border-color, ...) so they adapt on their
+// own; this block holds the pieces that need explicit dark values.
+[data-bs-theme='dark'] {
+  // Native form controls and scrollbars follow the theme.
+  color-scheme: dark;
+
+  // Dark syntax highlighting for code fences. A nested @import is the only
+  // way to scope the generated stylesheet under this selector with libsass
+  // (no @use support), hence the lint exemption.
+  // stylelint-disable-next-line no-invalid-position-at-import-rule
+  @import 'syntax-github-dark';
+}
+
 /* ref: https://coolors.co/555b6e-89b0ae-bee3db-faf9f9-ffd6ba */
 $independence: #555b6eff;
 $morning-blue: #89b0aeff;
@@ -24,7 +40,9 @@ $bootstrap-border: #ced4da;
 $links: #2d70b9;
 
 /* SVG */
-$search-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' class='bi bi-search' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z'%3E%3C/path%3E%3C/svg%3E");
+// fill is a fixed mid-gray so the icon stays visible in both color modes
+// (data URIs cannot reference CSS variables).
+$search-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' class='bi bi-search' viewBox='0 0 16 16'%3E%3Cpath fill='%23888888' d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z'%3E%3C/path%3E%3C/svg%3E");
 
 /* SCSS */
 
@@ -32,8 +50,25 @@ body {
   font-family: Lato, sans-serif;
 }
 
+// Bootstrap 5 added an xxl breakpoint (>=1400px viewport) that grows the
+// container to 1320px; keep the Bootstrap 4 maximum of 1140px so wide
+// screens match the layout this site was designed around.
+@media (min-width: 1400px) {
+  .container {
+    max-width: 1140px;
+  }
+}
+
 a {
   color: $links;
+
+  // Bootstrap 5 underlines links by default; restore the Bootstrap 4
+  // underline-on-hover-only behavior this site was designed around.
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }
 
 code {
@@ -43,15 +78,15 @@ code {
 
 .small,
 small {
-  color: #777;
+  color: var(--bs-secondary-color);
 }
 
 .muted {
-  color: #777;
+  color: var(--bs-secondary-color);
 }
 
 figcaption {
-  color: #777 !important;
+  color: var(--bs-secondary-color) !important;
   font-size: 0.8rem !important;
 }
 
@@ -70,9 +105,9 @@ nav.navbar {
   // Styles for input search box based on:
   // https://tippingpoint.dev/search-icon-inside-input
   form#search {
-    border: 1px solid $bootstrap-border;
+    border: 1px solid var(--bs-border-color);
     border-radius: 5px;
-    background: white;
+    background: var(--bs-body-bg);
   }
 
   input[type='search'] {
@@ -81,17 +116,29 @@ nav.navbar {
   }
 
   input[type='search']::placeholder {
-    color: #bbb;
+    color: var(--bs-tertiary-color);
   }
 
   button[type='submit'] {
     height: 40px;
     width: 40px;
-    background: white $search-icon no-repeat center;
+    background: var(--bs-body-bg) $search-icon no-repeat center;
     opacity: 0.7;
   }
 
   button[type='submit']:hover {
+    opacity: 1;
+  }
+
+  // Mute the color mode toggle to match the search box's quiet treatment
+  // (same gray + opacity as the search icon) so it doesn't draw more
+  // attention than neighboring controls.
+  #theme-toggle {
+    color: var(--bs-secondary-color);
+    opacity: 0.7;
+  }
+
+  #theme-toggle:hover {
     opacity: 1;
   }
 }
@@ -101,6 +148,12 @@ nav.navbar {
 }
 
 .jumbotron {
+  // Bootstrap 5 removed .jumbotron; these first properties recreate the
+  // Bootstrap 4.5 component styles this page was built against.
+  // https://getbootstrap.com/docs/5.3/migration/#jumbotron
+  padding: 2rem 1rem;
+  margin-bottom: 2rem;
+  border-radius: 0.3rem;
   margin-top: -25px;
   color: black;
 
@@ -108,6 +161,13 @@ nav.navbar {
   background: url('{{ (resources.Get "images/view-tall-comp.jpg" | fingerprint "md5").RelPermalink }}');
   background-position: center;
   background-size: cover;
+
+  // Prefix notation required: Hugo's toCSS/libsass cannot parse the modern
+  // range syntax (width >= 576px); see media-feature-range-notation in
+  // .stylelintrc.json.
+  @media (min-width: 576px) {
+    padding: 4rem 2rem;
+  }
 }
 
 .jumbotron > .container {
@@ -118,6 +178,11 @@ nav.navbar {
 
 .breadcrumb {
   background-color: transparent;
+
+  // Bootstrap 5 removed the default breadcrumb padding/margin; restore the
+  // Bootstrap 4 spacing this layout was designed with.
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
 }
 
 .mono {
@@ -128,25 +193,14 @@ nav.navbar {
 .footer {
   margin-top: 50px;
   margin-bottom: 25px;
-  border: solid 1px #eee;
-  background: linear-gradient(
-    #eee,
-    #fff,
-    #fff,
-    #fff,
-    #fff
-  ); /* For:
-  - Safari 5.1 to 6.0
-  - Opera 11.1 to 12.0
-  - Firefox 3.6 to 15 */
-
+  border: solid 1px var(--bs-border-color);
   background: repeating-linear-gradient(
-    #eee,
-    #fff,
-    #fff,
-    #fff,
-    #fff
-  ); /* Standard syntax */
+    var(--bs-secondary-bg),
+    var(--bs-body-bg),
+    var(--bs-body-bg),
+    var(--bs-body-bg),
+    var(--bs-body-bg)
+  );
 }
 
 .copyright {
@@ -273,7 +327,7 @@ nav.navbar {
 
   pre {
     border-radius: 0.3rem 0.3rem 0 0;
-    border: 1px solid #ddd;
+    border: 1px solid var(--bs-border-color);
     padding: 0.5rem 1rem;
     font-size: 80%;
     line-height: 1.05rem;
@@ -302,7 +356,7 @@ nav.navbar {
 .btn-outline.active {
   color: #999;
   border: solid 2px #999;
-  background: #fff;
+  background: var(--bs-body-bg);
 }
 
 .btn-social {
